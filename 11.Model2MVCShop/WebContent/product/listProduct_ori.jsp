@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 <head>
@@ -26,11 +25,7 @@
  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
-	<!-- 이미지롤링 -->
-	<script type="text/javascript" src="../javascript/imageRolling.js"></script>
-	
 	<script type="text/javascript">
-		
 		
 		//<!-- form data serialize function -->
 		jQuery.fn.serializeObject = function() {
@@ -55,66 +50,7 @@
 		    return obj;
 		};
 	
-		function fncGetProduct(prodNo) {
-			var dialog = $("#dialog").dialog({
-				autoOpen : false,
-				title : "상품정보",
-				width : 400,
-				buttons : {
-					<c:if test="${param.menu == 'search'}">
-						"구매하기" : function(){
-							purchaseProduct(prodNo);
-						},
-					</c:if>
-					<c:if test="${param.menu == 'manage'}">
-						"수정하기" : function(){
-							updateProduct(prodNo);
-						},
-					</c:if>
-					
-					"닫기" : function(){
-						dialog.dialog("close");
-					}
-				},
-				close : function(){
-					dialog.dialog("close");
-				},
-				open : function(){
-					console.log("open");
-					
-					$.ajax({
-						
-						url : "/product/json/getProduct/"+prodNo,
-						method : "get",
-						dataType : "json",
-						success : function(JSONData, status){
-							
-							console.log(status);
-							console.log(JSON.stringify(JSONData));
-							
-							var htmlStr ="<table class='table'><tr><td class='danger'>상품명</td>"
-												+"<td>"+JSONData.prodName+"</td></tr>"
-												+"<tr><td class='danger'>상세정보</td><td>"+JSONData.prodDetail+"</td></tr>"
-												+"<tr><td class='danger'>가격</td><td>"+JSONData.price+"</td></tr>"
-												+"<tr><td class='danger'>제조일자</td><td>"+JSONData.manuDate+"</td></tr>"
-												+"<tr><td class='danger'>이미지</td>";
-												
-												
-							
-							for(var i = 0; i < JSONData.fileName.length; i++){
-								htmlStr += "<td><img class='img-thumbnail' src='../images/uploadFiles/"+JSONData.fileName[i]+"'/>";
-							}
-							htmlStr += "</td></table>";
-							
-							$("#dialog").html(htmlStr);
-							
-						}
-						
-					})
-				}
-			});
-			dialog.dialog("open");
-		}
+	
 		
 		function fncGetList(currentPage) {
 			console.log("선택한 페이지 : "+currentPage);
@@ -189,7 +125,7 @@
 		}
 			
 		//<!-- update prod..-->
-		function updateProduct(prodNo) {
+		function updateProduct(prodNo, elem) {
 			console.log("업데이트버튼 : prodNo=>"+prodNo);
 			self.location = "/product/getProduct?prodNo="+prodNo+"&menu=manage";
 			/* $.ajax({
@@ -216,16 +152,6 @@
 		}
 		
 		$(function(){
-			
-			var count = [];
-			
-			$("input:hidden[name='fileCount']").each(function(index){
-				count.push($(this).val());
-			});
-			
-			
-			imgMove(count);
-			//console.log(moveSpeed);
 			
 			//get 방식 접근 시
 			var resultHtml = "전체 "+${resultPage.totalCount}+" 건수, 현재 "+${resultPage.currentPage}+"페이지";
@@ -263,8 +189,8 @@
 						},
 			          dataType: "json",
 			          data: JSON.stringify({
-			            searchKeyword : $("input:text[name='searchKeyword']").val(),
-			            searchCondition : $("select[name='searchCondition']").val()
+			            "searchKeyword": request.term,
+			            "searchCondition" : 1
 			          }),
 			          success: function( JSONData ) {
 			        	console.log("server data===>"+JSON.stringify(JSONData));
@@ -295,7 +221,7 @@
 			});
 			
 			//<!-- 검색버튼 눌렀을때 -->
-			$(".btn:contains('검색')").bind('click', function(){
+			$("input:submit").button().bind('click', function(){
 				
 				console.log("검색 searchKeyword : "+$("input:text[name='searchKeyword']").val());
 				console.log("검색 searchKeywordPrice : "+$("input:text[name='searchKeywordPrice']").val());
@@ -378,70 +304,9 @@
 			});  */
 			
 			///*
-			
-			//dialog
-			/* var dialog = $("#dialog").dialog({
-				autoOpen : false,
-				title : "상품정보",
-				width : 400,
-				buttons : {
-					"구매하기" : function(){
-						self.loaction="";
-					},
-					"닫기" : function(){
-						dialog.dialog("close");
-					}
-				},
-				close : function(){
-					dialog.dialog("close");
-				},
-				open : function(){
-					console.log("open");
-					
-					$.ajax({
-						
-						url : "/product/json/getProduct/"+$("input:hidden[name='pNo']").val(),
-						method : "get",
-						dataType : "json",
-						success : function(JSONData, status){
-							
-							console.log(status);
-							console.log(JSON.stringify(JSONData));
-							
-							var htmlStr ="<table class='table'><tr><td class='danger'>상품명</td>"
-												+"<td>"+JSONData.prodName+"</td></tr>"
-												+"<tr><td class='danger'>상세정보</td><td>"+JSONData.prodDetail+"</td></tr>"
-												+"<tr><td class='danger'>가격</td><td>"+JSONData.price+"</td></tr>"
-												+"<tr><td class='danger'>제조일자</td><td>"+JSONData.manuDate+"</td></tr>"
-												+"<tr><td class='danger'>이미지</td>";
-												
-												
-							
-							for(var i = 0; i < JSONData.fileName.length; i++){
-								htmlStr += "<td><img class='img-thumbnail' src='../images/uploadFiles/"+JSONData.fileName[i]+"'/>";
-							}
-							htmlStr += "</td></table>";
-							
-							$("#dialog").html(htmlStr);
-							
-						}
-						
-					})
-				}
-			}) */
-			
-			$(".btn:contains('상세보기')").bind('click', function(){
-				fncGetProduct($(this).val());
-			})
-			
-			$(".btn:contains('바로구매')").bind('click', function(){
-				purchaseProduct($(this).val());
-			})
-			
-			/* $(".btn:contains('상세보기')").bind('click', function(){
+			$("p").bind('click', function(){
 				
-				
-				var prodNo = $("input:hidden[name='pNo']").val();
+				var prodNo = $("input:hidden[name='pNo']",this).val();
 				console.log("prodNO===>"+prodNo);
 				
 				//<!-- ajax 상품 보기 -->
@@ -471,7 +336,7 @@
 						$("h4").remove();
 						$("#"+prodNo).html(displayStr);
 					}
-				}); */
+				});
 				
 				
 				//var name = $(this).text().trim();
@@ -481,6 +346,7 @@
 				
 				//self.location="/product/getProduct?prodNo="+$($($(this).siblings('td'))[0]).text().trim()+"&menu=${param.menu}";
 				//self.location="/product/getProduct?prodNo="+$("input:hidden[name='pNo']",this).val()+"&menu=${param.menu}"; 
+			}); 
 			//*/
 			
 			//<!-- 아코디언 -->
@@ -532,18 +398,13 @@
 				self.location = "/product/listProduct?menu=${param.menu}&currentPage=1";
 			}); 
 			
-			//carousel
-			$("#myCarousel").on('slide.bs.carousel', function () {
-				 console.log("slide...");
-			})
-			
 		});
 	</script>
 	<style type="text/css">
-	/*  .prod_img{
-			height : 110px;
-			width : 110px;
-		}  */
+		.prod_img{
+			height : 100px;
+			width : 100px;
+		}
 	   	.ui-button{
 	   		background:#f06561;
 	   	}
@@ -553,35 +414,15 @@
         .table-striped>tbody>tr:nth-of-type(even){
         	background-color:#F7CAC9
         }
-    /* div{
+        /* div{
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
-		} */
-		
-		.img-thumbnail{
-			height : 190px;
-			padding-rigth:50px;
-		}
-		.rollingList > div{
-			overflow:hidden;
-			height:190px;
-			width:190px;
-		}
-		.rollingList > div > a{
-			display:block;
-			
-		}  
-		.rollingList > div > a > img{
-			width:190px;
-			height:190px;
-			margin-right:10px;
-		}
+		}  */
 	</style>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
-	
-	<div id="dialog"></div>
+
 	<!-- navbar -->
 	<jsp:include page="/layout/toolbar.jsp"/>
 
@@ -603,12 +444,10 @@
 				<button class="btn btn-default">판매된 상품</button>
 			</div>
 				<div class="form-group col-md-offset-5 col-md-4">
-					<select name="searchCondition" class="form-control">
-						<c:if test="${param.menu == 'manage'}">
-						<option value="0" ${!empty search.searchCondition && search.searchCondition == 0 ? "selected" : ""}>상품번호</option>
-						</c:if>
-						<option value="1" ${!empty search.searchCondition && search.searchCondition == 1 ? "selected" : ""}>상품명</option>
-						<option value="2" ${!empty search.searchCondition && search.searchCondition == 2 ? "selected" : ""}>가격</option>
+					<select class="form-control">
+						<option>상품번호</option>
+						<option>상품명</option>
+						<option>가격</option>
 					</select>
 					<input type="text" id="searchKeyword" name="searchKeyword" class="form-control input-sm" placeholder="검색어 입력">
 					<button class="btn btn-default">검색</button>
@@ -624,115 +463,7 @@
 			<div class="col-md-1">&nbsp;</div>
 		</div>
 		
-		<!-- <!-- carousel 
-		<div id="myCarousel" class="carousel slide" data-ride="carousel">
-      	Indicators
-      		<ol class="carousel-indicators">
-        		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        		<li data-target="#myCarousel" data-slide-to="1"></li>
-        		<li data-target="#myCarousel" data-slide-to="2"></li>
-      		</ol>
-      		<div class="carousel-inner" role="listbox">
-        		<div class="item active">
-          			<img class="first-slide" src="../images/uploadFiles/chanel1.jpg" alt="First slide">
-          			<div class="container">
-            			<div class="carousel-caption">
-             				<h1>샤넬신상</h1>
-              				<p>이것이 리얼리다</p>
-              				<p><a class="btn btn-lg btn-primary" href="#" role="button">구매하기</a></p>
-           				</div>
-          			</div>
-        		</div>
-        		<div class="item">
-          			<img class="second-slide" src="../images/uploadFiles/chanel2.jpg" alt="Second slide">
-          			<div class="container">
-           				<div class="carousel-caption">
-              				<h1>프라다</h1>
-              				<p>새로운 프라다 백 지금 만나보세요</p>
-              				<p><a class="btn btn-lg btn-primary" href="#" role="button">더알아보기</a></p>
-            			</div>
-          			</div>
-        		</div>
-        		<div class="item">
-          			<img class="third-slide" src="../images/uploadFiles/chanel2.jpg" alt="Third slide">
-          			<div class="container">
-            			<div class="carousel-caption">
-              				<h1>One more for good measure.</h1>
-              				<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              				<p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
-            			</div>
-          			</div>
-        		</div>
-      		</div>
-      		<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        		<span class="sr-only">Previous</span>
-      		</a>
-      		<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        		<span class="sr-only">Next</span>
-      		</a>
-    	</div> -->
-    	
-    	<!-- 이미지롤링 -->
 		<div class="row">
-			<c:forEach var="product" items="${list}">
-				<div class="col-md-offset-1 col-md-3">
-					<div class="thumbnail">
-						<div class="row">
-							<c:forEach var="files" items="${product.fileName}">
-								<c:set var="fileName" value="${files}"/>
-							</c:forEach>
-							<div class="rollingList">
-									<div>
-										<c:forEach items="${product.fileName}" var="fileNames">
-											<input type="hidden" name="fileCount" value="${fn:length(product.fileName)}">
-											<a><img class="img-thumbnail" src="../images/uploadFiles/${fileNames}"></a>
-										</c:forEach>
-									</div>
-							</div>
-							<div class="caption text-center">
-									<p><small>${product.prodName}</small></p>
-									<p class="text-primary">${product.price}원</p>
-									<p>
-										  <button class="btn btn-default btn-sm" value="${product.prodNo}">상세보기</button>
-										  <button class="btn btn-danger btn-sm" value="${product.prodNo}">바로구매</button></p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</c:forEach>
-		</div>
-		
-		
-		<!--  섬네일형식 -->
-		
-		<%-- <div class="row">
-			<c:forEach var="product" items="${list}">
-				<div class="col-md-offset-1 col-md-3">
-					<div class="thumbnail">
-					<c:if test="${!empty product.fileName}">
-						<c:forEach var="files" items="${product.fileName}">
-							<c:set var="fileName" value="${files}"/>
-						</c:forEach>
-						<img class="img-thumbnail" alt="${product.prodName}" src="../images/uploadFiles/${fileName}">
-					</c:if>
-					<c:if test="${empty product.fileName}">
-						<img  alt="${product.prodName}" src="http://placehold.it/100x100">
-					</c:if>
-					<div class="caption text-center">
-						<p><small>${product.prodName}</small></p>
-						<p class="text-primary">${product.price}원</p>
-						<p><button class="btn btn-default btn-sm">상세보기</button>
-							  <button class="btn btn-danger btn-sm">바로구매</button></p>
-					</div>
-					</div>
-				</div>
-			</c:forEach>
-		</div> --%>
-		
-		<!-- 테이블 형식 -->
-		<%-- <div class="row">
 			<div class="col-md-offset-3 col-md-6 col-md-offset-3">
 	          <table class="table table-striped table-condensed">
 	            <thead>
@@ -766,7 +497,7 @@
 	            </tbody>
 	          </table>
         	</div>
-		</div> --%>
+		</div>
 		
 		<jsp:include page="../common/pageNavigator_new.jsp"/>
 		
