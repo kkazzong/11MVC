@@ -124,4 +124,25 @@
 			$(self.location).attr("href","/user/getUser?userId=${sessionScope.user.userId}");
 		});
 		
+		
+		$(function(){
+			
+			$("a:contains('판매상품등록')").bind('click', function(){
+				self.location = "../product/addProductView.jsp";
+			});
+			
+			$("a[href='#']:contains('판매상품관리')").bind('click', function(){
+				self.location = "/product/listProduct?menu=manage";
+			});
+			
+			$("a[href='#']:contains('상 품 검 색')").bind('click', function(){
+				self.location = "/product/listProduct?menu=search";
+			});
+			
+			$("a[href='#']:contains('최근본상품')").bind('click', function(){
+				self.location = "../history.jsp";
+			});
+			
+		});
+		
 	</script>  

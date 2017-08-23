@@ -246,7 +246,7 @@ public class ProductController {
 		// modelAndView.addObject("menu", menu);
 		modelAndView.addObject("list", map.get("productList"));
 		modelAndView.addObject("resultPage", resultPage);
-		modelAndView.setViewName("/product/listProductScroll.jsp");
+		modelAndView.setViewName("/product/listProduct.jsp");
 
 		return modelAndView;
 	}
