@@ -52,14 +52,14 @@
 	               <c:if test="${sessionScope.user.role == 'admin'}">
 		              <li class="dropdown">
 		                     <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-		                         <span >판매상품관리</span>
+		                         <span>상품관리</span>
 		                         <span class="caret"></span>
 		                     </a>
 		                     <ul class="dropdown-menu">
 		                         <li><a href="#">판매상품등록</a></li>
 		                         <li><a href="#">판매상품관리</a></li>
 		                         <li class="divider"></li>
-		                         <li><a href="#">etc..</a></li>
+		                         <li><a href="#">배 송 관 리</a></li>
 		                     </ul>
 		                </li>
 	                 </c:if>
@@ -131,7 +131,7 @@
 				self.location = "../product/addProductView.jsp";
 			});
 			
-			$("a[href='#']:contains('판매상품관리')").bind('click', function(){
+			$("li > a:contains('판매상품관리')").bind('click', function(){
 				self.location = "/product/listProduct?menu=manage";
 			});
 			
@@ -141,6 +141,14 @@
 			
 			$("a[href='#']:contains('최근본상품')").bind('click', function(){
 				self.location = "../history.jsp";
+			});
+			
+			$("a[href='#']:contains('구매이력조회')").bind('click', function(){
+				self.location = "/purchase/listPurchase";
+			});
+			
+			$("a[href='#']:contains('배 송 관 리')").bind('click', function(){
+				self.location = "/purchase/listSale";
 			});
 			
 		});
