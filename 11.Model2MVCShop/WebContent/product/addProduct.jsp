@@ -70,6 +70,9 @@
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
 		} */
+		.dropdown:hover .dropdown-menu {
+        	display : block;
+        }
    	</style>
 	
 </head>

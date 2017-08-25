@@ -106,6 +106,9 @@
         body {
             padding-top : 70px;
         }
+        .dropdown:hover .dropdown-menu {
+        	display : block;
+        }
    	</style>
    	
 </head>

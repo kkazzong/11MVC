@@ -51,7 +51,6 @@
 				self.location = "/purchase/addPurchase?prodNo=${product.prodNo}";
 			});
 			
-			
 		});
 		
 	</script>
@@ -112,12 +111,12 @@
 		</div> --%>
 		
 		<div class="row">
-			<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>상품이미지</strong></div>
+			<div class="col-md-offset-2 col-md-4"><strong>상품이미지</strong></div>
 		</div>
 		<div class="row">
-			<div class="col-md-offset-4 col-xs-2 col-md-4 col-md-4 grid">
+			<div class="col-md-offset-4 col-xs-4 col-md-4">
 			<c:forEach var="fileName" items="${product.fileName}">
-			  <div class="grid-item thumbnail"><img src="../images/uploadFiles/${fileName}"></div>
+			  <div class="thumbnail"><img src="../images/uploadFiles/${fileName}"></div>
 			</c:forEach>
 			</div>
 		</div>
@@ -127,10 +126,10 @@
 				<div class="col-sm-offset-4  col-sm-4 text-center">
 					<a href="# "class="btn btn-default">구매</a>
 					<c:if test="${param.menu == 'search'}">
-						<a href="#" class="btn btn-default">확인</a>
+						<a href="#" class="btn btn-default">이전</a>
 					</c:if>
 					<c:if test="${param.menu == 'manage'}">
-						<a href="#" class="btn btn-default">이전</a>
+						<a href="#" class="btn btn-default">확인</a>
 					</c:if>
 				</div>
 			</div>

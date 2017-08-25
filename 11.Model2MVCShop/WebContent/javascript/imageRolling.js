@@ -10,7 +10,7 @@ var moveWork = false;
 // 일시정지 flag 
 //var movePause = false; 
 
-function imgMove(fileCount){ 
+function imgMove(elem){ 
 	
     //if(moveWork==false){ 
     	
@@ -32,7 +32,7 @@ function imgMove(fileCount){
 		
 	}*/
 	
-	$(".rollingList > div").each(function(index, elem){
+	/*$(".rollingList > div").each(function(index, elem){
 		//console.log("index : "+index+", html :: "+$(this).html());
 		//console.log(elem);
 		//console.log($(elem).children("a")[0]);
@@ -49,7 +49,7 @@ function imgMove(fileCount){
 	
 	var index = 0;
 	
-	$($($(".rollingList > div")[0]).children("a")[0] , $($(".rollingList > div")[1]).children("a")[0], $($(".rollingList > div")[2]).children("a")[0]).animate(
+	$($($(".rollingList > div")[0]).children("a")[0]).animate(
 			{opacity:1},
 			{duration:moveSpeed,
 				step:function(elem){
@@ -62,15 +62,11 @@ function imgMove(fileCount){
 		
 		
 		$(this).css("opacity","0");
-		$($($(".rollingList > div")[1]).children("a")[0]).css("opacity","0");
-		$($($(".rollingList > div")[2]).children("a")[0]).css("opacity","0");
 		$(this).remove(); 
-		$($($(".rollingList > div")[1]).children("a")[0]).remove();
-		$($($(".rollingList > div")[2]).children("a")[0]).remove();
 		imgMove();
 	}
 	}); 
-	
+	*/
 	//console.log($(this).html());
 	
 	
@@ -78,8 +74,10 @@ function imgMove(fileCount){
 	//imgMove();
 	
 	
-    /*     // 맨처음 이미지의 폭 
-         var aWidth = $(".rollingList > div > a:first").width(); 
+        // 맨처음 이미지의 폭 
+         var aWidth = $(".rollingList > div > a:first",elem).width(); 
+         console.log("gkgkgk")
+         console.log(aWidth);
          
          // 롤링마지막에 맨처음의 a태그 추가 
          $(".rollingList > div").append("<a>" + $(".rollingList > div > a:first").html()+ "</a>"); 
@@ -129,7 +127,7 @@ function imgMove(fileCount){
       // 이미지 움직이는것을 다시 실행 
       imgMove(); 
    }}); 
-}*/
+}
    
 }
 //imgMove(); 

@@ -118,7 +118,7 @@
 				}
 			});
 			
-			$(".ct_btn01:contains('취소')").on('click', function(){
+			$(".btn:contains('취소')").on('click', function(){
 				console.log($(this).html());
 				//window.history.back();
 				history.go(-1);

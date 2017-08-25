@@ -4,9 +4,14 @@
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<style>
+ .navbar{
+ 	background : #FED7D9;
+ }
 
+</style>
 <!-- ToolBar Start /////////////////////////////////////-->
-<div class="navbar  navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-default navbar-transparent navbar-fixed-top">
 	
 	<div class="container">
 	       
@@ -21,6 +26,7 @@
 		        <span class="icon-bar"></span>
 		    </button>
 		</div>
+		
 		<!-- toolBar Button End //////////////////////// -->
 		
 	    <!--  dropdown hover Start -->
@@ -94,12 +100,19 @@
 	    
 	</div>
 </div>
+
 		<!-- ToolBar End /////////////////////////////////////-->
  	
    	
    	
    	<script type="text/javascript">
-	
+		
+   		$(".dropdown").hover(function(){
+   			$(this).toggleClass("mouse-on");
+   		})
+   		
+   		
+   		
 		//============= logout Event  贸府 =============	
 		 $(function() {
 			//==> DOM Object GET 3啊瘤 规过 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)

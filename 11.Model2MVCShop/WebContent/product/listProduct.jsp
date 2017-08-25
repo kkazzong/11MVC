@@ -223,8 +223,10 @@
 				count.push($(this).val());
 			});
 			
+			/* $(".thumbnail").hover(function(){
+				imgMove($(this));
+			}); */
 			
-			imgMove(count);
 			//console.log(moveSpeed);
 			
 			//get 방식 접근 시
@@ -285,12 +287,12 @@
 			
 			
 			//<!-- 검색시 엔터 -->
-			$("span").bind('keydown', function(event){
+			$("input:text[name='searchKeyword']").bind('keydown', function(event){
 					
 					if(event.keyCode == 13) {
 						alert("keydown  "+event.keyCode);
 						event.preventDefault();
-						$("input:submit").click();
+						$(".btn:contains('검색')").click();
 					}
 			});
 			
@@ -434,8 +436,17 @@
 				fncGetProduct($(this).val());
 			})
 			
+			$(".thumbnail > a").bind('click', function(){
+				console.log($(this).attr('id'));
+				self.location = "/product/getProduct?prodNo="+$(this).attr('id')+"&menu=${param.menu}";
+			})
+			
 			$(".btn:contains('바로구매')").bind('click', function(){
 				purchaseProduct($(this).val());
+			})
+			
+			$(".btn:contains('상품수정')").bind('click', function(){
+				updateProduct($(this).val());
 			})
 			
 			/* $(".btn:contains('상세보기')").bind('click', function(){
@@ -537,6 +548,11 @@
 				 console.log("slide...");
 			})
 			
+			/* $(".thumbnail > a > img").hover(function(){
+				console.log("hover")				
+				$(this).css("border","red");
+			}) */
+			
 		});
 	</script>
 	<style type="text/css">
@@ -557,12 +573,15 @@
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
 		} */
-		
+		.thumbnail{
+			height : 70%;
+		} 
+		/*
 		.img-thumbnail{
 			height : 190px;
-			padding-rigth:50px;
-		}
-		.rollingList > div{
+			width : 190px;
+		} */
+		/* .rollingList > div{
 			overflow:hidden;
 			height:190px;
 			width:190px;
@@ -575,7 +594,25 @@
 			width:190px;
 			height:190px;
 			margin-right:10px;
+		} */
+		.dropdown:hover .dropdown-menu {
+        	display : block;
+        }
+        /* img {
+			height : 80%;
+			width : 50%;
+		}  */
+		.thumbnail > a > img{
+			display:block;
+			max-width:90%;
+			height:200;
+			
 		}
+		.thumbnail:hover{
+			border : 1px solid red;
+		}
+		
+		
 	</style>
 </head>
 
@@ -610,7 +647,7 @@
 						<option value="1" ${!empty search.searchCondition && search.searchCondition == 1 ? "selected" : ""}>상품명</option>
 						<option value="2" ${!empty search.searchCondition && search.searchCondition == 2 ? "selected" : ""}>가격</option>
 					</select>
-					<input type="text" id="searchKeyword" name="searchKeyword" class="form-control input-sm" placeholder="검색어 입력">
+					<input type="text" id="searchKeyword" name="searchKeyword" value="${search.searchKeyword}" class="form-control input-sm" placeholder="검색어 입력">
 					<button class="btn btn-default">검색</button>
 					<input type="hidden" id="currentPage" name="currentPage" value=""/>
 				</div>
@@ -676,32 +713,33 @@
     	
     	<!-- 이미지롤링 -->
 		<div class="row">
+			<c:if test="${!empty list}">
 			<c:forEach var="product" items="${list}">
 				<div class="col-md-offset-1 col-md-3">
 					<div class="thumbnail">
-						<div class="row">
-							<c:forEach var="files" items="${product.fileName}">
-								<c:set var="fileName" value="${files}"/>
-							</c:forEach>
-							<div class="rollingList">
-									<div>
-										<c:forEach items="${product.fileName}" var="fileNames">
-											<input type="hidden" name="fileCount" value="${fn:length(product.fileName)}">
-											<a><img class="img-thumbnail" src="../images/uploadFiles/${fileNames}"></a>
-										</c:forEach>
-									</div>
-							</div>
+							<a id="${product.prodNo}" href="#"><img src="../images/uploadFiles/${product.fileName[0]}"></a>
 							<div class="caption text-center">
 									<p><small>${product.prodName}</small></p>
 									<p class="text-primary">${product.price}원</p>
 									<p>
+										<c:if test="${param.menu == 'search'}">
 										  <button class="btn btn-default btn-sm" value="${product.prodNo}">상세보기</button>
-										  <button class="btn btn-danger btn-sm" value="${product.prodNo}">바로구매</button></p>
+										  <button class="btn btn-danger btn-sm" value="${product.prodNo}">바로구매</button>
+										</c:if>
+										<c:if test="${param.menu == 'manage'}">
+										  <button class="btn btn-primary btn-sm" value="${product.prodNo}">상품수정</button>
+										</c:if>
+									</p>
 							</div>
 						</div>
-					</div>
 				</div>
 			</c:forEach>
+			</c:if>
+			<c:if test="${empty list}">
+				<div class="col-md-offset-3 col-md-6">
+					<p class="text-muted text-center">검색결과와 일치하는 데이터가 없습니다.</p>
+				</div>
+			</c:if>
 		</div>
 		
 		
