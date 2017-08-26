@@ -315,7 +315,7 @@
 			}); 
 			
 			//<!-- 가격검색 눌렀을때 -->
-			$("select[name='searchCondition']").bind('change', function(){
+			/* $("select[name='searchCondition']").bind('change', function(){
 				console.log("select change : :  :"+$(this).html());
 				$('span').html(htmlStr);
 				
@@ -341,7 +341,7 @@
 					$('span input:text[name="searchKeywordPrice"]').val("${search.searchKeywordPrice}");
 				}
 				
-			});
+			}); */
 			
 			//<!-- 이름정렬 -->
 			$("select[name='sortCondition']").bind('change', function(){
@@ -643,7 +643,30 @@
 				}
 			});
 		
+			
+			
+		$(function(){
+			
+			
+			$("select[name='searchCondition']").bind('change', function(){
+				console.log($(this).val());
+				$("#searchKeyword").val("");
+				if($(this).val() == 2){
+					fncChangeSearch();					
+				}
+				
+			})
 		
+		})
+		
+		function fncChangeSearch() {
+			$("#searchKeyword").val("");
+				
+				var htmlStr = "";
+				htmlStr += "~";
+				htmlStr += "<input type='text' id='searchKeywordPrice' name='searchKeywordPrice' value='${search.searchKeywordPrice}' class='form-control input-sm' placeholder='최대금액'>";
+				$("#searchField").append(htmlStr);
+		}
 	</script>
 	<style type="text/css">
 	/*  .prod_img{
@@ -737,7 +760,7 @@
 						<option value="1" ${!empty search.searchCondition && search.searchCondition == 1 ? "selected" : ""}>상품명</option>
 						<option value="2" ${!empty search.searchCondition && search.searchCondition == 2 ? "selected" : ""}>가격</option>
 					</select>
-					<input type="text" id="searchKeyword" name="searchKeyword" value="${search.searchKeyword}" class="form-control input-sm" placeholder="검색어 입력">
+					<div id="searchField"><input type="text" id="searchKeyword" name="searchKeyword" value="${search.searchKeyword}" class="form-control input-sm" placeholder="검색어 입력"></div>
 					<button class="btn btn-default">검색</button>
 					<input type="hidden" id="currentPage" name="currentPage" value=""/>
 				</div>
@@ -813,8 +836,10 @@
 									<p class="text-primary">${product.price}원</p>
 									<p>
 										<c:if test="${param.menu == 'search'}">
-										  <button class="btn btn-default btn-sm" value="${product.prodNo}">상품보기</button>
-										  <button class="btn btn-danger btn-sm" value="${product.prodNo}">바로구매</button>
+											 <c:if test="${empty product.proTranCode}">
+												  <button class="btn btn-default btn-sm" value="${product.prodNo}">상품보기</button>
+												  <button class="btn btn-danger btn-sm" value="${product.prodNo}">바로구매</button>
+											  </c:if>
 										</c:if>
 										<c:if test="${param.menu == 'manage'}">
 										  <button class="btn btn-primary btn-sm" value="${product.prodNo}">상품수정</button>

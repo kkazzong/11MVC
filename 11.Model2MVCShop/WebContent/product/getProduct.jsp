@@ -126,7 +126,9 @@
 		<div class="row">
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
+					<c:if test="${empty product.proTranCode}">
 					<a href="# "class="btn btn-default">구매</a>
+					</c:if>
 					<c:if test="${param.menu == 'search'}">
 						<a href="#" class="btn btn-default">이전</a>
 					</c:if>
