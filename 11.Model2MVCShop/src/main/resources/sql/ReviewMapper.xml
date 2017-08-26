@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReviewMapper">
+		
+	<resultMap type="com.model2.mvc.service.domain.Review" id="selectReviewMap">
+		<id property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="reviews" column="reviews" jdbcType="VARCHAR"/>
+		<!-- <result property="reviewImage" column="review_image" jdbcType="VARCHAR" javaType="java.util.List"/> -->
+		<association property="reviewUser" javaType="com.model2.mvc.service.domain.User">
+			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
+			<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+			<result property="password" column="password" jdbcType="VARCHAR"/>
+			<result property="role" column="role" jdbcType="VARCHAR"/>
+			<result property="ssn" column="ssn" jdbcType="VARCHAR"/>
+			<result property="phone" column="cell_phone" jdbcType="VARCHAR"/>
+			<result property="addr" column="addr" 	jdbcType="VARCHAR"/>
+			<result property="email" column="email" jdbcType="NUMERIC"/>
+			<result property="regDate" column="reg_date" jdbcType="DATE"/>
+		</association>
+		<association property="reviewProd" javaType="com.model2.mvc.service.domain.Product">
+			<id property="prodNo" column="prod_no" jdbcType="NUMERIC"/>
+			<result property="prodName" column="prod_name" jdbcType="VARCHAR"/>
+			<result property="prodDetail" column="prod_detail" jdbcType="VARCHAR"/>
+			<result property="manuDate" column="manufacture_day" jdbcType="VARCHAR"/>
+			<result property="price" column="price" jdbcType="NUMERIC"/>
+			<result property="fileName" column="image_file" jdbcType="VARCHAR"  javaType="java.util.List"/> 
+			<result property="regDate" column="reg_date" jdbcType="DATE"/>
+			<result property="proTranCode" column="tran_code" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	
+	<resultMap type="com.model2.mvc.service.domain.Review" id="selectReviewListMap">
+		<id property="reviewNo" column="review_no" jdbcType="NUMERIC"/>
+		<result property="reviews" column="reviews" jdbcType="VARCHAR"/>
+		<!-- <result property="reviewImage" column="review_image" jdbcType="VARCHAR" javaType="java.util.List"/> -->
+		<collection property="reviewUser" javaType="com.model2.mvc.service.domain.User">
+			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
+			<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+			<result property="password" column="password" jdbcType="VARCHAR"/>
+			<result property="role" column="role" jdbcType="VARCHAR"/>
+			<result property="ssn" column="ssn" jdbcType="VARCHAR"/>
+			<result property="phone" column="cell_phone" jdbcType="VARCHAR"/>
+			<result property="addr" column="addr" 	jdbcType="VARCHAR"/>
+			<result property="email" column="email" jdbcType="NUMERIC"/>
+			<result property="regDate" column="reg_date" jdbcType="DATE"/>
+		</collection>
+		<collection property="reviewProd" javaType="com.model2.mvc.service.domain.Product">
+			<id property="prodNo" column="prod_no" jdbcType="NUMERIC"/>
+			<result property="prodName" column="prod_name" jdbcType="VARCHAR"/>
+			<result property="prodDetail" column="prod_detail" jdbcType="VARCHAR"/>
+			<result property="manuDate" column="manufacture_day" jdbcType="VARCHAR"/>
+			<result property="price" column="price" jdbcType="NUMERIC"/>
+			<result property="fileName" column="image_file" jdbcType="VARCHAR"  javaType="java.util.List"/> 
+			<result property="regDate" column="reg_date" jdbcType="DATE"/>
+			<result property="proTranCode" column="tran_code" jdbcType="VARCHAR"/>
+		</collection>
+	</resultMap>
+	
+	<insert id="addReview" parameterType="com.model2.mvc.service.domain.Review" useGeneratedKeys="true" keyProperty="reviewNo" keyColumn="review_no">
+		INSERT INTO review (review_no, reviews, prod_no, user_id, review_image)
+		VALUES (seq_review_review_no.nextVal,
+			#{reviews:VARCHAR},
+			#{reviewProd.prodNo:NUMERIC},
+			#{reviewUser.userId:VARCHAR},
+			#{reviewImage:VARCHAR})
+	</insert>
+	
+	<select id="getReview" parameterType="int" resultMap="selectReviewMap">
+		<!-- SELECT r.review_no, r.reviews, p.prod_no, u.user_id, r.review_image
+		FROM product p, users u, review r
+		WHERE p.prod_no = r.prod_no AND u.user_id = r.user_id AND r.review_no = #{value} -->
+		SELECT r.review_no AS review_no,
+		r.reviews AS reviews,
+		p.prod_name AS prod_name,
+		p.price AS price,
+		p.manufacture_day AS manufacture_day,
+		p.prod_detail AS prod_detail,
+		u.user_id AS user_id
+		FROM review r, product p, users u
+		WHERE r.prod_no = p.prod_no AND r.user_id = u.user_id AND r.review_no = #{value}
+	</select>
+	
+	<select id="getReviewList" parameterType="int" resultMap="selectReviewListMap">
+		SELECT r.review_no AS review_no,
+		r.reviews AS reviews,
+		p.prod_name AS prod_name,
+		p.price AS price,
+		p.manufacture_day AS manufacture_day,
+		p.prod_detail AS prod_detail,
+		u.user_id AS user_id
+		FROM review r, product p, users u
+		WHERE r.prod_no = p.prod_no AND r.user_id = u.user_id AND p.prod_no = #{value}
+	</select>
+	
+	<update id="updateReview" parameterType="com.model2.mvc.service.domain.Review">
+		UPDATE review
+		SET reviews = #{reviews}
+		WHERE review_no = #{reviewNo}
+	</update>
+	
+	<delete id="deleteReview" parameterType="int">
+		DELETE
+		FROM review
+		WHERE review_no = #{value}
+	</delete>
+		
+</mapper>

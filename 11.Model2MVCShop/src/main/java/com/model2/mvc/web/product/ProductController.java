@@ -26,6 +26,7 @@ import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.product.ProductService;
+import com.model2.mvc.service.review.ReviewService;
 
 @Controller
 @RequestMapping("/product/*") // /product/~~~ ¸ðµç°Å
@@ -34,6 +35,10 @@ public class ProductController {
 	@Autowired
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
+	
+	@Autowired
+	@Qualifier("reviewServiceImpl")
+	ReviewService reviewService;
 
 	@Value("#{commonProperties['pageUnit']}")
 	private int pageUnit;
@@ -333,6 +338,7 @@ public class ProductController {
 		}
 
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("reviewList", reviewService.getReviewList(prodNo));
 		modelAndView.addObject("menu", menu);
 		modelAndView.addObject("product", product);
 		modelAndView.setViewName(viewName);

@@ -11,7 +11,7 @@
 	product.setManuDate("20170909");
 	product.setPrice(15000);
 	
-	List<String> list = new ArrayList<String>();
+	/* List<String> list = new ArrayList<String>();
 	list.add("AHlbAAAAtBqyWAAA.jpg");
 	list.add("AHlbAAAAvewfegAB.jpg");
 	list.add("150418.JPG");
@@ -19,8 +19,14 @@
 	list.add("131221.JPG");
 	list.add("150418.JPG");
 	
-	product.setFileName(list);
+	product.setFileName(list); */
 	
-	request.setAttribute("product",product);
+	Review review = new Review();
+	review.setReviewProd(product);
+	review.setReviewNo(10011);
+	review.setReviews("Å×½ºÆ®");
+	
+	//request.setAttribute("product",product);
+	request.setAttribute("review",review);
 	
 %>

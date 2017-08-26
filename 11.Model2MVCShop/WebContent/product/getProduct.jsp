@@ -3,11 +3,6 @@
 <%@ page import="com.model2.mvc.service.domain.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%--
-	Product product = (Product)request.getAttribute("product");
-	User user = (User)session.getAttribute("user");
-	String menu = request.getParameter("menu");
---%>
 <html>
 <head>
 	<meta charset="EUC-KR">
@@ -122,6 +117,13 @@
 		</div>
 		
 		<div class="row">
+			<div class="col-xs-8 col-md-4"><button class="btn btn-primary btn-xs" >상품평보기</button></div>
+			<c:forEach var="review" items="${reviewList}">
+				${review.reviewUser.userId} -- ${review.reviews}<br>
+			</c:forEach>
+		</div>
+		
+		<div class="row">
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
 					<a href="# "class="btn btn-default">구매</a>
@@ -134,7 +136,7 @@
 				</div>
 			</div>
 		</div>
-
+	</div>
 <%-- <form name="detailForm">
 
 <input type="hidden" name="prodNo" value="${product.prodNo }"/> 

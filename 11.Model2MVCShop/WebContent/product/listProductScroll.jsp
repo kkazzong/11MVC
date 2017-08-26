@@ -433,7 +433,7 @@
 				}
 			}) */
 			
-			$(".btn:contains('상세보기')").bind('click', function(){
+			$(".btn:contains('상품보기')").bind('click', function(){
 				fncGetProduct($(this).val());
 			})
 			
@@ -592,7 +592,7 @@
 											"<p>";
 											
 						<c:if test="${param.menu == 'search'}">
-							htmlStr += "<button class='btn btn-default btn-sm' value='"+JSONData.productList[i].prodNo+"'>상세보기</button>"+
+							htmlStr += "<button class='btn btn-default btn-sm' value='"+JSONData.productList[i].prodNo+"'>상품보기</button>"+
 			 				 				"<button class='btn btn-danger btn-sm' value='"+JSONData.productList[i].prodNo+"'>바로구매</button>";
 						</c:if>
 											
@@ -604,7 +604,7 @@
 						
 						$("#scrollProd").append(htmlStr);
 						
-						$(".btn:contains('상세보기')").bind('click', function(){
+						$(".btn:contains('상품보기')").bind('click', function(){
 							fncGetProduct($(this).val());
 						})
 						
@@ -813,7 +813,7 @@
 									<p class="text-primary">${product.price}원</p>
 									<p>
 										<c:if test="${param.menu == 'search'}">
-										  <button class="btn btn-default btn-sm" value="${product.prodNo}">상세보기</button>
+										  <button class="btn btn-default btn-sm" value="${product.prodNo}">상품보기</button>
 										  <button class="btn btn-danger btn-sm" value="${product.prodNo}">바로구매</button>
 										</c:if>
 										<c:if test="${param.menu == 'manage'}">

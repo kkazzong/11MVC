@@ -186,7 +186,13 @@
 								console.log($("#"+JSONData.tranNo).next().html().trim());
 								
 								$("#"+JSONData.tranNo).next().remove();
-								$("#"+JSONData.tranNo).html("<a>review</a>");
+								$("#"+JSONData.tranNo).html("<button class='btn btn-link btn-xs' value='${purchase.purchaseProd.prodNo}''>review</button>");
+								
+								$(".btn:contains('review')").bind("click", function(){
+									console.log($(this).html())
+									self.location = "/review/addReview?prodNo="+JSONData.purchaseProd.prodNo+"&userId="+JSONData.buyer.userId;
+								})
+								
 							}
 							
 						})
@@ -196,9 +202,9 @@
 					}
 				}
 				
-				$("a").bind("click", function(){
+				$(".btn:contains('review')").bind("click", function(){
 					console.log($(this).html())
-					self.location = "/purchase/reviewProduct.html";
+					self.location = "/review/addReview?prodNo="+$(this).val()+"&userId=user13";
 				})
 				
 			});
@@ -271,7 +277,6 @@
 		                <th>No / 주문날짜</th>
 		                <th>상품명 / 구매정보</th>
 		                <th>총 금액</th>
-		                <th>배송정보</th>
 		                <th>정보</th>
 	             	</tr>
 	            </thead>
@@ -289,19 +294,6 @@
 			                </td>
 			                <td rowspan="2">${purchase.purchaseProd.price}원</td>
 			                <td rowspan="2">
-			                	<c:choose>
-									<c:when test="${purchase.tranCode == 1}">
-										구매완료
-									</c:when>
-									<c:when test="${purchase.tranCode == 2 }">
-										배송중
-									</c:when>
-									<c:when test="${purchase.tranCode == 3 }">
-										배송완료
-									</c:when>
-								</c:choose>
-			                </td>
-			                <td rowspan="2">
 			                	<p id="${purchase.tranNo}">
 								<c:if test="${purchase.tranCode == 2 }">
 									<p><input type="hidden" name="tNo" value="${purchase.tranNo}">물건도착
@@ -310,7 +302,7 @@
 									대기
 								</c:if>
 								<c:if test="${purchase.tranCode > 2}">
-									<a>review</a>
+									<button class="btn btn-link btn-xs" value="${purchase.purchaseProd.prodNo}">review</button>
 								</c:if>
 			                </td>
 	              		</tr>
