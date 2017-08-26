@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="EUC-KR">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,900,900italic,700italic,700,500italic,400italic,500,300italic,300' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<title>Insert title here</title>
+<script type="text/javascript">
+$(document).ready(function() {
+	$.localScroll();
+	$(".cache").delay(1000).fadeOut(500);
+	
+	//$("#wrapper-header").delay(1500).animate({opacity:'1',width:'100%'},500);
+	//$("#wrapper-navbar").delay(2000).animate({opacity:'1',height:'60px'},500);
+	
+	$("#main-container-image").delay(2500).animate({opacity:'1'},500);
+	
+});
+</script>
+<style type="text/css">
+#wrapper-part-info > .part-info-image > img{height:20%;width:20%;}
+.cache{
+	width:100%;
+	height:100%;
+	position:absolute;
+	background-color:#FFF;
+	z-index:1000;
+}
+</style>
+</head>
+<body>
+<!-- CACHE -->
+<div class="cache"></div>
+
+<div id="wrapper-container">
+    
+		<div class="container object">
+
+			<div id="main-container-image">
+                       
+					<section class="work">
+
+						<figure class="white">
+							<a href="details.html">
+								<img src="../img/psd-4.jpg" alt="" />
+								<dl>
+									<dt>Wordpress theme</dt>
+									<dd>Symphony is a responsive one page website template designed with sketches and coded with html5 and php. Freebie released by Lacoste Xavier.</dd>	
+								</dl>
+							</a>
+                            <div id="wrapper-part-info">
+                            	<div class="part-info-image"><img src="../img/icon-psd.svg" alt="" width="28" height="28"/></div>
+                            	<div id="part-info">Wordpress theme</div>
+							</div>
+                        </figure>	
+                   </section>
+              </div>
+            </div>
+           </div>
+
+
+</body>
+</html>
