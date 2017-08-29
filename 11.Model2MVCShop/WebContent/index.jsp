@@ -187,6 +187,8 @@
   <!-- Styles -->
   <link rel="stylesheet" href="/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/owl.carousel.css">
+  <link rel="stylesheet" href="/css/style.css">
   <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700' rel='stylesheet' type='text/css'>
   
 
@@ -197,8 +199,13 @@
   <style type="text/css">
   	.logo > img {
 		margin-top: 6px;
-		width : 30px;
-		heigth : 30px;
+		width : 40px;
+		heigth : 40px;
+	}
+	#main-info img {
+		margin-top: 6px;
+		width : 320px;
+		heigth : 630px;
 	}
 	.navbar {
     border: 0px solid rgba(0, 0, 0, 0);
@@ -246,6 +253,11 @@
 h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, small, #pricing {
   font-family: 'Montserrat', sans-serif;
 }
+.panel-footer{
+	background-color: #FFE1E8;
+	font-family: 'Montserrat', sans-serif;
+}
+
   </style>
 </head>
 
@@ -260,12 +272,12 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="index.jsp"><img src="/images/pokeball.svg" alt="Logo"></a>
+          <a class="logo" href="index.jsp"><img src="/images/tube.png" alt="Logo">&nbsp;&nbsp;TUBE SHOP</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#">Sign in</a></li>
+            <li><a href="#invite">Location</a></li>
+            <li><a href="#">Log in</a></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -276,30 +288,30 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
         <div class="row">
           <div class="col-xs-6">
           	<!-- 화면 로고 -->
-            <a class="logo" href="index.jsp"><img src="/images/pokeball.svg" alt="Logo"></a>
+            <a class="logo" href="index.jsp"><img src="/images/tube.png" alt="Logo">&nbsp;&nbsp;TUBE SHOP</a>
           </div>
           <div class="col-xs-6 signin text-right navbar-nav">
-            <a href="#pricing" class="scroll">Pricing</a>&nbsp; &nbsp;<a href="#">Sign in</a>
+            <a href="#invite" class="scroll">Location</a>&nbsp; &nbsp;<a href="#">Log in</a>
           </div>
         </div>
         
         <div class="row header-info">
           <div class="col-sm-10 col-sm-offset-1 text-center">
-            <h1 class="wow fadeIn">A free landing page theme</h1>
-            <br />
-            <p class="lead wow fadeIn" data-wow-delay="0.5s">Lorem ipsum dolor sit amet, consectetur adipis. <br>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit sit dol mi arlna.</p>
-            <br />
+            <!-- <h1 class="wow fadeIn">A peach is </h1>
+            <br /> -->
+            <!-- <p class="lead wow fadeIn" data-wow-delay="0.5s">Welcome to PeachShop
+            <br>You can buy anything you want. Now let's get start it</p> -->
+            <!-- <br /> -->
               
             <div class="row">
-              <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+              <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-1">
                 <div class="row">
                   <div class="col-xs-6 text-right wow fadeInUp" data-wow-delay="1s">
-                    <a href="#be-the-first" class="btn btn-secondary btn-lg scroll">Learn More</a>
+                    <a href="#be-the-first" class="btn btn-secondary btn-lg scroll">About Us</a>
                   </div>
-                  <div class="col-xs-6 text-left wow fadeInUp" data-wow-delay="1.4s">
+                  <!-- <div class="col-xs-6 text-left wow fadeInUp" data-wow-delay="1.4s">
                     <a href="#invite" class="btn btn-primary btn-lg scroll">Request Invite</a>
-                  </div>
+                  </div> -->
                 </div><!--End Button Row-->  
               </div>
             </div>
@@ -311,48 +323,114 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
     
     <div class="mouse-icon hidden-xs">
 				<div class="scroll"></div>
-			</div>
+	</div>
     
-    <section id="be-the-first" class="pad-xl">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-8 col-sm-offset-2 text-center margin-30 wow fadeIn" data-wow-delay="0.6s">
-            <h2>Be the first</h2>
-            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipis.</p>
-          </div>
-        </div>
-        
-        <div class="iphone wow fadeInUp" data-wow-delay="1s">
-	        <img src="/img/iphone.png">
-        </div>
-      </div>
-    </section>
     
     <section id="main-info" class="pad-xl">
 	    <div class="container">
 		    <div class="row">
 			    <div class="col-sm-4 wow fadeIn" data-wow-delay="0.4s">
-				    <hr class="line purple">
-				    <h3>App Feature One Here</h3>
-				    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut est facilisis, eu elementum mi volutpat. Pellentesque ac tristique nisi.</p>
-			    </div>
-			    <div class="col-sm-4 wow fadeIn" data-wow-delay="0.8s">
-				    <hr  class="line blue">
-				    <h3>App Feature One Here</h3>
-				    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut est facilisis, eu elementum mi volutpat. Pellentesque ac tristique nisi.</p>
-			    </div>
-			    <div class="col-sm-4 wow fadeIn" data-wow-delay="1.2s">
-				    <hr  class="line yellow">
-				    <h3>App Feature One Here</h3>
-				    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut est facilisis, eu elementum mi volutpat. Pellentesque ac tristique nisi.</p>
-			    </div>
-		    </div>
+	    			<div class="panel panel-default">
+		    			<div class="panel-body">
+					    	<img alt="hi" src="/images/uploadFiles/apeach.jpg">
+						    <h3>App Feature One Here</h3>
+						    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut est facilisis, eu elementum mi volutpat. Pellentesque ac tristique nisi.</p>
+			    		</div>
+	    				<div class="panel-footer">
+	    					Panel footer
+	    				</div>
+			 		</div>
+	    		</div>
+	    		<div class="col-sm-4 wow fadeIn" data-wow-delay="0.4s">
+	    			<div class="panel panel-default">
+		    			<div class="panel-body">
+					    	<img alt="hi" src="/images/uploadFiles/apeach.jpg">
+						    <h3>App Feature One Here</h3>
+						    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut est facilisis, eu elementum mi volutpat. Pellentesque ac tristique nisi.</p>
+			    		</div>
+	    				<div class="panel-footer">
+	    					Panel footer
+	    				</div>
+			 		</div>
+			 		
+	    		</div>
+	   		</div>
 	    </div>
     </section>
+    
+  <!-- teastimonial -->
+  <section id="tstm_sec">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="all_tstm">
+					
+				<div class="clnt_tstm">
+					<div class="sngl_tstm">
+						<i class="fa fa-quote-right"></i>
+						<h3>what people say?</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
+						<h6>- jhon deo</h6>					
+					</div>
+				</div>						
+				
+				<div class="clnt_tstm">
+					<div class="sngl_tstm">
+						<i class="fa fa-quote-right"></i>
+						<h3>Clien Design</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
+						<h6>- shura deo</h6>					
+					</div>
+				</div>				
+				<div class="clnt_tstm">
+					<div class="sngl_tstm">
+						<i class="fa fa-quote-right"></i>
+						<h3>Awesome Support SIMA</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
+						<h6>- kumara deo</h6>					
+					</div>
+				</div>				
+				<div class="clnt_tstm">
+					<div class="sngl_tstm">
+						<i class="fa fa-quote-right"></i>
+						<h3>Theme Feature great</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
+						<h6>- dhera deo</h6>					
+					</div>
+				</div>				
+				<div class="clnt_tstm">
+					<div class="sngl_tstm">
+						<i class="fa fa-quote-right"></i>
+						<h3>Non conflict</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
+						<h6>- jhon deo</h6>					
+					</div>
+				</div>	
+					
+				</div>
+			</div>	
+		</div>
+	</div>
+</section>
+    
+    <!-- Learn more -->
+     <section id="be-the-first" class="pad-xl">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-sm-offset-2 text-center margin-30 wow fadeIn" data-wow-delay="0.6s">
+            <h2>Tube Shop</h2><h2> Be the first</h2>
+            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipis.</p>
+          </div>
+        </div>
         
+        <div class="iphone wow fadeInUp" data-wow-delay="1s">
+	        <!-- <img src="/img/iphone.png"> -->
+        </div>
+      </div>
+    </section> 
         
     <!--Pricing-->
-    <section id="pricing" class="pad-lg">
+   <!--  <section id="pricing" class="pad-lg">
       <div class="container">
         <div class="row margin-40">
           <div class="col-sm-8 col-sm-offset-2 text-center">
@@ -405,7 +483,7 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
         </div>
         
       </div>
-    </section>
+    </section> -->
     
     
     <section id="invite" class="pad-lg light-gray-bg">
@@ -413,21 +491,25 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
         <div class="row">
           <div class="col-sm-8 col-sm-offset-2 text-center">
             <i class="fa fa-envelope-o margin-40"></i>
-            <h2 class="black">Get the invite</h2>
+            <h2 class="black">Location</h2>
             <br />
-            <p class="black">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut.</p>
+            <p class="black">8, Gangnam-daero 53-gil, Seocho-gu, Seoul, Republic of Korea</p>
             <br />
+            
+            <!-- 다음지도 -->
+            
             
             <div class="row">
               <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <form role="form">
                   <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email">
+                    <!-- <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email"> -->
+        				<%-- <jsp:include page="daum.jsp"/> --%>
                   </div>
-                  <button type="submit" class="btn btn-primary btn-lg">Request Invite</button>
+                  <button class="btn btn-primary btn-lg"><a href="http://map.daum.net/link/to/비트아카데미,37.49456429671521,127.0280215767454">Way to Shop</a></button>
                 </form>
               </div>
-            </div><!--End Form row-->
+            </div>
 
           </div>
         </div>
@@ -441,9 +523,9 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
         <div class="row margin-30 news-container">
           <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 wow fadeInLeft" data-wow-delay="0.8s">
             <a href="#" target="_blank">
-            <img class="news-img pull-left" src="/img/press-01.jpg" alt="Tech Crunch">
+            <img class="news-img pull-left" width="170px" height="70px" src="/img/press01.jpg" alt="Tech Crunch">
             <p class="black">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut.<br /> 
-            <small><em>Tech Crunch - January 15, 2015</em></small></p>
+            <small><em>Tube Shop - May 17, 1993</em></small></p>
             </a>
           </div>
         </div>
@@ -493,7 +575,34 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
     <script src="/js/wow.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/main.js"></script>
-
+    <script src="/js/owl.carousel.min.js"></script>
+	<script>
+	$('.all_tstm').owlCarousel({
+		items:1,
+		loop:true,
+		margin:10,
+		nav:true,
+		autoplay:true,
+		smartSpeed:500,	
+		navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"],
+		responsive:{
+			0:{
+				items:1
+			},
+			600:{
+				items:1
+			},
+			1000:{
+				items:1
+			}
+		}
+	})
+	
+	$("a[href='#' ]:contains('Log in')").bind('click',function(){
+		console.log("log in click");
+		self.location = "/user/login";
+	})
+	</script>
    
     </body>
 </html>

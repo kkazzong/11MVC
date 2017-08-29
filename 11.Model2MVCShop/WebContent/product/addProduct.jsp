@@ -73,6 +73,7 @@
 		.dropdown:hover .dropdown-menu {
         	display : block;
         }
+        
    	</style>
 	
 </head>
@@ -80,11 +81,12 @@
 <body bgcolor="#ffffff" text="#000000">
 
 	<!-- navbar -->
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp" />
 	
 	<div class="container">
 	
-		<div class="page-header bg-danger">
+		<div class="page-header text-center">
 			<h3 class="text-info">상 품 등 록</h3>
 			<small class="text-muted">입력한 상품 정보를 확인하세요.</small>
 		</div>
@@ -135,7 +137,7 @@
 		<div class="row">
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<a href="# "class="btn btn-default">확인</a>
+					<a href="# "class="btn btn-primary">확인</a>
 					<a href="#" class="btn btn-default">추가등록</a>
 				</div>
 			</div>

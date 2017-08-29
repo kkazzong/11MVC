@@ -29,9 +29,9 @@
 		function fncAddPurchase() {
 			
 			var payment = $("option:selected").val();
-			var name = $($("input:text")[0]).val();
-			var phone = $($("input:text")[1]).val();
-			var addr = $($("input:text")[2]).val();
+			var name = $($("input:text[name='receiverName']")).val();
+			var phone = $($("input:text[name='receiverPhone']")).val();
+			var addr = $($("input:text[name='receiverAddr']")).val();
 			
 			console.log(payment+":"+name+":"+phone+":"+addr);
 			
@@ -94,7 +94,9 @@
 				
 				$("input:text[name='receiverName']").val("${user.userName}");
 				$("input:text[name='receiverPhone']").val("${user.phone}");
-				$("input:text[name='receiverAddr']").val("${user.addr}");
+				if($("input:text[name='receiverAddr']").val() == '') {
+					$("input:text[name='receiverAddr']").val("${user.addr}");
+				}
 			});
 			
 			
@@ -117,26 +119,34 @@
 			background : #000;
 			border : 1px solid #000;
 		}
+		/* .table tr:nth-child(1){
+			background-color : #70cbce;
+		} */
+		form {
+			padding-top : 20px;
+		}
    	</style>
 </head>
 
 <body>
 
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
-		<h2 class="bg-danger text-center">상 품 구 매</h2>
+		
+		<div class="page-header">
+			<h3 class="text-info text-center">상품구매</h3>
+		</div>
 		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 			<table class="table">
-			 	<thead>
-			 		<tr class="bg-danger">
-			 			<th>상품정보</th>
-			 			<th></th>
-			 			<th>가격</th>
+			 		<tr>
+			 			<td>상품정보</td>
+			 			<td></td>
+			 			<td>가격</td>
 			 		</tr>
-			 	</thead>
 			 	<tr>
 			 		<td>
 			 			<img class="img-thumbnail" src="../images/uploadFiles/${product.fileName[0]}"/>
@@ -160,11 +170,12 @@
 			</div>
 		</div>
 		
+		
 		<form class="form-horizontal" name="detailForm" id="detailForm" enctype="multipart/form-data">
 			<input type="hidden" name="purchaseProd.prodNo" value="${product.prodNo}" />
 			<input type="hidden" name="buyer.userId" value="${user.userId }" />
 			
-			<div class="form-group has-warning">
+			<div class="form-group">
 				<label for="receiverName" class="col-sm-offset-1 col-sm-3 control-label">받는 분</label>
 				<div class="col-sm-4">
 			    	<input type="text" class="form-control input-sm" id="receiverName" name="receiverName" placeholder="이름을 입력해주세요"/>
@@ -172,15 +183,15 @@
 			</div>
 			
 			
-			<div class="form-group has-warning">
-				  <input type="hidden" name="currentPage" value="1"/>				
-				  <input type="hidden" name="countPerPage" value="10"/>		
+			<!-- <div class="form-group has-warning">
+				  <input type="hidden" name="currentPage" value=""/>				
+				  <input type="hidden" name="countPerPage" value="8"/>		
 				  <input type="hidden" name="resultType" value="json"/> 			
 				  <input type="hidden" name="confmKey" value="U01TX0FVVEgyMDE3MDgyNjE0MDUzNzI0MzI0"/>	
 				  <label for="keyword" class="col-sm-offset-1 col-sm-3 control-label">배송지</label>
 				  <div class="col-sm-4">
 				  <input class="form-control input-sm" type="text" id="keyword" name="keyword" value="" placeholder="주소를 입력하세요"/>
-				  <input type="button" class="btn btn-xs" onclick="getAddr()" value="주소검색"/>
+				  <input type="button" class="btn btn-default btn-xs" onclick="getAddr(1)" value="주소검색"/>
 				  <span id="helpBlock" class="help-block">
 			    		주소입력 후 주소 검색 버튼을 눌러주세요
 			    </span>
@@ -200,7 +211,7 @@
 				<div class="col-sm-4">
 					<input type="text" id="doroAddr" name="receiverAddr" class="form-control input-sm" placeholder="배송지 주소" readonly/>
 				</div>
-			</div> 
+			</div>  -->
 			 <jsp:include page="/data/addr.jsp"/>
 			
 			
@@ -240,7 +251,7 @@
 			
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-danger">구매</button>
+					<button type="button" class="btn btn-primary">구매</button>
 					<button type="button" class="btn btn-default">취소</button>
 			    </div>
 			</div>

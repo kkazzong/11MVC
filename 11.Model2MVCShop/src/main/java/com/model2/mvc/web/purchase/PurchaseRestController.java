@@ -1,5 +1,6 @@
 package com.model2.mvc.web.purchase;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +63,16 @@ public class PurchaseRestController {
 		return returnPurchase;
 	}
 	
-	@RequestMapping(value="json/listPurchase/{buyerId}", method=RequestMethod.GET)
-	public Map listPurchase(@PathVariable String buyerId) throws Exception {
+	@RequestMapping(value="json/listPurchase/{buyerId}", method=RequestMethod.POST)
+	public List<Purchase> listPurchase(@PathVariable String buyerId, @RequestBody Search search) throws Exception {
 		
 		System.out.println(">>>[From Client]<<<");
 		System.out.println("buyerId : "+buyerId);
 		
-		Search search = new Search();
-		search.setCurrentPage(1);
+//		Search search = new Search();
+		if(search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
 		search.setPageSize(pageSize);
 		
 		Map<String, Object> map = purchaseService.getPurchaseList(search, buyerId);
@@ -80,11 +83,11 @@ public class PurchaseRestController {
 		System.out.println(">>>[To Client]<<<");
 		System.out.println(map);
 		
-		return map;
+		return (List<Purchase>)map.get("purchaseList");
 	}
 	
 	@RequestMapping(value="json/listSale", method=RequestMethod.GET)
-	public Map listSale() throws Exception {
+	public Map listSaleGet() throws Exception {
 		
 		Search search = new Search();
 		search.setCurrentPage(1);
@@ -100,6 +103,29 @@ public class PurchaseRestController {
 		
 		return map;
 	}
+	
+	@RequestMapping(value="json/listSale", method=RequestMethod.POST)
+	public List<Purchase> listSale(@RequestBody Search search) throws Exception {
+		
+		
+		System.out.println("리스트세일 포스트");
+		
+		if(search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+		Map<String, Object> map = purchaseService.getSaleList(search);
+		
+		Page page = new Page(search.getCurrentPage(), (Integer)map.get("totalCount"), pageUnit, pageSize);
+		System.out.println(page);
+		
+		System.out.println(">>>[To Client]<<<");
+		System.out.println((List<Purchase>)map.get("saleList"));
+		
+		return  (List<Purchase>)map.get("saleList");
+	}
+	
 	
 	@RequestMapping(value="json/updatePurchase/{tranNo}", method=RequestMethod.POST)
 	public Purchase updatePurchase(@PathVariable int tranNo,

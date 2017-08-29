@@ -11,8 +11,14 @@
 
 </head>
 <body>
+<div class="container">
+<div class="row">
+<div class="col-md-offset-4 col-md-8 col-sm-offset-4 col-sm-8">
 <a id="kakao-login-btn"></a>
 <a href="http://developers.kakao.com/logout"></a>
+</div>
+</div>
+</div>
 <script type='text/javascript'>
   //<![CDATA[
     // 사용할 앱의 JavaScript 키를 설정해 주세요.

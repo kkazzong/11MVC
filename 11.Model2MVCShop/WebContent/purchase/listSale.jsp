@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
 	<meta charset="EUC-KR">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,36 +33,32 @@
 						 .submit();
 		}
 		
+		function updateTranCode(elem) {
+			
+			var result = confirm("물건을 배송하시겠습니까?");
+			
+			if(result) {
+				
+				$.ajax({
+					url : "/purchase/json/updateTranCode/"+$(elem).val()+"/2",
+					method : "get",
+					dataType : "json",
+					success : function(JSONData, status){
+						console.log(status);
+						console.log(JSON.stringify(JSONData));
+						$("#"+JSONData.tranNo).text("배송중");
+					}
+				})
+				
+			} else {
+				return;
+			}
+		}
+		
 		$(function(){
-			
-			$(".ct_list_pop td:nth-child(5)").css("color","magenta");
-			
-			$("p > span").css("color","magenta");
-			
+
 			$(".btn:contains('배송하기')").bind('click', function(elem){
-				
-				//console.log($(this).html());
-				
-				//console.log($("input:hidden[name='pNo']", this).val());
-				var result = confirm("물건을 배송하시겠습니까?");
-				
-				if(result) {
-					//self.location = "/purchase/updateTranCodeByProd?prodNo="+$("input:hidden[name='pNo']", this).val()+"&tranCode=2";
-					
-					$.ajax({
-						url : "/purchase/json/updateTranCode/"+$(this).val()+"/2",
-						method : "get",
-						dataType : "json",
-						success : function(JSONData, status){
-							console.log(status);
-							console.log(JSON.stringify(JSONData));
-							$("#"+JSONData.tranNo).text("배송중");
-						}
-					})
-					
-				} else {
-					return;
-				}
+				updateTranCode($(this));
 			});
 			
 			$(".ct_btn01:contains('검색')").bind('click', function(){
@@ -70,46 +66,144 @@
 			});
 			
 		});
+		
+		var count = 1;
+		
+		//무한스크롤
+		$(window).bind("scroll",function(){
+				console.log("scrolling....");
+				console.log("doc > "+$(document).height());
+				console.log("win > "+$(window).height());
+				console.log("cur > "+$(window).scrollTop()); 
+				
+				if($(window).scrollTop() >= $(document).height() - $(window).height() -1){
+					
+					if(count < ${resultPage.endUnitPage}) {
+						alert(count);
+						console.log("끝");
+						count++;
+						console.log($(this).html());
+						getPurchaseList(count);					
+						
+					} else if(count >= ${resultPage.endUnitPage}) {
+						alert("마지막입니다");
+					}
+				}
+		});
+		
+		//무한스크롤
+		function getPurchaseList(count) {
+		
+			$.ajax({
+				
+				url : "/purchase/json/listSale",
+				method : "post",
+				headers : {
+					"Accept" : "application/json",
+					"Content-Type" : "application/json"
+				},
+				data : JSON.stringify({
+					currentPage : count
+				}),
+				dataType : "json",
+				success : function(JSONData, status){
+					
+					alert(status);
+					alert(JSON.stringify(JSONData));
+
+					var htmlStr = "<div class='col-md-offset-2 col-md-8 col-md-offset-2'><form><table class='table table-bordered table-condensed text-center'><tr class='ct_list_pop'>";
+					for(var i = 0; i < JSONData.length; i++) {
+						
+						$("#scrollProd").removeClass();
+						$("#scrollProd").addClass("row");
+						
+						var tranNo = JSONData[i].tranNo;
+						var tranCode = JSONData[i].tranCode;
+						var orderDate = JSONData[i].orderDate;
+						var prodNo = JSONData[i].purchaseProd.prodNo;
+						var prodName = JSONData[i].purchaseProd.prodName;
+						var user = JSONData[i].buyer.userId;
+						var price = JSONData[i].purchaseProd.price;
+						var fileName = JSONData[i].purchaseProd.fileName;
+						console.log(fileName);
+						
+						htmlStr += "<td>"+(9 * (count - 1) + (i+1))+"</td>";
+						htmlStr += "<td rowspan='2'><img class='img-thumbnail' src='../images/uploadFiles/"+fileName+"'>";
+	                	htmlStr += "<span>";
+						htmlStr += '<button type="button" class="btn btn-xs disabled" value="'+tranNo+'">'+prodName+'</button>';
+						htmlStr += "</span></td>";				
+						htmlStr += '<td rowspan="2">구매자 : '+user+'</td>';
+						htmlStr += '<td rowspan="2">'+price+'원</td><td rowspan="2">';
+					  	htmlStr += "<p id="+tranNo+">";
+					  	
+						if(tranCode == '1') {
+							htmlStr += '구매완료<br>';
+							htmlStr += ' <button type="button" class="btn btn-xs btn-primary" value="'+tranNo+'">배송하기</button>';
+						} else if (tranCode == 2) {
+							htmlStr += "배송중";
+						} else {
+							htmlStr += "배송완료";
+						}
+						htmlStr += '</p></td></tr><tr><td><small class="text-muted">주문번호 : '+tranNo+'</small></td></tr>';
+					}
+					htmlStr += "</table></form></div>";
+						
+					$("#scrollProd").append(htmlStr);
+					
+					$(".btn:contains('배송하기')").bind('click', function(){
+						updateTranCode($(this));
+					});
+						
+				}
+				
+			});
+		}
+		
 	</script>
 	<style type="text/css">
 		body {
             padding-top : 70px;
         }
-   		div{
+   		/* div{
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
-		}
+		} */
 		.img-thumbnail{
-			height : 100px;
-			width:100px;
+			height : 80px;
+			width:80px;
 		}
 		.dropdown:hover .dropdown-menu {
         	display : block;
+        }
+        thead {
+        	background-color : #70cbce;
         }
 	</style>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
-		
-		<div class="page-header bg-danger">
+		${resultPage.endUnitPage}
+		<div class="page-header text-center">
 			<h3 class="text-info">배송목록</h3>
 			<small class="text-muted">배송하기 전 확인해주세요</small>
 		</div>
 		
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8 col-md-offset-2">
+			<form>
 	          <table class="table table-bordered table-condensed text-center">
 	            <thead>
-	            	<tr class="danger">
-		                <th>No / 주문번호</th>
-		                <th>상품명</th>
-		                <th>구매정보</th>
-		                <th>총 금액</th>
-		                <th>현재상태</th>
+	            	<tr>
+		                <td>No / 주문번호</td>
+		                <td>상품명</td>
+		                <td>구매정보</td>
+		                <td>총 금액</td>
+		                <td>현재상태</td>
 	             	</tr>
 	            </thead>
 	            <tbody>
@@ -120,7 +214,7 @@
 			                <td rowspan="2">
 			                	<img class="img-thumbnail" src="../images/uploadFiles/${purchase.purchaseProd.fileName[0]}">
 			                	<span>
-			                		${purchase.purchaseProd.prodName}<br>
+			                		<button type="button" class="btn btn-xs disabled">${purchase.purchaseProd.prodName}</button>
 			                	</span>
 			                </td>
 			                <td rowspan="2">구매자 : ${purchase.buyer.userId} </td>
@@ -129,7 +223,7 @@
 			                <p id="${purchase.tranNo}">
 			                	<c:choose>
 									<c:when test="${purchase.tranCode == 1}">
-										구매완료<br> <button class="btn btn-xs btn-danger" value="${purchase.tranNo}">배송하기</button>
+										구매완료<br> <button type="button" class="btn btn-xs btn-primary" value="${purchase.tranNo}">배송하기</button>
 									</c:when>
 									<c:when test="${purchase.tranCode == 2 }">
 										배송중
@@ -147,7 +241,9 @@
 	            </c:forEach>
 	            </tbody>
 	          </table>
+	          </form>
         	</div>
+	          <div id="scrollProd"></div>
 		</div>
 	</div>
 	

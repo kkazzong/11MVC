@@ -68,17 +68,18 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
 	
-		<div class="page-header bg-danger">
+		<div class="page-header text-center">
 			<h3 class="text-info">구매정보확인</h3>
 			<small class="text-muted">입력한 구매 정보를 확인하세요.</small>
 		</div>
 		
 		<div class="row">
-			<div class="col-sm-offset-2  col-sm-6">
+			<div class="col-sm-offset-3  col-sm-6">
 		<form name="updateForm">
 			<table class="table">
 				<tr>
@@ -103,6 +104,10 @@
 				<tr>
 					<td>배송요청사항</td>
 					<td>${purchase.receiverRequest}</td>
+				</tr>
+				<tr>
+					<td>배송희망날짜</td>
+					<td>${purchase.receiverDate}</td>
 				</tr>
 				<tr>
 					<td>결제수단</td>

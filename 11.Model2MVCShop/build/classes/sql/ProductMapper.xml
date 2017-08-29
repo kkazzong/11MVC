@@ -72,12 +72,12 @@
 												AND p.prod_name LIKE '%${searchKeyword}%'
 											</when>
 											<!--  가격검색 -->
-											<when test="searchCondition == 2 and searchKeyword != ''"> 
-												<if test="searchKeywordPrice != null and searchKeywordPrice != ''">
-													AND p.price BETWEEN #{searchKeyword} AND #{searchKeywordPrice}
+											<when test="searchCondition == 2 and searchLowPrice != ''"> 
+												<if test="searchLowPrice != null and searchHighPrice != ''">
+													AND p.price BETWEEN #{searchLowPrice} AND #{searchHighPrice}
 												</if>
-												<if test="searchKeywordPrice == '' or searchKeywordPrice == null">
-													AND p.price >= #{searchKeyword}
+												<if test="searchHighPrice == '' or searchHighPrice == null">
+													AND p.price >= #{searchLowPrice}
 												</if>
 											</when>
 										</choose>
@@ -133,12 +133,12 @@
 								</when>
 								<!--  가격검색 -->
 								<when test="searchCondition == 2 and searchKeyword != ''"> 
-									<if test="searchKeywordPrice != null and searchKeywordPrice != ''">
-										AND p.price BETWEEN #{searchKeyword} AND #{searchKeywordPrice}
-									</if>
-									<if test="searchKeywordPrice == '' or searchKeywordPrice == null">
-										AND p.price >= #{searchKeyword}
-									</if>
+												<if test="searchLowPrice != null and searchLowPrice != ''">
+													AND p.price BETWEEN #{searchLowPrice} AND #{searchHighPrice}
+												</if>
+												<if test="searchHighPrice == '' or searchHighPrice == null">
+													AND p.price >= #{searchLowPrice}
+												</if>
 								</when>
 							</choose>
 						</if>

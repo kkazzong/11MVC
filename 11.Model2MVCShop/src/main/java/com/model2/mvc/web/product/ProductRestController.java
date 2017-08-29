@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
@@ -63,6 +64,88 @@ public class ProductRestController {
 		
 		return returnProduct;
 	}*/
+	
+	/*@RequestMapping(value="json/addFile", method=RequestMethod.POST)
+	public Product addFile(@RequestParam(value="json") String json,
+													@RequestParam(value="uploadFile") MultipartFile uploadFile,
+													@RequestParam(value="multipart2") MultipartFile multipartFile2,
+													MultipartRequest request,
+													HttpSession session) throws Exception {
+		
+		System.out.println(">>>[From Client]<<<");
+//		System.out.println(json);
+		System.out.println(uploadFile.getOriginalFilename());
+		//System.out.println(multipartFile2.getOriginalFilename());
+//		List<MultipartFile> fileList = request.getFiles("uploadFile");
+		
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+//		Product product = objectMapper.readValue(URLDecoder.decode(json,"UTF-8"), Product.class);
+//		System.out.println(product);
+		
+		///////////////////////////////////////////////////颇老历厘//////////////////////////////////////////////////////
+		String path = session.getServletContext().getInitParameter("saveDirectory");
+		System.out.println(path);
+		
+		String fileName = uploadFile.getOriginalFilename();
+		//String fileName2 = multipartFile2.getOriginalFilename();
+		//System.out.println(fileName);
+		List<String> fileNameList = new ArrayList<String>();
+		for(MultipartFile multipartFile : fileList) {
+			String fileName = multipartFile.getOriginalFilename();
+			System.out.println(fileName);
+			File file = new File(path, fileName);
+			multipartFile.transferTo(file);
+			fileNameList.add(fileName);
+		}
+		
+		//File file = new File(path, fileName);
+		//multipartFile.transferTo(file);
+		
+		//File file2 = new File(path, fileName2);
+		//multipartFile2.transferTo(file2);
+		///////////////////////////////////////////////////颇老历厘//////////////////////////////////////////////////////
+		
+		
+		
+		List<String> fileList = new ArrayList<String>();
+		fileList.add(fileName);
+		//fileList.add(fileName2);
+		//product.setFileName(fileList);
+//		product.setFileName(fileNameList);
+		
+//		productService.addProduct(product);
+		
+//		Product returnProduct = productService.getProduct(product.getProdNo());
+
+		System.out.println(">>>>[To Client]<<<<");
+//		System.out.println(returnProduct);
+		
+		return null;
+	}*/
+	
+	@RequestMapping(value="json/addFile", method=RequestMethod.POST)
+	public List<String> addFile(MultipartRequest request,
+													HttpSession session) throws Exception {
+		
+		System.out.println(">>>[From Client]<<<");
+		
+		List<MultipartFile> fileList = request.getFiles("uploadFile");
+		String path = session.getServletContext().getInitParameter("saveDirectory");
+		System.out.println(path);
+		
+		List<String> fileNameList = new ArrayList<String>();
+		for(MultipartFile multipartFile : fileList) {
+			String fileName = multipartFile.getOriginalFilename();
+			System.out.println(fileName);
+			File file = new File(path, fileName);
+			multipartFile.transferTo(file);
+			fileNameList.add(fileName);
+		}
+		
+		return fileNameList;
+	}
+	
 	
 	@RequestMapping(value="json/addProduct", method=RequestMethod.POST)
 	public Product addProduct(@RequestParam(value="json") String json,

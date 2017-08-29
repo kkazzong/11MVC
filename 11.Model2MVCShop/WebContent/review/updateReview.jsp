@@ -111,28 +111,36 @@
         	width : 80px;
         	height : 80px;
         }
-        div{
+        /* div{
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
-		}
+		} */
+		 thead {
+        	background-color : #70cbce;
+        }
    	</style>
 </head>
 
 <body>
 
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
-		<h2 class="bg-danger text-center">상품평수정</h2>
+		
+		<div class="page-header text-center">
+			<h3 class="text-info">상품평</h3>
+			<small class="text-muted">입력한 상품평를 확인하세요.</small>
+		</div>
 		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 			<table class="table">
 			 	<thead>
-			 		<tr class="bg-danger">
-			 			<th>상품정보</th>
-			 			<th></th>
-			 			<th>가격</th>
+			 		<tr>
+			 			<td>상품정보<td>
+			 			<td><td>
+			 			<td>가격<td>
 			 		</tr>
 			 	</thead>
 			 	<tr>

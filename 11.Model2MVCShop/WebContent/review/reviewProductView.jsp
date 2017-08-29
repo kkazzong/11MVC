@@ -63,7 +63,7 @@
 			
 		} */
 		function fncAddReview(){
-			var result = confirm("댓글을 등록하시겠습니까?");
+			var result = confirm("등록하시겠습니까?");
 			if(result) {
 				$("form").attr("method","post").attr("action","/review/addReview").submit();
 			} else {
@@ -85,10 +85,10 @@
 				
 				console.log($(this).html());
 				
-				var result = confirm("상품평 등록을 취소하시겠습니까?");
+				var result = confirm("취소하시겠습니까?");
 				
 				if(result) {
-					window.history.back();
+					self.location = "/purchase/listPurchase";
 				} else {
 					return;
 				}
@@ -115,28 +115,35 @@
         	width : 80px;
         	height : 80px;
         }
-        div{
+        /* div{
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
-		}
+		} */
+		 thead {
+        	background-color : #70cbce;
+        }
    	</style>
 </head>
 
 <body>
 
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
-		<h2 class="bg-danger text-center">상품평달기</h2>
+		
+		<div class="page-header text-center">
+			<h3 class="text-info">상품평</h3>
+		</div>
 		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 			<table class="table">
 			 	<thead>
-			 		<tr class="bg-danger">
-			 			<th>상품정보</th>
-			 			<th></th>
-			 			<th>가격</th>
+			 		<tr>
+			 			<td>상품정보</td>
+			 			<td></td>
+			 			<td>가격</td>
 			 		</tr>
 			 	</thead>
 			 	<tr>
@@ -171,7 +178,7 @@
 			
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-danger">등록</button>
+					<button type="button" class="btn btn-primary">등록</button>
 					<button type="button" class="btn btn-default">취소</button>
 			    </div>
 			</div>

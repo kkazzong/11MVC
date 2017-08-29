@@ -148,12 +148,17 @@
 		body {
             padding-top : 70px;
         }
+        img{
+        	width : 80px;
+        	height : 80px;
+        }
 	</style>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 
 	<div class="container">
 		
@@ -198,13 +203,16 @@
 			<div class="form-group">
 				<label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 				<div class="col-sm-4">
+					<div class="img-thumbnail">
+						<img alt="image" src="../images/uploadFiles/${product.fileName[0]}"/>
+					</div>
 			    	<input	type="file" id="uploadFile" name="uploadFile" multiple="multiple"/>
 			    </div>
 			</div>
 			
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-default">수정</button>
+					<button type="button" class="btn btn-primary">수정</button>
 					<button type="button" class="btn btn-default">취소</button>
 			    </div>
 			</div>

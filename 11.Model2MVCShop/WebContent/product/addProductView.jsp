@@ -29,24 +29,24 @@
 		$(function(){
 			
 			//<!-- modal message -->
-			$("#modal").dialog({
+			/* $("#modal").dialog({
 				modal : true,
 				buttons : {
 					확인 : function(){
 						$(this).dialog("close");
 					}
 				}
-			}); 
+			});  */
 			
 			
 			//<!-- form tooltip -->
-			$("[title]").tooltip({
+			/* $("[title]").tooltip({
 				position : {
 					my : "left top",
 					at : "right+5 top-5",
 					collision : "none"
 				}
-			});
+			}); */
 			
 			$(".btn:contains('등록')").bind("click", function(){
 		
@@ -99,6 +99,54 @@
 			
 			}); */
 		});
+		
+		//<!-- Ajax File upload -->
+		$(function(){
+			$("input:file").bind('change',function(){
+				
+				var form = new FormData($("form")[0]);
+				
+				$.ajax({
+					
+					url : "/product/json/addFile",
+					method : "post",
+					processData: false,
+                    contentType: false,
+					data : form,
+					enctype: "multipart/form-data",
+					success : function(JSONData, status) {
+						console.log(status);
+						console.log(JSON.stringify(JSONData));
+						
+						var progressTimer;
+						progressTimer = setTimeout( progress, 2500 );
+						$("#preImage").text("업로드 중..");
+						function progress() {
+						      //var val = progressbar.progressbar( "value" ) || 0;
+						 
+						      //progressbar.progressbar( "value", val + Math.floor( Math.random() * 3 ) );
+						 	
+								$("#preImage").html("");
+							$(JSONData).each(function(index){
+								var htmlStr = "<img width='80px' height='80px' src='../images/uploadFiles/"+JSONData[index]+"'/> &nbsp;";
+								$("#preImage").append(htmlStr);
+							})
+						     
+						 }
+						
+					}
+					
+				})
+				
+				
+			})
+		})
+		
+		
+		
+		
+ 
+ 
 	
 	</script>
 	
@@ -109,6 +157,21 @@
         .dropdown:hover .dropdown-menu {
         	display : block;
         }
+        .thumbnail{
+        	height : 200px;
+        }
+        #progressbar {
+		    margin-top: 20px;
+		  }
+		 
+		  .progress-label {
+		    font-weight: bold;
+		    text-shadow: 1px 1px 0 #fff;
+		  }
+		 
+		  .ui-dialog-titlebar-close {
+		    display: none;
+		  }
    	</style>
    	
 </head>
@@ -116,14 +179,17 @@
 <body bgcolor="#ffffff" text="#000000">
 
 	<!--  튤바 -->
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp" />
 	
 	<!-- modal message -->
-	<div id="modal">Welcome ! <br> 상품등록하기 </div>
+	<!-- <div id="modal">Welcome ! <br> 상품등록하기 </div> -->
 	
 	<div class="container">
 		
-		<h2 class="bg-danger text-center">상 품 등 록</h2>
+		<div class="page-header">
+			<h3 class="text-info text-center">상품등록</h3>
+		</div>
 				
 		<form class="form-horizontal" name="detailForm" enctype="multipart/form-data">
 			
@@ -160,168 +226,25 @@
 			
 			<div class="form-group">
 				<label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
-				<div class="col-sm-4">
+				<div class="col-sm-4 thumbnail">
 			    	<input	type="file" id="uploadFile" name="uploadFile" multiple="multiple"/>
+			    	<div class="text-muted">미리보기</div>
+			    	<div id="preImage"></div>
 			    </div>
 			</div>
 			
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-default">등록</button>
+					<button type="button" class="btn btn-primary">등록</button>
 					<button type="button" class="btn btn-default">취소</button>
 			    </div>
 			</div>
 			
 		</form>
-		
 	</div>	
 	
-	
-	
-	
-	
-	
-	<!-- <form name="detailForm" enctype="multipart/form-data"> -->
-	
-	<!-- <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
-		<tr>
-			<td width="15" height="37">
-				<img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
-			</td>
-			<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td width="93%" class="ct_ttl01">상품등록</td>
-						<td width="20%" align="right">&nbsp;</td>
-					</tr>
-				</table>
-			</td>
-			<td width="12" height="37">
-				<img src="/images/ct_ttl_img03.gif"	width="12" height="37"/>
-			</td>
-		</tr>
-	</table> -->
-	
-	<!-- <!-- modal message
-	<div id="modal">Welcome ! <br> 상품등록하기 </div> -->
-	
-	<!-- <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 13px;">
-		<tr>
-			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-		</tr>
-		<tr>
-			<td width="104" class="ct_write">
-				상품명 <imgsrc="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle">
-			</td>
-			<td bgcolor="D6D6D6" width="1"></td>
-			<td class="ct_write01">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td width="105">
-							<input type="text" name="prodName" class="ct_input_g" 
-										style="width: 100px; height: 19px" maxLength="20" title="상품명은 20자 이하로 입력해주세요">
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-		</tr>
-		<tr>
-			<td width="104" class="ct_write">
-				상품상세정보 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-			</td>
-			<td bgcolor="D6D6D6" width="1"></td>
-			<td class="ct_write01">
-				<input type="text" name="prodDetail" class="ct_input_g" 
-							style="width: 100px; height: 50px" maxLength="100" minLength="6"/>
-				<textarea rows="4" cols="50" name="prodDetail" class="ct_input_g" maxlength="50" title="상세정보는 50자 이하로 입력해주세요"></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-		</tr>
-		<tr>
-			<td width="104" class="ct_write">
-				제조일자 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-			</td>
-			<td bgcolor="D6D6D6" width="1"></td>
-			<td class="ct_write01">
-				<input type="text" name="manuDate" readonly="readonly" class="ct_input_g"  
-							style="width: 100px; height: 19px"	maxLength="10" minLength="6"/>
-					&nbsp;<img src="../images/ct_icon_date.gif" width="15" height="15" />
-											onclick="show_calendar('document.detailForm.manuDate', document.detailForm.manuDate.value)"
-				<input name="manuDate" type="text" class="ct_input_g"/>
-			</td>
-		</tr>
-		<tr>
-			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-		</tr>
-		<tr>
-			<td width="104" class="ct_write">
-				가격 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-			</td>
-			<td bgcolor="D6D6D6" width="1"></td>
-			<td class="ct_write01">
-				<input type="text" name="price" 	class="ct_input_g" 
-							style="width: 100px; height: 19px" maxLength="10">&nbsp;원
-			</td>
-		</tr>
-		<tr>
-			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-		</tr>
-		<tr>
-			<td width="104" class="ct_write">상품이미지</td>
-			<td bgcolor="D6D6D6" width="1"></td>
-			<td class="ct_write01">
-				 하나의 파일
-				<input		type="file" name="uploadFile" class="ct_input_g" 
-								style="width: 200px; height: 19px" maxLength="13"/>
-				여러 파일
-				<input		type="file" name="uploadFile"  multiple="multiple" class="ct_input_g" 
-								style="width: 200px; height: 19px" maxLength="13"/>
-			</td>
-		</tr>
-		<tr>
-			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-		</tr>
-	</table> -->
-	
-	<!-- <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
-		<tr>
-			<td width="53%"></td>
-			<td align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="17" height="23">
-						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
-					</td>
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
-						<a href="javascript:fncAddProduct();">등록</a>
-						등록
-					</td>
-					<td width="14" height="23">
-						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
-					</td>
-					<td width="30"></td>
-					<td width="17" height="23">
-						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
-					</td>
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	 style="padding-top: 3px;">
-						<a href="javascript:resetData();">취소</a>
-						취소
-					</td>
-					<td width="14" height="23">
-						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
-					</td>
-				</tr>
-			</table>
-			</td>
-		</tr>
-	</table>
-	
-	</form> -->
 </body>
 
 </html>
+
+ 

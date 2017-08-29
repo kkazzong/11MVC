@@ -128,6 +128,22 @@
 								 	u.user_id = t.buyer_id
 									AND p.prod_no = t.prod_no
 									AND u.user_id = #{userId}
+									<if test="search.searchCondition != null and search.searchCondition != ''">
+										<if test="search.searchCondition == 0 and search.searchKeyword != ''">
+											AND p.prod_no = #{search.searchKeyword}
+										</if>
+										<if test="search.searchCondition == 1 and search.searchKeyword != ''">
+											AND p.prod_name LIKE '%${search.searchKeyword}%'
+										</if>
+										<if test="search.searchCondition == 2 and search.searchKeyword != ''">
+											<if test="search.searchKeywordPrice != null and search.searchKeywordPrice != ''">
+												AND p.price BETWEEN #{search.searchKeword} AND #{search.searchKeywordPrice}
+											</if>
+											<if test="search.searchKeywordPrice == null or search.searchKeywordPrice == ''">
+												AND p.price >= #{search.searchKeyword}
+											</if>
+										</if>
+									</if>
 								</where>) inner_table
 					WHERE ROWNUM &lt;= ${search.currentPage}*${search.pageSize})
 		WHERE row_seq BETWEEN (${search.currentPage}-1)*${search.pageSize}+1 AND ${search.currentPage}*${search.pageSize}
@@ -195,7 +211,7 @@
 											AND p.prod_no = #{search.searchKeyword}
 										</if>
 										<if test="search.searchCondition == 1 and search.searchKeyword != ''">
-											AND p.prod_name LIKE #{search.searchKeyword}
+											AND p.prod_name LIKE '%${search.searchKeyword}%'
 										</if>
 										<if test="search.searchCondition == 2 and search.searchKeyword != ''">
 											<if test="search.searchKeywordPrice != null and search.searchKeywordPrice != ''">

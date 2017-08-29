@@ -11,6 +11,8 @@ public class Search {
 	private int pageSize;
 	private String searchSoldProd;
 	private String searchKeywordPrice; //가격위해서
+	private String searchLowPrice;
+	private String searchHighPrice;
 	private String sortCondition;
 	private String sortCondition2;
 	//==> 리스트화면 currentPage에 해당하는 회원정보를 ROWNUM 사용 SELECT 위해 추가된 Field 
@@ -93,14 +95,32 @@ public class Search {
 	public void setSortCondition2(String sortCondition2) {
 		this.sortCondition2 = sortCondition2;
 	}
+		
+	public String getSearchLowPrice() {
+		return searchLowPrice;
+	}
+
+	public String getSearchHighPrice() {
+		return searchHighPrice;
+	}
+
+	public void setSearchLowPrice(String searchLowPrice) {
+		this.searchLowPrice = searchLowPrice;
+	}
+
+	public void setSearchHighPrice(String searchHighPrice) {
+		this.searchHighPrice = searchHighPrice;
+	}
 
 	@Override
 	public String toString() {
 		return "Search [currentPage=" + currentPage + ", searchCondition=" + searchCondition + ", searchKeyword="
 				+ searchKeyword + ", pageSize=" + pageSize + ", searchSoldProd=" + searchSoldProd
-				+ ", searchKeywordPrice=" + searchKeywordPrice + ", sortCondition=" + sortCondition
-				+ ", sortCondition2=" + sortCondition2 + ", endRowNum=" + endRowNum + ", startRowNum=" + startRowNum
-				+ "]";
+				+ ", searchKeywordPrice=" + searchKeywordPrice + ", searchLowPrice=" + searchLowPrice
+				+ ", searchHighPrice=" + searchHighPrice + ", sortCondition=" + sortCondition + ", sortCondition2="
+				+ sortCondition2 + ", endRowNum=" + endRowNum + ", startRowNum=" + startRowNum + "]";
 	}
+
+	
 	
 }

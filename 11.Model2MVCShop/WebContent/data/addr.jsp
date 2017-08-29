@@ -19,8 +19,45 @@
 
  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+
+<div class="form-group has-warning">
+				  <input type="hidden" name="currentPage" value=""/>				
+				  <input type="hidden" name="countPerPage" value="8"/>		
+				  <input type="hidden" name="resultType" value="json"/> 			
+				  <input type="hidden" name="confmKey" value="U01TX0FVVEgyMDE3MDgyNjE0MDUzNzI0MzI0"/>	
+				  <label for="keyword" class="col-sm-offset-1 col-sm-3 control-label">배송지</label>
+				  <div class="col-sm-4">
+				  <input class="form-control input-sm" type="text" id="keyword" name="keyword" value="" placeholder="주소를 입력하세요"/>
+				  <input type="button" class="btn btn-default btn-xs" onclick="getAddr(1)" value="주소검색"/>
+				  <span id="helpBlock" class="help-block">
+			    		주소입력 후 주소 검색 버튼을 눌러주세요
+			    </span>
+				  </div>
+				  <div id="list"></div>
+			</div>
+			
+			<div class="form-group">
+					<label for="postNum" class="sr-only col-sm-offset-1 col-sm-3 control-label">배송지</label>
+					<div class="col-sm-4">
+					<input type="text" id="postNum" name="postNum" class="form-control input-sm" width="100px" placeholder="우편번호" readonly/>
+					</div>
+			</div> 
+			
+			<div class="form-group">
+				<label for="doroAddr" class="sr-only col-sm-offset-1 col-sm-3 control-label">배송지</label>
+				<div class="col-sm-4">
+					<input type="text" id="doroAddr" name="receiverAddr" class="form-control input-sm" placeholder="배송지 주소" readonly/>
+				</div>
+			</div> 
+			
 <script language="javascript">
-function getAddr(){
+function getAddr(page){
+	if(page == null || page == '') {
+		$("input:hidden[name='currentPage']").val(1);
+	} else {
+		$("input:hidden[name='currentPage']").val(page);
+	}
+	
 	// AJAX 주소 검색 요청
 	$.ajax({
 		url:"http://www.juso.go.kr/addrlink/addrLinkApiJsonp.do"	/* // 주소검색 OPEN API URL */
@@ -28,7 +65,8 @@ function getAddr(){
 		,data:$("#detailForm").serialize() 								/* // 요청 변수 설정 */
 		,dataType:"jsonp"											/* // 크로스도메인으로 인한 jsonp 이용, 검색결과형식 JSON  */
 		,crossDomain:true
-		,success:function(jsonStr){									/* // jsonStr : 주소 검색 결과 JSON 데이터			 */
+		,success:function(jsonStr){		
+			alert(JSON.stringify(jsonStr));/* // jsonStr : 주소 검색 결과 JSON 데이터			 */
 			$("#list").html("");									/* // 결과 출력 영역 초기화 */
 			var errCode = jsonStr.results.common.errorCode;
 			var errDesc = jsonStr.results.common.errorMessage;
@@ -36,6 +74,7 @@ function getAddr(){
 				alert(errCode+"="+errDesc);
 			}else{
 				if(jsonStr!= null){
+					alert(JSON.stringify(jsonStr));
 					makeListJsonTable(jsonStr);
 					makeListAddr(jsonStr)/* // 결과 JSON 데이터 파싱 및 출력 */
 				}
@@ -84,9 +123,13 @@ function makeListJson(jsonStr){
 	$("#list").html(htmlStr);
 }	
 function makeListJsonTable(jsonStr){
+	
+	console.log(JSON.stringify(jsonStr));
+	
 	var htmlStr = "";
 	htmlStr += "<table class='table table-border'>";
 	// jquery를 이용한 JSON 결과 데이터 파싱
+	htmlStr +="총 "+jsonStr.results.common.totalCount+"건<br>";
 	htmlStr += "<thead class='bg-danger'><tr><td>우편번호</td><td>도로명</td></tr></thead>"
 	$(jsonStr.results.juso).each(function(){
 		htmlStr += "<tr>";
@@ -96,13 +139,21 @@ function makeListJsonTable(jsonStr){
 		htmlStr += "</tr>";
 	});
 	htmlStr += "</table>";
+	var result = jsonStr.results.common.totalCount;
+	htmlStr += "<ul class='pagination'>"
+	for(var i = 1; i <= 5; i++){
+		
+		htmlStr += "<li><a onClick='getAddr("+i+")'>"+i+"</a></li?";
+	}
+	htmlStr += "</ul>";
+	
 	// 결과 HTML을 FORM의 결과 출력 DIV에 삽입
 	$("#list").html(htmlStr);
 	
 	
-	$("tr:nth-child(n)").hover(function(){
+	$("tr:nth-child(n+1)").hover(function(){
 		console.log("hover");
-		$(this).css("color","#F1F0EF");
+		$(this).css("color","#cccccc");
 	},function(){
 		$(this).removeAttr("style");
 	}).bind('click',function(){

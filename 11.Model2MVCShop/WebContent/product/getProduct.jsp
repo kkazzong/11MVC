@@ -65,12 +65,13 @@
 
 
 	<!-- navbar -->
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
 	
-		<div class="page-header bg-danger">
-			<h3 class="text-info">상 품 보 기</h3>
+		<div class="page-header text-center">
+			<h3 class="text-info">상품보기</h3>
 		</div>
 	
 		<div class="row">
@@ -127,14 +128,12 @@
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
 					<c:if test="${empty product.proTranCode}">
-					<a href="# "class="btn btn-default">구매</a>
+					<a href="# "class="btn btn-primary">구매</a>
 					</c:if>
-					<c:if test="${param.menu == 'search'}">
 						<a href="#" class="btn btn-default">이전</a>
-					</c:if>
-					<c:if test="${param.menu == 'manage'}">
+					<%-- <c:if test="${param.menu == 'manage'}">
 						<a href="#" class="btn btn-default">확인</a>
-					</c:if>
+					</c:if> --%>
 				</div>
 			</div>
 		</div>

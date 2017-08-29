@@ -4,18 +4,14 @@
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<style>
- .navbar{
- 	background : #FED7D9;
- }
 
-</style>
 <!-- ToolBar Start /////////////////////////////////////-->
 <div class="navbar navbar-default navbar-transparent navbar-fixed-top">
 	
 	<div class="container">
 	       
-		<a class="navbar-brand" href="/index.jsp">Model2 MVC Shop</a>
+		<!-- <a class="navbar-brand" href="/index.jsp">Model2 MVC Shop</a> -->
+		<a class="navbar-brand" href="/index.jsp"><img src="/images/tube.png" alt="Logo"></a>
 		
 		<!-- toolBar Button Start //////////////////////// -->
 		<div class="navbar-header">
@@ -167,3 +163,36 @@
 		});
 		
 	</script>  
+	<meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <meta property="og:title" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="">
+	<meta property="og:site_name" content="">
+	<meta property="og:description" content="">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="/css/animate.css"> -->
+  <link rel="stylesheet" href="/css/owl.carousel.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700' rel='stylesheet' type='text/css'>
+  
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="/css/main.css"> -->
+	<style>
+	.navbar-brand > img {
+			width : 40px;
+			heigth : 40px;
+			padding-bottom : 6px;
+	}
+	.navbar {
+		background: url(/images/bg.PNG) no-repeat center center;
+		width: 100%;
+		height: 10vh;
+		background-size: cover;
+	}
+	</style>

@@ -61,6 +61,7 @@
 				autoOpen : false,
 				title : "상품정보",
 				width : 400,
+				position: {at: "center", of: window },
 				buttons : {
 					<c:if test="${param.menu == 'search'}">
 						"구매하기" : function(){
@@ -439,7 +440,7 @@
 			
 			$(".thumbnail > a").bind('click', function(){
 				console.log($(this).attr('id'));
-				self.location = "/product/getProduct?prodNo="+$(this).attr('id')+"&menu=${param.menu}";
+				self.location = "/product/getProduct?prodNo="+$(this).attr('id')+"&menu='search''";
 			})
 			
 			$(".btn:contains('바로구매')").bind('click', function(){
@@ -559,7 +560,34 @@
 			
 		});
 		
+		var count = 1;
 		
+		//무한스크롤...................................................
+		$(function(){
+
+		$(window).bind("scroll",function(){
+				console.log("scrolling....");
+				console.log("doc > "+$(document).height());
+				console.log("win > "+$(window).height());
+				console.log("cur > "+$(window).scrollTop()); 
+				
+				var scrollH = $(window).scrollTop();
+				var docH = $(document).height() - $(window).height();
+				if(scrollH  >= docH-2){
+
+					if(count <= ${resultPage.maxPage}) {
+						//alert(count);
+						console.log("끝");
+						count++;
+						
+						getProductList(count);					
+						
+					} else if(count > ${resultPage.maxPage}) {
+						alert("마지막입니다"+count+"${resultPage.maxPage}");
+					}				
+				}
+			});
+		})	
 			
 			
 		function getProductList(count) {
@@ -577,7 +605,7 @@
 				dataType : "json",
 				success : function(JSONData, status){
 					//alert(status)
-					console.log(JSON.stringify(JSONData.productList));
+					alert(JSON.stringify(JSONData.productList));
 					
 					if(JSONData.productList.length == 0) {
 						alert("마지막입니다");
@@ -627,25 +655,11 @@
 			});
 		}
 			
-		var count = 1;
 		
-		//무한스크롤...................................................
-			$(window).bind("scroll",function(){
-				/* console.log("scrolling....");
-				console.log("doc > "+$(document).height());
-				console.log("win > "+$(window).height());
-				console.log("cur > "+$(window).scrollTop()); */
-				
-				if($(window).scrollTop() >= $(document).height() - $(window).height()) {
-					console.log("끝");
-					count++;
-					getProductList(count);					
-				}
-			});
 		
 			
 			
-		$(function(){
+		/* $(function(){
 			
 			
 			$("select[name='searchCondition']").bind('change', function(){
@@ -666,13 +680,41 @@
 				htmlStr += "~";
 				htmlStr += "<input type='text' id='searchKeywordPrice' name='searchKeywordPrice' value='${search.searchKeywordPrice}' class='form-control input-sm' placeholder='최대금액'>";
 				$("#searchField").append(htmlStr);
-		}
+		} */
+		
+		$(function(){
+			$(".btn:contains('가격')").bind('click',function(){
+				alert("가격검색")				
+				$("form[name='priceForm']").attr("method","post").attr("action","/product/listProduct").submit();
+			})
+		})
+		
+		$(function(){
+			$(".btn:contains('삭제하기')").bind('click',function(){
+				console.log($(this).text().trim());
+				
+				var result = confirm("정말로 삭제하시겠습니까?");
+				if(result) {
+					self.location="/product/deleteProduct?prodNo="+$(this).val();
+				} else {
+					return;
+				}
+			})
+		})
+				
 	</script>
 	<style type="text/css">
 	/*  .prod_img{
 			height : 110px;
 			width : 110px;
 		}  */
+		.btn{
+			background-color : #70cbce;
+			border-color: #cccccc;
+		}
+		.btn:hover{
+			background-color : #33dfe4;
+		}
 	   	.ui-button{
 	   		background:#f06561;
 	   	}
@@ -682,13 +724,13 @@
         .table-striped>tbody>tr:nth-of-type(even){
         	background-color:#F7CAC9
         }
-    /* div{
+    	/* div{
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
-		} */
-		.thumbnail{
+		}  */
+		/* .thumbnail{
 			height : 500px;
-		}
+		} */
 		
 		/*
 		.img-thumbnail{
@@ -722,7 +764,7 @@
 			height:10;	
 		}
 		.thumbnail:hover{
-			border : 1px solid red;
+			border : 1px solid #70cbce;
 		}
 		
 		
@@ -733,36 +775,48 @@
 	
 	<div id="dialog"></div>
 	<!-- navbar -->
-	<jsp:include page="/layout/toolbar.jsp"/>
-
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
+	${resultPage.maxPage}
 	<div class="container">
 		
-		<div class="page-header bg-danger">
-			<h3 class="text-info">상 품 목 록</h3>
+		<!-- HEADER -->
+		<div class="page-header text-center">
+			<h3 class="text-info">상품목록</h3>
 			<small class="text-muted">판매 상품 리스트</small>
 		</div>
 		
-		
+		<!-- SEARCH -->
 		<div class="row">
 			<form class="form-inline" name="detailForm">
-			<div class="col-md-3">
-				<c:if test="${search.searchSoldProd == 1}">
-					<p>뒤로</p>
-				</c:if>
-				<input type="hidden" id="searchSoldProd" name="searchSoldProd" value="${search.searchSoldProd}"/>
-				<button class="btn btn-default">판매된 상품</button>
-			</div>
-				<div class="form-group col-md-offset-5 col-md-4">
-					<select name="searchCondition" class="form-control">
-						<c:if test="${param.menu == 'manage'}">
-						<option value="0" ${!empty search.searchCondition && search.searchCondition == 0 ? "selected" : ""}>상품번호</option>
+					<div class="form-group col-md-2">
+						<c:if test="${search.searchSoldProd == 1}">
+							<p>뒤로</p>
 						</c:if>
-						<option value="1" ${!empty search.searchCondition && search.searchCondition == 1 ? "selected" : ""}>상품명</option>
-						<option value="2" ${!empty search.searchCondition && search.searchCondition == 2 ? "selected" : ""}>가격</option>
-					</select>
-					<div id="searchField"><input type="text" id="searchKeyword" name="searchKeyword" value="${search.searchKeyword}" class="form-control input-sm" placeholder="검색어 입력"></div>
-					<button class="btn btn-default">검색</button>
-					<input type="hidden" id="currentPage" name="currentPage" value=""/>
+						<input type="hidden" id="searchSoldProd" name="searchSoldProd" value="${search.searchSoldProd}"/>
+						<button class="btn btn-default btn-sm">판매된 상품</button>
+					</div>
+					<div class="form-group col-md-offset-4 col-md-6">
+						<select name="searchCondition" class="form-control input-sm col-md-6">
+							<c:if test="${param.menu == 'manage'}">
+							<option value="0" ${!empty search.searchCondition && search.searchCondition == 0 ? "selected" : ""}>상품번호</option>
+							</c:if>
+							<option value="1" ${!empty search.searchCondition && search.searchCondition == 1 ? "selected" : ""}>상품명</option>
+							<%-- <option value="2" ${!empty search.searchCondition && search.searchCondition == 2 ? "selected" : ""}>가격</option> --%>
+						</select>
+						<input type="text" id="searchKeyword" name="searchKeyword" value="${search.searchKeyword}"  class="form-control input-sm" placeholder="검색어 입력">
+						<button class="btn btn-default btn-sm">검색</button>
+						<input type="hidden" id="currentPage" name="currentPage" value=""/>
+					</div>
+			</form>
+			<form class="form-inline col-md-offset-6" name="priceFrom">
+				<input type="hidden" id="searchCondition" name="searchCondition" value="2">
+				<div class="form-group">
+					<input type="text" id="searchLowPrice" name="searchLowPrice" value="${search.searchLowPrice}"  class="form-control input-sm" placeholder="최소금액">원~
+					<input type="text" id="searchHighPrice" name="searchHighPrice" value="${search.searchHighPrice}"  class="form-control input-sm" placeholder="최대금액">원
+				</div>
+				<div class="form-group">
+					<button class="btn btn-default btn-sm">가격</button>
 				</div>
 			</form>
 		</div>
@@ -828,36 +882,37 @@
 		<div class="row">
 			<c:if test="${!empty list}">
 			<c:forEach var="product" items="${list}">
-				<div class="col-md-offset-1 col-md-3">
+				<div class="col-md-3">
 					<div class="thumbnail">
-							<a id="${product.prodNo}" href="#"><img src="../images/uploadFiles/${product.fileName[0]}"></a>
+							<a id="${product.prodNo}" href="#"><img alt="http://placehold.it/200x150" src="../images/uploadFiles/${product.fileName[0]}"></a>
 							<div class="caption text-center">
 									<p><small>${product.prodName}</small></p>
 									<p class="text-primary">${product.price}원</p>
 									<p>
 										<c:if test="${param.menu == 'search'}">
 											 <c:if test="${empty product.proTranCode}">
-												  <button class="btn btn-default btn-sm" value="${product.prodNo}">상품보기</button>
-												  <button class="btn btn-danger btn-sm" value="${product.prodNo}">바로구매</button>
+												  <button class="btn btn-primary btn-sm" value="${product.prodNo}">상품보기</button>
+												  <button class="btn btn-default btn-sm" value="${product.prodNo}">바로구매</button>
 											  </c:if>
 										</c:if>
 										<c:if test="${param.menu == 'manage'}">
-										  <button class="btn btn-primary btn-sm" value="${product.prodNo}">상품수정</button>
+										  <button class="btn btn-sm" value="${product.prodNo}">상품수정</button>
+										  <button class="btn btn-default btn-sm" value="${product.prodNo}">삭제하기</button>
 										</c:if>
 									</p>
 							</div>
 						</div>
 				</div>
 			</c:forEach>
+					<div id="scrollProd" class="hidden">
+					</div>
 			</c:if>
 			<c:if test="${empty list}">
 				<div class="col-md-offset-3 col-md-6">
-					<p class="text-muted text-center">검색결과와 일치하는 데이터가 없습니다.</p>
+					<p class="text-muted text-center">데이터가 없습니다.</p>
 				</div>
 			</c:if>
 	
-					<div id="scrollProd" class="hidden">
-					</div>
 				
 		</div>
 		
@@ -928,255 +983,5 @@
 		<%-- <jsp:include page="../common/pageNavigator_new.jsp"/> --%>
 		
 	</div>
-
-<!-- <div style="width:98%; margin-left:10px;"> -->
-
-<!-- form name="detailForm" action="/listProduct.do?menu=<%--=menu--%>" method="post"-->
-<%-- <form name="detailForm" action="/listProduct.do?menu=${param.menu}" method="post"> --%>
-<!-- <form name="detailForm"> -->
-<%-- <form name="detailForm" action="/product/listProduct/${menu}" method="post"> --%>
-<%-- <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
-	<tr>
-		<td width="15" height="37">
-			<img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
-		</td>
-		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left:10px;">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-				if(menu.equals("manage")) {
-				<c:if test="${param.menu == 'manage'}">
-				<c:if test="${menu == 'manage'}">
-					<td width="93%" class="ct_ttl01">상품 관리</td>
-				} else {
-				</c:if>
-				<c:if test="${param.menu == 'search'}">
-				<c:if test="${menu == 'search'}">
-					<td width="93%" class="ct_ttl01">상품 목록조회</td>
-				}
-				</c:if>
-					</td>
-				</tr>
-			</table>
-		</td>
-		<td width="12" height="37">
-			<img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
-		</td>
-	</tr>
-</table> --%>
-
-<%-- <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
-	<tr>
-		<td></td>
-		<td align="left">
-		<table border="0" cellspacing="0" cellpadding="0">
-			<tr>
-				<td width="17" height="23">
-					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
-				</td>
-				<c:if test="${param.menu == 'manage'}">
-				<c:if test="${menu == 'manage'}">
-				<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
-					<a href="/listSale.do?menu=${param.menu}">완판 상품 관리</a>
-					<a href="/purchase/listSale?menu=${param.menu}">완판 상품 관리</a
-					완판 상품 관리
-				</td>
-				</c:if>
-				<c:if test="${param.menu == 'search'}">
-				<c:if test="${menu == 'search'}">
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
-						<input type="hidden" id="searchSoldProd" name="searchSoldProd" value="${search.searchSoldProd}"/>
-						<!-- <a href="javascript:fncGetList2('1');">판매된 상품 보기</a> -->
-						판매된 상품 보기
-					</td>
-					<c:if test="${search.searchSoldProd == 1}">
-						<a href="/listProduct.do?menu=${param.menu}&currentPage=1">뒤로</a>
-						<a href="/product/listProduct?menu=${param.menu}&currentPage=1">뒤로</a>
-						<p>뒤로</p>
-						<a href="/purchase/listProduct?${menu}/${search.currentPage}">뒤로</a>
-					</c:if>
-				</c:if>
-				<td width="14" height="23">
-					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
-				</td>
-			</tr>
-		</table>
-		</td>
-		<td align="right">
-				<select name="searchCondition" class="ct_input_g" style="width:80px">
-					<c:if test="${param.menu == 'manage'}">
-					<c:if test="${menu == 'manage'}">
-					<option value="0" ${!empty search.searchCondition && search.searchCondition == 0 ? "selected" : ""} >상품번호</option>
-					</c:if>
-					<option value="1" ${!empty search.searchCondition && search.searchCondition == 1 ? "selected" : ""}>상품명</option>
-					<option value="2" ${!empty search.searchCondition && search.searchCondition == 2 ? "selected" : ""}>상품가격</option>
-				</select>
-				<span>
-				</span>
-		</td>
-		<td align="right" width="70">
-			<!-- <table border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="17" height="23">
-						<img src="/images/ct_btnbg01.gif" width="17" height="23">
-					</td>
-					<td background="/images/ct_btnbg02.gif" id="search" class="ct_btn01" style="padding-top:3px;">
-						<a href="javascript:fncGetSearchList('1');">검색</a>
-						검색
-					</td>
-					<td width="14" height="23">
-						<img src="/images/ct_btnbg03.gif" width="14" height="23">
-					</td>
-				</tr>
-			</table> -->
-			<input type="submit" value="검색"/>
-		</td>
-	</tr>
-</table>
- --%>
-
-<%-- <div style="width:98%;">
-<table width="70%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;" align="center">
-	<tr id="result">
-		<td colspan="11" >전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
-	</tr>
-	<tr>
-		<td  id="result" colspan="11"></td>
-	</tr>
-	<tr>
-		<td class="ct_list_b" width="50">No</td>
-		<c:if test="${param.menu == 'manage'}">
-		<td class="ct_list_b" width="100">상품번호</td>
-		</c:if>
-		<td class="ct_list_b" width="150">상품명
-		<select name="sortCondition" class="ct_input_g" style="width:40px">
-			<option value="" ${!empty search.sortCondition2 ? "selected":""} >▼</option>
-			<option value="asc" ${!empty search.sortCondition && search.sortCondition == 'asc' ? "selected" : ""}>ㄱ~ㅎ</option>
-			<option value="desc" ${!empty search.sortCondition && search.sortCondition == 'desc' ? "selected" : ""}>ㅎ~ㄱ</option>
-		</select>
-		</td>
-		<td class="ct_list_b" width="150">가격
-		<select name="sortCondition2" class="ct_input_g" style="width:40px">
-			<option value="" ${!empty search.sortCondition ?  "selected":""}>▼</option>
-			<option value="asc" ${!empty search.sortCondition2 && search.sortCondition2 == 'asc' ? "selected":"" }>낮은순</option>
-			<option value="desc" ${!empty search.sortCondition2 && search.sortCondition2 == 'desc' ? "selected":"" }>높은순</option>
-		</select>
-		</td>
-		<c:if test="${param.menu == 'manage'}">
-		<c:if test="${menu == 'manage'}">
-		<td class="ct_list_b"  width="150">등록일</td>	
-		<td class="ct_list_b"  width="150">변경</td>	
-		</c:if>
-		<!-- <td class="ct_list_b"  width="150">현재상태</td>	 -->
-	</tr>
-	
-	<tr>
-		<td colspan="20" bgcolor="808285" height="1"></td>
-	</tr>
-	<c:set var="i" value="0"/>
-	<c:forEach var="product" items="${list}">
-	<tr class="ct_list_pop">
-		<!-- <td align="center">= no</td> -->
-		<c:set var="i" value="${i+1}"/>
-		<td align="center">${i}</td>
-		<c:if test="${param.menu == 'manage'}">
-		<td align="center">${product.prodNo}</td>
-		</c:if>
-			<c:choose>
-				<c:when test="${product.proTranCode == '0' or product.proTranCode == null }">
-					<td align="center">
-					<c:forEach var="files" items="${product.fileName}">
-						<c:set var="file" value="${files}"/>
-					</c:forEach>
-					<p data-photo="${file}">
-					<input type="hidden" name="pNo" value="${product.prodNo }">
-					${product.prodName}
-					</p>
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td align="center">${product.prodName}</td>
-				</c:otherwise>
-			</c:choose>
-		<td align="center">${product.price} 원</td>
-		<c:if test="${param.menu == 'manage'}">
-		<td align="center">${product.regDate}</td>
-		<!--  삭제버튼 -->
-	<td align="center">
-		<table border="0" cellspacing="0" cellpadding="0">
-		<tr>
-					<td width="17" height="23">
-						<img src="/images/ct_btnbg01.gif" width="17" height="23">
-					</td>
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-					<input type="hidden" name="pNo" value="${product.prodNo }">
-						삭제
-					</td>
-					<td width="14" height="23">
-						<img src="/images/ct_btnbg03.gif" width="14" height="23">
-					</td>
-		</tr>	
-		</table>
-		<input type="hidden" name="pNo" value="${product.prodNo}"/>
-		삭제
-	</td>
-		</c:if>
-		<td align="center">
-		
-		${product.proTranCode}
-		<c:if test="${param.menu == 'manage'}">
-		<c:if test="${menu == 'manage'}">
-			<c:choose>
-				<c:when test="${product.proTranCode == 0 or product.proTranCode == null}">
-					판매중
-				</c:when>
-				<c:when test="${product.proTranCode == 1}">
-					구매완료 <a href="/updateTranCodeByProd.do?prodNo=${product.prodNo}&tranCode=2">배송하기</a>
-					구매완료 
-				</c:when>
-				<c:when test="${product.proTranCode == 2}">
-					배송중
-				</c:when>
-				<c:when test="${product.proTranCode == 3}">
-					배송완료
-				</c:when>
-			</c:choose>
-		</c:if>
-		<c:if test="${param.menu == 'search' }">
-		<c:if test="${menu == 'search' }">
-			<c:choose>
-				<c:when test="${product.proTranCode == 0 or product.proTranCode == null}">
-					판매중
-				</c:when>
-				<c:otherwise>
-					재고없음
-				</c:otherwise>
-			</c:choose>
-		</c:if>
-		</td>	
-	</tr>
-	<!-- 상품 정보 -->
-	<tr>
-	<td id="${product.prodNo}" align="center" colspan="20" bgcolor="92A8D1" height="1">
-	<div id="updateView"></div>
-	</td>
-	</tr>
-	<!-- <tr>
-		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
-	</tr>	 -->
-	</c:forEach>
-</table>
-</div> --%>
-
-<%-- <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
-	<tr>
-		<td align="center">
-		<input type="hidden" id="currentPage" name="currentPage" value=""/>
-		<c:import var="importPage" url="/common/pageNavigator.jsp" scope="application"/>
-		${ importPage }
-		</td>
-	</tr>
-</table> --%>
-<!--  페이지 Navigator 끝 -->
-
 </body>
 </html> 

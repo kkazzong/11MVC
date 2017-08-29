@@ -57,33 +57,37 @@
 		.dropdown:hover .dropdown-menu {
         	display : block;
         }
+         thead {
+        	background-color : #70cbce;
+        }
    	</style>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
 	
-		<div class="page-header bg-danger">
+		<div class="page-header text-center">
 			<h3 class="text-info">상품평</h3>
-			<small class="text-muted">입력한 구매 정보를 확인하세요.</small>
+			<small class="text-muted">입력한 상품평를 확인하세요.</small>
 		</div>
 		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 			<table class="table">
 			 	<thead>
-			 		<tr class="bg-danger">
-			 			<th>상품정보</th>
-			 			<th></th>
-			 			<th>가격</th>
+			 		<tr>
+			 			<td>상품정보</td>
+			 			<td></td>
+			 			<td>가격</td>
 			 		</tr>
 			 	</thead>
 			 	<tr>
 			 		<td>
-			 			<img class="img-thumbnail" src="../images/uploadFiles/${product.fileName[0]}"/>
+			 			<img class="img-thumbnail" src="../images/uploadFiles/${review.reviewProd.fileName[0]}"/>
 			 		</td>
 			 		<td>
 			 			<p><strong class="primary">${review.reviewProd.prodName}</strong></p>
@@ -98,27 +102,21 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-md-offset-5 col-md-2">
-				등록자
-			</div>
-			<div class="col-md-offset-1 col-md-5">
-				${review.reviewUser.userId}
+			<div class="col-md-offset-5 col-md-5">
+				등록자 : ${review.reviewUser.userId}
 			</div>
 		</div>
 		
 		<div class="row">
-			<div class="col-md-offset-5 col-md-2">
-				상품평
-			</div>
-			<div class="col-md-offset-1 col-md-5">
-				${review.reviews}
+			<div class="col-md-offset-5 col-md-5">
+				상품평 : ${review.reviews}
 			</div>
 		</div>
 		
 		<div class="row">
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<a href="# "class="btn btn-danger">수정</a>
+					<a href="# "class="btn btn-primary">수정</a>
 					<a href="# "class="btn btn-default">확인</a>
 				</div>
 			</div>

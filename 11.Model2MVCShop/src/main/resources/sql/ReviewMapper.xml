@@ -79,6 +79,7 @@
 		p.price AS price,
 		p.manufacture_day AS manufacture_day,
 		p.prod_detail AS prod_detail,
+		p.image_file AS image_file,
 		u.user_id AS user_id
 		FROM review r, product p, users u
 		WHERE r.prod_no = p.prod_no AND r.user_id = u.user_id AND r.review_no = #{value}
@@ -91,6 +92,7 @@
 		p.price AS price,
 		p.manufacture_day AS manufacture_day,
 		p.prod_detail AS prod_detail,
+		p.image_file AS image_file,
 		u.user_id AS user_id
 		FROM review r, product p, users u
 		WHERE r.prod_no = p.prod_no AND r.user_id = u.user_id AND p.prod_no = #{value}

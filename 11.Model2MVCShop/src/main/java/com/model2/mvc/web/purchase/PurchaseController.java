@@ -85,7 +85,6 @@ public class PurchaseController {
 											  Model model) throws Exception {
 		
 		
-		int currentPage = 1;
 		if(search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}

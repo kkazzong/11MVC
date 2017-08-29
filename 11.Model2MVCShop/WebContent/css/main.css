@@ -2,8 +2,18 @@
 /* ==========================================================================
    Global styles
    ========================================================================== */
-h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, small, #pricing {
+h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .logo, .form-control, .list-inline, small, #pricing {
   font-family: 'Montserrat', sans-serif;
+}
+
+.logo{
+	color: #ffffff;
+}
+
+.logo:hover{
+	color: #ffffff;
+	 font-size: 13px;
+    letter-spacing: 1px;
 }
 
 p, .lead {
@@ -96,7 +106,7 @@ a:hover, a:focus {
 .btn-lg {
   font-size: 13px;
   line-height: 1.33;
-  padding: 22px 30px;
+  padding: 18px 18px;
   font-weight: 400;
   letter-spacing: 1px;
 }
@@ -266,14 +276,18 @@ a:hover, a:focus {
 .logo img {
 	margin-top: 6px;
 }
-
+.logo > img {
+		margin-top: 6px;
+		width : 40px;
+		heigth : 40px;
+	}
 
 
 /* ==========================================================================
    Main styles
    ========================================================================== */
 header {
-  background: url(../img/header-bg.jpg) no-repeat center center;
+  background: url(/images/header-bg.png) no-repeat center center;
   width: 100%;
   padding: 20px 10px 60px 10px;
   height: 100vh;
@@ -291,7 +305,7 @@ header {
   left: 0;
   right: 0;
   margin-left: 0px;
-  margin-bottom: 12%;
+  margin-bottom: 22%;
 }
 
 .signin {
@@ -361,7 +375,7 @@ header {
 
 
 #be-the-first {
-  background: url(../img/be-the-first-bg.jpg) #231f20 no-repeat center center fixed;
+  background: url(../img/be-the-first-bg.png) #231f20 no-repeat center center fixed;
   min-height: 300px;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -375,8 +389,8 @@ hr.line {
 }
 
 .purple {
-	border-color: #6d3f96;
-	color: #6d3f96;
+	border-color: #FEBECD;
+	color: #FEBECD;
 }
 
 .blue {
@@ -432,6 +446,8 @@ hr.line {
 
 .news-img {
   padding-right: 20px;
+  width : 170px;
+  height : 80;
 }
 
 footer {

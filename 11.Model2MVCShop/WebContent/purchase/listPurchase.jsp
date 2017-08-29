@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
 
 	<meta charset="EUC-KR">
@@ -27,12 +27,12 @@
  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script type="text/javascript">
 	
-		function fncGetList(currentPage) {
+		/* function fncGetList(currentPage) {
 			$("#currentPage").val(currentPage);
 			$('form').attr("method","post")
 						 .attr("action","/purchase/listPurchase")
 						 .submit();
-		}
+		} */
 	
 		function fncUpdatePurchaseView(tranNo) {
 			console.log("tranNo====>"+tranNo);
@@ -160,7 +160,7 @@
 			console.log($("p").html)
 			
 			//물건도착
-			$("p").css("color","magenta");
+			$("p").css("color","#70cbce");
 			
 			
 			$("p").bind('click', function(){
@@ -170,7 +170,6 @@
 				console.log($("input:hidden[name='tNo']",this).val());
 				
 				if($(this).text().trim() != 'review') {
-		 			var result = confirm("물건이 도착했습니까?");
 					
 					if(result) {
 						//self.location="/purchase/updateTranCode?tranNo="+$("input:hidden[name='tNo']",this).val()+"&tranCode=3";
@@ -186,11 +185,10 @@
 								console.log($("#"+JSONData.tranNo).next().html().trim());
 								
 								$("#"+JSONData.tranNo).next().remove();
-								$("#"+JSONData.tranNo).html("<button class='btn btn-link btn-xs' value='${purchase.purchaseProd.prodNo}''>review</button>");
+								$("#"+JSONData.tranNo).html("<button type='button' class='btn btn-link btn-xs' value='"+JSONData.purchaseProd.prodNo+"'>review</button>");
 								
 								$(".btn:contains('review')").bind("click", function(){
-									console.log($(this).html())
-									self.location = "/review/addReview?prodNo="+JSONData.purchaseProd.prodNo+"&userId="+JSONData.buyer.userId;
+									reviewProduct($(this))
 								})
 								
 							}
@@ -202,14 +200,207 @@
 					}
 				}
 				
-				$(".btn:contains('review')").bind("click", function(){
-					console.log($(this).html())
-					self.location = "/review/addReview?prodNo="+$(this).val()+"&userId=user13";
-				})
 				
 			});
 			
 		});
+		
+		$(function(){
+				$(".btn:contains('review')").bind("click", function(){
+					reviewProduct($(this));
+				})
+		})
+		
+		function reviewProduct(elem) {
+			alert("리뷰");
+			self.location = "/review/addReview?prodNo="+$(elem).val()+"&userId=user13";
+		}
+		
+		function getPurchase(elem) {
+				console.log($(elem).html());
+				fncUpdatePurchaseView($(elem).val());
+		}
+		
+		function updateTranCode(elem) {
+			
+			
+			if($(elem).text().trim() != 'review') {
+	 			var result = confirm("물건이 도착했습니까?");
+				
+				if(result) {
+					
+					$.ajax({
+						
+						url : "/purchase/json/updateTranCode/"+$("input:hidden[name='tNo']",$(elem)).val()+"/3",
+						method : "get",
+						dataType : "json",
+						success : function(JSONData, status){
+							console.log(status);
+							console.log(JSON.stringify(JSONData));
+							console.log($("#"+JSONData.tranNo).next().html().trim());
+							
+							$("#"+JSONData.tranNo).next().remove();
+							$("#"+JSONData.tranNo).html("<button type='button' class='btn btn-link btn-xs' value='"+JSONData.purchaseProd.prodNo+"'>review</button>");
+							
+							$(".btn:contains('review')").bind("click", function(){
+								reviewProduct($(this));
+							})
+							
+						}
+						
+					})
+					
+				} else {
+					return;
+				}
+			}
+		}
+		
+		//무한스크롤
+		function getPurchaseList(count) {
+		
+			$.ajax({
+				
+				url : "/purchase/json/listPurchase/"+$("input:hidden[name='buyer.userId']").val(),
+				method : "post",
+				headers : {
+					"Accept" : "application/json",
+					"Content-Type" : "application/json"
+				},
+				data : JSON.stringify({
+					currentPage : count
+				}),
+				dataType : "json",
+				success : function(JSONData, status){
+					console.log(status);
+					console.log(JSON.stringify(JSONData));
+
+					var htmlStr = "<div class='col-md-offset-2 col-md-8 col-md-offset-2'><form><table class='table table-bordered table-condensed text-center'><tr class='ct_list_pop'>";
+					for(var i = 0; i < JSONData.length; i++) {
+						
+						$("#scrollProd").removeClass();
+						$("#scrollProd").addClass("row");
+						
+						var tranNo = JSONData[i].tranNo;
+						var tranCode = JSONData[i].tranCode;
+						var orderDate = JSONData[i].orderDate;
+						var prodNo = JSONData[i].purchaseProd.prodNo;
+						var prodName = JSONData[i].purchaseProd.prodName;
+						var price = JSONData[i].purchaseProd.price;
+						var fileName = JSONData[i].purchaseProd.fileName;
+						console.log(fileName);
+						
+						htmlStr += "<td>"+(9 * (count - 1) + (i+1))+"</td>";
+						htmlStr += "<td rowspan='2'><img class='img-thumbnail' src='../images/uploadFiles/"+fileName+"'>";
+	                	htmlStr += "<span>";
+											
+						 if(JSONData[i].tranCode == '1'){
+							htmlStr += '<button type="button" class="btn btn-xs btn-link" value="'+tranNo+'">'+prodName+'<br>'
+	                						+'<small class="text-muted primary">주문번호 | '+tranNo+'</small></button>';
+						} else {
+							htmlStr += '&nbsp;<button type="button" class="btn btn-xs">'+prodName+'<br>'
+    						+'<small class="text-muted primary">주문번호 | '+tranNo+'</small></button>';
+						} 
+						htmlStr += "</span></td>";				
+						htmlStr += '<td rowspan="2">'+price+'원</td><td rowspan="2">';
+					  	
+						if(tranCode == '2') {
+							htmlStr += '<p id="'+tranNo+'"></p>';
+							htmlStr += '<p><input type="hidden" name="tNo" value="'+tranNo+'">물건도착</p>';
+						} else if (tranCode < 2) {
+							htmlStr += "대기";
+						} else {
+							htmlStr += '<button type="button" class="btn btn-link" value="'+prodNo+'">review</button>';
+						}
+						htmlStr += '</td></tr><tr><td><small class="text-muted">주문날짜 : '+orderDate+'</small></td></tr>';
+					}
+						htmlStr += "</table></form></div>";
+						
+						$("#scrollProd").append(htmlStr);
+						
+						$("span > button").bind('click', function(){
+							getPurchase($(this));
+						});
+						
+						$("p").bind('click', function(){
+							updateTranCode($(this));
+						});
+						
+						$(".btn:contains('review')").bind("click", function(){
+							console.log("리뷰클릭");
+							reviewProduct($(this));
+						}) 
+				}
+				
+			});
+		}
+		
+		var count = 1;
+		
+		//무한스크롤
+		$(window).bind("scroll",function(){
+				console.log("scrolling....");
+				console.log("doc > "+$(document).height());
+				console.log("win > "+$(window).height());
+				console.log("cur > "+$(window).scrollTop()); 
+				
+				if($(window).scrollTop() >= $(document).height() - $(window).height() - 1){
+					
+					if(count < ${resultPage.endUnitPage}) {
+						console.log("끝");
+						count++;
+						console.log($(this).html());
+						getPurchaseList(count);					
+						
+					} else if(count >= ${resultPage.endUnitPage}) {
+						alert("마지막입니다");
+					}
+				}
+		});
+		
+		//검색
+		$(function(){
+			$(".btn:contains('검색')").bind('click', function(){
+				$("form[name='detailForm']").attr("action","/purchase/listPurchase").attr("method","post").submit();
+			})
+		})
+		
+		//autocomplete
+		$(function(){
+			
+		$("input:text[name='searchKeyword']").autocomplete({
+				source: function( request, response ) {
+			        $.ajax( {
+			          url: "/product/json/listProductAuto",
+			          method : "post",
+			          headers : {
+							"Accept" : "application/json",
+							"Content-Type" : "application/json"
+						},
+			          dataType: "json",
+			          data: JSON.stringify({
+			            searchKeyword : $("input:text[name='searchKeyword']").val(),
+			            searchCondition : 1,
+			            searchSoldProd : 1
+			          }),
+			          success: function( JSONData ) {
+			        	console.log("server data===>"+JSON.stringify(JSONData));
+			        	console.log("prodName===>"+JSONData[0].prodName);
+			        	
+			            response($.map(JSONData, function(value, key){
+			            	console.log(value);
+			            	console.log("key(autocomplete : value)====>"+key);
+			        		return {
+			        			label : value.prodName,
+			        			value : value.prodName //원래는 key,, 선택시를 위해
+			        		}
+			        	}));
+			          }
+			        } );
+			    }
+			});
+		});
+		
 	</script>
 
 	<style type="text/css">
@@ -231,6 +422,12 @@
         .dropdown:hover .dropdown-menu {
         	display : block;
         }
+        thead {
+        	background-color : #70cbce;
+        }
+        table {
+        	margin-top : 20px;
+        }
 	</style>
 	
 	
@@ -238,7 +435,8 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<!-- 수정 dialog form -->
 	<div class="ui-widget">
@@ -264,22 +462,36 @@
 	
 	<div class="container">
 		
-		<div class="page-header bg-danger">
+		<div class="page-header text-center">
 			<h3 class="text-info">구매목록</h3>
-			<small class="text-muted">구매한 상품</small>
 		</div>
 		
 		<div class="row">
+			<form class="form-inline" name="detailForm">
+					<div class="form-group col-md-offset-9 col-md-3">
+						<input type="hidden" id="searchCondition" name="searchCondition" value="1"/>
+						<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+						<input type="text" id="searchKeyword" name="searchKeyword" value="${search.searchKeyword}"  class="form-control input-sm" placeholder="상품명 입력" autocomplete="on">
+						<button class="btn btn-default btn-sm">검색</button>
+					</div>
+			</form>
+		</div>
+		
+		
+		<div class="row">
 			<div class="col-md-offset-2 col-md-8 col-md-offset-2">
+			<form class="form">
+			<input type="hidden" name="buyer.userId" value="${user.userId}">
+			<input type="hidden" name="currentPage" value="${search.currentPage}">
 	          <table class="table table-bordered table-condensed text-center">
 	            <thead>
-	            	<tr class="danger">
-		                <th>No / 주문날짜</th>
-		                <th>상품명 / 구매정보</th>
-		                <th>총 금액</th>
-		                <th>정보</th>
+	            	<tr>
+		                <td>No / 주문날짜</td>
+		                <td>상품명 / 구매정보</td>
+		                <td>총 금액</td>
+		                <td>정보</td>
 	             	</tr>
-	            </thead>
+	             </thead>
 	            <tbody>
 	            <c:forEach var="purchase" items="${list}">
 	            	<c:set var="i" value="${i+1}"/>
@@ -288,21 +500,28 @@
 			                <td rowspan="2">
 			                	<img class="img-thumbnail" src="../images/uploadFiles/${purchase.purchaseProd.fileName[0]}">
 			                	<span>
+			                	<c:if test="${purchase.tranCode == 1 }">
 			                		<button type="button" class="btn btn-xs btn-link" value="${purchase.tranNo}">${purchase.purchaseProd.prodName}<br>
 			                		<small class="text-muted primary">주문번호 | ${purchase.tranNo}</small></button>
+			                	</c:if>
+			                	<c:if test="${purchase.tranCode != 1 }">
+			                		<button class="btn btn-xs disabled">${purchase.purchaseProd.prodName}<br>
+			                		<small class="text-muted primary">주문번호 | ${purchase.tranNo}</small></button>
+			                	</c:if>
 			                	</span>
 			                </td>
 			                <td rowspan="2">${purchase.purchaseProd.price}원</td>
 			                <td rowspan="2">
-			                	<p id="${purchase.tranNo}">
+			                	
 								<c:if test="${purchase.tranCode == 2 }">
-									<p><input type="hidden" name="tNo" value="${purchase.tranNo}">물건도착
+									<p id="${purchase.tranNo}"></p>
+									<p><input type="hidden" name="tNo" value="${purchase.tranNo}">물건도착</p>
 								</c:if>
 								<c:if test="${purchase.tranCode < 2}">
 									대기
 								</c:if>
 								<c:if test="${purchase.tranCode > 2}">
-									<button class="btn btn-link btn-xs" value="${purchase.purchaseProd.prodNo}">review</button>
+									<button type="button" class="btn btn-link" value="${purchase.purchaseProd.prodNo}">review</button>
 								</c:if>
 			                </td>
 	              		</tr>
@@ -312,139 +531,17 @@
 	            </c:forEach>
 	            </tbody>
 	          </table>
+	          </form>
+	          <div id="scrollButton"></div>
         	</div>
 		</div>
+		
+		<!-- 무한스크롤 -->
+		<div id="scrollProd" class="hidden">
+		</div>
+		
+		
 	</div>
 
-
-<%-- <div style="width: 98%; margin-left: 10px;">
-
-<form name="detailForm">
-
-<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
-	<tr>
-		<td width="15" height="37"><img src="/images/ct_ttl_img01.gif"width="15" height="37"></td>
-		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="93%" class="ct_ttl01">구매 목록조회</td>
-				</tr>
-			</table>
-		</td>
-		<td width="12" height="37"><img src="/images/ct_ttl_img03.gif"	width="12" height="37"></td>
-	</tr>
-</table>
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
-	<tr>
-		<td colspan="11">전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
-	</tr>
-	<tr>
-		<td class="ct_list_b" width="50">NO</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="100">주문번호</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">주문날짜</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">주문상품</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b">주문금액</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b">배송현황</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b">정보수정</td>
-		<td class="ct_line02"></td>
-	</tr>
-	<tr>
-		<td colspan="20" bgcolor="F7CAC9" height="1"></td>
-	</tr>
-	
-	<c:set var="i" value="0"/>
-	<c:forEach var="purchase" items="${list}">
-	<c:set var="i" value="${i+1}"/>
-	<tr class="ct_list_pop">
-		<td align="center">
-			${i}
-		</td>
-		<td></td>
-		<td align="center">
-			<a href="/getPurchase.do?tranNo=${purchase.tranNo}">${i}</a>
-			${purchase.tranNo}
-		</td>
-		<td></td>
-		<td align="center">
-			<a href="/getUser.do?userId=${purchase.buyer.userId}">${purchase.buyer.userId }</a>
-			${purchase.orderDate}
-		</td>
-		<td></td>
-		<td align="left">${purchase.buyer.userName }</td>
-		<td align="center">
-			<c:choose>
-				<c:when test="${purchase.tranCode == 1}">
-					<span>
-					<input type="hidden" name="tNo" value="${purchase.tranNo }">
-					${purchase.purchaseProd.prodName}
-					</span>
-				</c:when>
-				<c:otherwise>
-					${purchase.purchaseProd.prodName}
-				</c:otherwise>
-			</c:choose>
-		</td>
-		<td></td>
-		<td align="center">
-			${purchase.purchaseProd.price}원
-		</td>
-		<td></td>
-		<td align="center">
-			<c:choose>
-				<c:when test="${purchase.tranCode == 1}">
-					구매완료
-				</c:when>
-				<c:when test="${purchase.tranCode == 2 }">
-					배송중
-				</c:when>
-				<c:when test="${purchase.tranCode == 3 }">
-					배송완료
-				</c:when>
-			</c:choose>
-		</td>
-		<td></td>
-		<td align="center">
-		<p id="${purchase.tranNo}">
-			<c:if test="${purchase.tranCode == 2 }">
-				<a href="/purchase/updateTranCode?tranNo=${purchase.tranNo}&tranCode=3">물건도착</a>
-				<p><input type="hidden" name="tNo" value="${purchase.tranNo}">물건도착
-			</c:if>
-			<c:if test="${purchase.tranCode < 2}">
-				대기
-			</c:if>
-			<c:if test="${purchase.tranCode > 2}">
-				<a>review</a>
-			</c:if>
-		</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td colspan="20" bgcolor="F7CAC9" height="1"></td>
-	</tr>
-	</c:forEach>
-</table>
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
-	<tr>
-		<td align="center">
-		<input type="hidden" id="currentPage" name="currentPage" value=""/>
-		<c:import var="importPage" url="/common/pageNavigator.jsp"/>
-		${importPage}
-		</td>
-	</tr>
-</table>
-
-<!--  페이지 Navigator 끝 --> 
-</form>
-
-</div>
---%>
 </body>
 </html>

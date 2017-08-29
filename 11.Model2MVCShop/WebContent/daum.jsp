@@ -3,7 +3,7 @@
 
 <div id="map" style="width:350px;height:350px;"></div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8865635962c202af331e7362850ce3f2&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4c581b38ff4c308971bc220233e61b89&libraries=services"></script>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
@@ -22,7 +22,8 @@ geocoder.addressSearch('서울특별시 서초구 강남대로53길 8', function(result, stat
 
     // 정상적으로 검색이 완료됐으면 
      if (status === daum.maps.services.Status.OK) {
-
+		alert(result[0].y+"  &  "+result[0].x);
+		alert(JSON.stringify(result[0]));
         var coords = new daum.maps.LatLng(result[0].y, result[0].x);
 
         // 결과값으로 받은 위치를 마커로 표시합니다
@@ -32,10 +33,10 @@ geocoder.addressSearch('서울특별시 서초구 강남대로53길 8', function(result, stat
         });
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new daum.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">Kazzong Shop</div>'
+        /* var infowindow = new daum.maps.InfoWindow({
+            content: '<div style="text-align:center;padding:2px 0;border:1px solid #4ec3cd;">Tube Shop</div>'
         });
-        infowindow.open(map, marker);
+        infowindow.open(map, marker); */
 
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         map.setCenter(coords);

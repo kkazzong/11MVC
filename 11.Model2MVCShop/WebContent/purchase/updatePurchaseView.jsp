@@ -90,25 +90,33 @@
         	width : 80px;
         	height : 80px;
         }
-        div{
+       /*  div{
 			border : 3px solid #D6CDB7;
 			margin0top : 10px;
-		}
+		} */
+		thead {
+        	background-color : #70cbce;
+        }
    	</style>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 	
-	<jsp:include page="/layout/toolbar.jsp"/>
+	<%-- <jsp:include page="/layout/toolbar.jsp"/> --%>
+	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
-		<h2 class="bg-danger text-center">구매정보수정</h2>
+		
+		<div class="page-header text-center">
+			<h3 class="text-info">구매정보수정</h3>
+			<small class="text-muted">입력한 구매 정보를 확인하세요.</small>
+		</div>
 		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 			<table class="table">
 			 	<thead>
-			 		<tr class="bg-danger">
+			 		<tr>
 			 			<th>상품정보</th>
 			 			<th></th>
 			 			<th>가격</th>
@@ -131,7 +139,7 @@
 			</div>
 		</div>
 			
-		<form class="form-horizontal" name="detailForm" enctype="multipart/form-data">
+		<form class="form-horizontal" id="detailForm" name="detailForm" enctype="multipart/form-data">
 			<input type="hidden" name="tranNo" value="${param.tranNo}"/>
 			<div class="form-group has-warning">
 				<label for="receiverName" class="col-sm-offset-1 col-sm-3 control-label">받는 분</label>
@@ -140,12 +148,13 @@
 			    </div>
 			</div>
 			
-			<div class="form-group has-warning ">
+			<%-- <div class="form-group has-warning ">
 				<label for="receiverAddr" class="col-sm-offset-1 col-sm-3 control-label">배송지</label>
 				<div class="col-sm-4">
 			    	<input type="text" class="form-control" id="receiverAddr" name="receiverAddr" value="${purchase.receiverAddr}" placeholder="받으실 주소를 입력해주세요"/>
 			    </div>
-			</div>
+			</div> --%>
+			<jsp:include page="/data/addr.jsp"/>
 			
 			<div class="form-group">
 				<label for="receiverPhone" class="col-sm-offset-1 col-sm-3 control-label">전화번호</label>
