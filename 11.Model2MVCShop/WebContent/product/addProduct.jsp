@@ -108,7 +108,12 @@
 		
 		<div class="row">
 	  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>가격</strong></div>
-			<div class="col-xs-8 col-md-4">${product.price}</div>
+			<div class="col-xs-8 col-md-4">${product.price}원</div>
+		</div>
+		
+		<div class="row">
+	  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>수량</strong></div>
+			<div class="col-xs-8 col-md-4">${product.prodStock}개</div>
 		</div>
 		
 		<%-- <div class="row">

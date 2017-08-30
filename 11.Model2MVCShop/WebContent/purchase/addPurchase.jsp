@@ -110,6 +110,10 @@
 					<td>${purchase.receiverDate}</td>
 				</tr>
 				<tr>
+					<td>구매수량</td>
+					<td>${purchase.stock.stocks}</td>
+				</tr>
+				<tr>
 					<td>결제수단</td>
 					<td>
 						<c:if test="${purchase.paymentOption == 1}">

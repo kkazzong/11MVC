@@ -9,7 +9,7 @@ import com.model2.mvc.service.domain.Purchase;
 
 public interface PurchaseDAO {
 	
-	public Purchase addPurchase(Purchase purchase) throws Exception;
+	public void addPurchase(Purchase purchase) throws Exception;
 	
 	public Purchase getPurchase(int tranNo) throws Exception;
 	

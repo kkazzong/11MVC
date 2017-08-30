@@ -201,6 +201,13 @@
 			</div>
 			
 			<div class="form-group">
+				<label for="prodStock" class="col-sm-offset-1 col-sm-3 control-label">재고</label>
+				<div class="col-sm-4">
+			    	<input type="text" class="form-control" id="prodStock" name="prodStock" value="${product.prodStock}" placeholder="재고입력"/>
+			    </div>
+			</div>
+			
+			<div class="form-group">
 				<label for="uploadFile" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 				<div class="col-sm-4">
 					<div class="img-thumbnail">

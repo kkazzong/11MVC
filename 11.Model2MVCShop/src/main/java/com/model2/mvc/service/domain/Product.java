@@ -21,12 +21,14 @@ public class Product implements Serializable{
 	private int prodNo;
 	private Date regDate;
 	private String proTranCode;
+	private int prodStock;
 	
 	public Product(){
 	}
+	
 
 	public Product(List<String> fileName, String manuDate, int price, String prodDetail, String prodName, int prodNo,
-			Date regDate, String proTranCode) {
+			Date regDate, String proTranCode, int prodStock) {
 		super();
 		this.fileName = fileName;
 		this.manuDate = manuDate;
@@ -36,7 +38,9 @@ public class Product implements Serializable{
 		this.prodNo = prodNo;
 		this.regDate = regDate;
 		this.proTranCode = proTranCode;
+		this.prodStock = prodStock;
 	}
+
 
 	public List<String> getFileName() {
 		return fileName;
@@ -102,10 +106,19 @@ public class Product implements Serializable{
 		this.proTranCode = proTranCode;
 	}
 
+	public int getProdStock() {
+		return prodStock;
+	}
+
+
+	public void setProdStock(int prodStock) {
+		this.prodStock = prodStock;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Product [fileName=" + fileName + ", manuDate=" + manuDate + ", price=" + price + ", prodDetail="
-				+ prodDetail + ", prodName=" + prodName + ", prodNo=" + prodNo + ", regDate=" + regDate
+		return "Product [ prodName=" + prodName + ", prodNo=" + prodNo + ", prodStock=" + prodStock
 				+ ", proTranCode=" + proTranCode + "]";
 	}
 	

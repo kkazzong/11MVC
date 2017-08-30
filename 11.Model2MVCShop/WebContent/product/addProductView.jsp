@@ -55,6 +55,7 @@
 				var detail = $("textarea").val();
 				var manuDate = $($("input:text")[1]).val();
 				var price = $($("input:text")[2]).val();
+				var stock = $($("input:text[name='prodStock']")).val();
 				
 				console.log(name+":"+detail+":"+manuDate+":"+price);
 				
@@ -72,6 +73,10 @@
 				}
 				if(price == null || price.length<1){
 					alert("가격은 반드시 입력하셔야 합니다.");
+					return;
+				}
+				if(stock == null || stock.length<1){
+					alert("수량은 반드시 입력하셔야 합니다.");
 					return;
 				}
 				
@@ -221,6 +226,13 @@
 				<label for="price" class="col-sm-offset-1 col-sm-3 control-label">가격</label>
 				<div class="col-sm-4">
 			    	<input type="text" class="form-control" id="price" name="price" placeholder="가격입력"/>
+			    </div>
+			</div>
+			
+			<div class="form-group">
+				<label for="prodStock" class="col-sm-offset-1 col-sm-3 control-label">재고</label>
+				<div class="col-sm-4">
+			    	<input type="text" class="form-control" id="prodStock" name="prodStock" placeholder="재고입력"/>
 			    </div>
 			</div>
 			

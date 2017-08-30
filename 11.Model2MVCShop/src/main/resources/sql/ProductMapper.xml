@@ -17,12 +17,13 @@
 		<!-- <result property="fileName" column="image_file" jdbcType="VARCHAR" javaType="java.util.List" typeHandler="com.model2.mvc.common.ListTypeHandlerTwo" />  -->
 		<result property="regDate" column="reg_date" jdbcType="DATE"/>
 		<result property="proTranCode" column="tran_code" jdbcType="VARCHAR"/>
+		<result property="prodStock" column="prod_stock" jdbcType="NUMERIC"/>
 	</resultMap>
 	
 	<insert id="insertProduct" parameterType="com.model2.mvc.service.domain.Product" 
 		useGeneratedKeys="true" keyColumn="prod_no" keyProperty="prodNo">
 		INSERT
-		INTO product(prod_no, prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
+		INTO product(prod_no, prod_name, prod_detail, manufacture_day, price, image_file, prod_stock, reg_date)
 		VALUES( seq_product_prod_no.nextval, 
 						#{prodName:VARCHAR},
 						#{prodDetail:VARCHAR},
@@ -30,12 +31,14 @@
 						<if test="price == 0">null</if>
 						<if test="price != 0">#{price}</if>,
 						#{fileName:VARCHAR},
+						<if test="prodStock == 0">null</if>
+						<if test="prodStock != 0">#{prodStock}</if>,
 						SYSDATE)
 	</insert>
 	
 	<select id="getProduct" parameterType="int" resultMap="selectProductMap">
 		SELECT 
-		t.tran_code, p.prod_no, p.prod_name, p.prod_detail, p.price, p.manufacture_day, p.image_file, p.reg_date
+		t.tran_code, p.prod_no, p.prod_name, p.prod_detail, p.price, p.manufacture_day, p.image_file, p.prod_stock, p.reg_date
 		FROM product p, transaction t
 		WHERE p.prod_no = t.prod_no(+)
 			AND p.prod_no = #{value}
@@ -44,11 +47,22 @@
 	<update id="updateProduct" parameterType="com.model2.mvc.service.domain.Product">
 		UPDATE product
 		<set>
-			prod_name = #{prodName:VARCHAR},
-			prod_detail = #{prodDetail:VARCHAR},
-			price = #{price},
-			manufacture_day = #{manuDate:DATE},
-			image_file = #{fileName:VARCHAR},
+			<if test="prodName != null">
+				prod_name = #{prodName:VARCHAR},
+			</if>
+			<if test="prodDetail != null">
+				prod_detail = #{prodDetail:VARCHAR},
+			</if>
+			<if test="price != 0">
+				price = #{price},
+			</if>
+			<if test="manuDate != null">
+				manufacture_day = #{manuDate:DATE},
+			</if>
+			<if test="fileName != null">
+				image_file = #{fileName:VARCHAR},
+			</if>
+			prod_stock = #{prodStock},
 			reg_date = SYSDATE
 		</set>
  			WHERE prod_no = #{prodNo}
@@ -59,7 +73,7 @@
 		FROM (SELECT inner_table.*, ROWNUM AS row_seq
 					FROM  
 								(SELECT 
-								t.tran_code, p.prod_no, p.prod_name, p.prod_detail, p.manufacture_day, p.price, p.image_file, p.reg_date
+								t.tran_code, p.prod_no, p.prod_name, p.prod_detail, p.manufacture_day, p.price, p.image_file, p.reg_date, p.prod_stock
 								FROM product p, transaction t
 								<where>
 									p.prod_no = t.prod_no(+)
@@ -119,7 +133,7 @@
 	<select id="getCount" resultType="int">
 		SELECT COUNT(*)
 		FROM (SELECT 
-					t.tran_code, p.prod_no, p.prod_name, p.prod_detail, p.manufacture_day, p.price, p.image_file, p.reg_date
+					t.tran_code, p.prod_no, p.prod_name, p.prod_detail, p.manufacture_day, p.price, p.image_file, p.reg_date, p.prod_stock
 					FROM product p, transaction t
 					<where>
 						p.prod_no = t.prod_no(+)

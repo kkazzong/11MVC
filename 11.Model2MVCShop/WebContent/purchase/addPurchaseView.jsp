@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>  
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -173,6 +174,7 @@
 		
 		<form class="form-horizontal" name="detailForm" id="detailForm" enctype="multipart/form-data">
 			<input type="hidden" name="purchaseProd.prodNo" value="${product.prodNo}" />
+			<input type="hidden" name="purchaseProd.prodStock" value="${product.prodStock}" />
 			<input type="hidden" name="buyer.userId" value="${user.userId }" />
 			
 			<div class="form-group">
@@ -230,6 +232,17 @@
 			    		부재시 연락 가능한 연락처를 남겨주세요.
 			    	</span>
 			    </div>
+			</div>
+			
+			<div class="form-group">
+			<label for="receiverDate" class="col-sm-offset-1 col-sm-3 control-label">구매수량</label>
+			<div class="col-sm-4">
+			    <select name="stock.stocks" class="form-control">
+			    	<c:forEach begin="1" end="${product.prodStock}" var="i"  step="1">
+				    	<option value="${i}">${i}</option>
+			    	</c:forEach>
+			    </select>
+			</div>
 			</div>
 			
 			<div class="form-group">

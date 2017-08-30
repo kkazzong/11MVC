@@ -4,24 +4,16 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
-<mapper namespace="PurchaseMapper">
+<mapper namespace="StockMapper">
 	
 	<!-- <sql id="selectProduct">
 		SELECT prod_no
 		FROM product
 	</sql> -->
-	<resultMap type="com.model2.mvc.service.domain.Purchase" id="selectPurchaseMap">
-		<id property="tranNo" column="tran_no" jdbcType="NUMERIC"/>
-		<result property="tranCode" column="tran_code" jdbcType="VARCHAR"/>
-		<result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
-		<result property="receiverPhone" column="receiver_phone" jdbcType="VARCHAR"/>
-		<result property="receiverAddr" column="receiver_addr" jdbcType="VARCHAR"/>
-		<result property="receiverRequest" column="receiver_request" jdbcType="VARCHAR"/>
-		<result property="paymentOption" column="payment_option" jdbcType="VARCHAR"/>
-		<result property="receiverDate" column="receiver_date" jdbcType="DATE"/>
-		<result property="orderDate" column="order_date" jdbcType="DATE"/>
-		<!-- <result property="review" column/> -->
-		<association property="purchaseProd" javaType="com.model2.mvc.service.domain.Product">
+	<resultMap type="com.model2.mvc.service.domain.Purchase" id="selectStockMap">
+		<id property="stockNo" column="stock_no" jdbcType="NUMERIC"/>
+		<result property="stocks" column="stocks" jdbcType="VARCHAR"/>
+		<association property="product" javaType="com.model2.mvc.service.domain.Product">
 			<id property="prodNo" column="prod_no" jdbcType="NUMERIC"/>
 			<result property="prodName" column="prod_name" jdbcType="VARCHAR"/>
 			<result property="prodDetail" column="prod_detail" jdbcType="VARCHAR"/>
@@ -29,36 +21,22 @@
 			<result property="regDate" column="reg_date" jdbcType="DATE"/>
 			<result property="manuDate" column="manufacture_day" jdbcType="VARCHAR"/>
 			<result property="fileName" column="image_file" jdbcType="VARCHAR" javaType="java.util.List"/>
-			<result property="prodStock" column="prod_stock" jdbcType="NUMERIC"/>
 		</association>
-		<association property="buyer" javaType="com.model2.mvc.service.domain.User">
-			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
-			<result property="userName" column="user_name" jdbcType="VARCHAR"/>
-			<result property="phone" column="cell_phone" jdbcType="VARCHAR"/>
-		</association>
-		<association property="stock" javaType="com.model2.mvc.service.domain.Stock">
-			<id property="stockNo" column="stock_no" jdbcType="NUMERIC"/>
-			<result property="stocks" column="stocks" jdbcType="NUMERIC"/>
+		<association property="purchase" javaType="com.model2.mvc.service.domain.Purchase">
+			<id property="tranNo" column="tran_no" jdbcType="VARCHAR"/>
 		</association>
 	</resultMap>
 	
-	<insert id="addPurchase" parameterType="com.model2.mvc.service.domain.Purchase" useGeneratedKeys="true" keyProperty="tranNo" keyColumn="tran_no">
+	<insert id="addStock" parameterType="com.model2.mvc.service.domain.Stock">
 		INSERT
-		INTO transaction (tran_no, prod_no, buyer_id, payment_option, receiver_name, receiver_phone, receiver_addr, receiver_request, tran_code, order_date, receiver_date)
-		VALUES (seq_transaction_tran_no.nextVal,
-					   #{purchaseProd.prodNo:NUMERIC},
-					   #{buyer.userId:VARCHAR},
-					   #{paymentOption:VARCHAR},
-					   #{receiverName:VARCHAR},
-					   #{receiverPhone:VARCHAR},
-					   #{receiverAddr:VARCHAR},
-					   #{receiverRequest:VARCHAR},
-					   '1',
-					   SYSDATE,
-					   #{receiverDate:DATE})
+		INTO stock(stock_no, stocks, prod_no, tran_no)
+		VALUES (seq_stock_stock_no.nextVal,
+					   #{stocks:NUMERIC},
+					   #{product.prodNo:NUMERIC},
+					   #{purchase.tranNo:NUMERIC})
 	</insert>
 	
-	<select id="getPurchase" parameterType="int" resultMap="selectPurchaseMap">
+	<select id="getStock" parameterType="int" resultMap="selectStockMap">
 		SELECT
 		p.prod_no, p.prod_name, p.prod_detail, p.image_file, p.manufacture_day, p.price,
 		t.receiver_name, t.tran_no, t.tran_code, t.payment_option, 
@@ -68,7 +46,7 @@
 		WHERE p.prod_no = t.prod_no AND t.tran_no = #{value}
 	</select>
 	
-	<select id="getPurchaseByProdNo" parameterType="int" resultMap="selectPurchaseMap">
+	<select id="getPurchaseByProdNo" parameterType="int" resultMap="selectStockMap">
 		SELECT
 		p.prod_no,
 		p.prod_name,
@@ -81,12 +59,9 @@
 		t.receiver_phone,
 		t.receiver_addr,
 		t.receiver_request,
-		TO_CHAR(t.receiver_date,'yy-mm-dd') receiver_date,
-		s.stock_no, s.stocks
-		FROM product p, transaction t, stock s
+		TO_CHAR(t.receiver_date,'yy-mm-dd') receiver_date
+		FROM product p, transaction t, users u
 		WHERE p.prod_no = t.prod_no 
-			AND s.tran_no = t.tran_no
-			AND s.prod_no = p.prod_no
 			AND p.prod_no = #{value}
 	</select>
 	
@@ -125,7 +100,7 @@
 		</where>
 	</update>
 	
-	<select id="getPurchaseList" parameterType="map" resultMap="selectPurchaseMap">
+	<select id="getPurchaseList" parameterType="map" resultMap="selectStockMap">
 		SELECT *
 		FROM (SELECT inner_table.*, ROWNUM AS row_seq
 					FROM (SELECT 
@@ -158,7 +133,7 @@
 		WHERE row_seq BETWEEN (${search.currentPage}-1)*${search.pageSize}+1 AND ${search.currentPage}*${search.pageSize}
 	</select>
 	
-	<select id="getSaleList" parameterType="com.model2.mvc.common.Search" resultMap="selectPurchaseMap">
+	<select id="getSaleList" parameterType="com.model2.mvc.common.Search" resultMap="selectStockMap">
 		SELECT *
 		FROM (SELECT inner_table.*, ROWNUM AS row_seq
 					FROM (SELECT 

@@ -18,10 +18,11 @@ import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.Purchase;
+import com.model2.mvc.service.domain.Stock;
 import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.purchase.PurchaseService;
-import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
+import com.model2.mvc.service.stock.StockService;
 
 @Controller
 @RequestMapping("/purchase/*")
@@ -34,6 +35,10 @@ public class PurchaseController {
 	@Autowired
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
+	
+	@Autowired
+	@Qualifier("stockServiceImpl")
+	private StockService stockService;
 	
 	@Value("#{commonProperties['pageSize']}")
 	private int pageSize;
@@ -70,9 +75,25 @@ public class PurchaseController {
 		
 		System.out.println("@ addPurchase[POST] @");
 		
+		
+		
+		int count = purchase.getPurchaseProd().getProdStock() - purchase.getStock().getStocks();
+		purchase.getPurchaseProd().setProdStock(count);
+		productService.updateProduct(purchase.getPurchaseProd());
+		
+		
+		Stock stock = new Stock();
+		stock.setProduct(purchase.getPurchaseProd());
+		stock.setStocks(purchase.getStock().getStocks());
+		
 		purchase = purchaseService.addPurchase(purchase);
+		stock.setPurchase(purchase);
+		stockService.addStock(stock);
+		System.out.println("=========±¸¸Å"+purchase);
+		
 		Product product = productService.getProduct(purchase.getPurchaseProd().getProdNo());
 		purchase.setPurchaseProd(product);
+		
 		System.out.println(purchase);
 		model.addAttribute(purchase);
 		return "/purchase/addPurchase.jsp";
