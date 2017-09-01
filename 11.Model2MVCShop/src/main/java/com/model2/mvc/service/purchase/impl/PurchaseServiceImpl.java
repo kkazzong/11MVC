@@ -60,7 +60,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		map.put("saleList", purchaseDAO.getSaleList(search));
 		Map<String, Object> tempMap = new HashMap<String, Object>();
 		tempMap.put("search", search);
-//		tempMap.put("userId", buyerId);
+		tempMap.put("userId", "");
 		map.put("totalCount", purchaseDAO.getTotalCount(tempMap));
 		return map;
 	}

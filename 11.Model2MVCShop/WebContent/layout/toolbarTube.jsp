@@ -44,9 +44,17 @@
 		border: 0px solid rgba(0, 0, 0, 0);
 		background-color : transparent;
 	} */
-	.dropdown:hover .dropdown-menu {
-        	display : block;
-      }
+	/* .dropdown:hover .dropdown-menu {
+			color : white;
+        	display: block;
+		    /* min-width: 100%; 
+		    white-space: nowrap;
+		    /* position:absolute !important; */
+		   /*  z-index: 100; 
+		    /* background: #70cbce; 
+			color: white;
+    		text-decoration: none;
+      } */
       h1, h2, h3, h4, h5, h6, p, .logo, .btn, .navbar-nav a, a span .form-control, .list-inline, small, #pricing {
 		  font-family: 'Montserrat', sans-serif;
 		}
@@ -60,6 +68,24 @@
 		.nav .navbar-nav {
     		max-height: fit-content;
 		}
+		/* @media (min-width: 768px) {
+		  ul > li > a {
+		    /* (80px - line-height of 27px) / 2 = 26.5px 
+		    padding-top: 26.5px;
+		    padding-bottom: 26.5px;
+		    line-height: 27px;
+		  }
+		} */
+		/* .navbar-collapse.in, .navbar-collapse.collapsing {
+			min-height : 100%;
+		}
+		.navbar-collapse.collapse.in { 
+        	display: block!important;
+        	min-width: 
+    	}
+    	.collapsing {
+	        overflow: hidden!important;
+	    } */
   </style>
 </head>
 
@@ -81,7 +107,7 @@
 	       			data-hover="dropdown" data-animations="fadeInDownNew fadeInRightNew fadeInUpNew fadeInLeftNew">
 	       		
 	       <ul class="nav navbar-nav navbar-right">	
-	            <li class="dropdown">
+	            <!-- <li class="dropdown">
 		            <a href="#" class="scroll dropdown-toggle"  data-toggle="dropdown" role="button" aria-expanded="false">
 		           		<span>mypage</span>
 		            	<span class="caret"></span>
@@ -89,7 +115,7 @@
 		            <ul class="dropdown-menu">
 			            <li><a href="#">회원정보조회</a></li>
 			        </ul>
-	            </li>
+	            </li> -->
             
 			
 			<li class="dropdown">
@@ -121,7 +147,23 @@
 	                     </ul>		
             </li>
             
-            <li><a href="#"> <span>Log out </span></a></li>
+            <li class="dropdown">
+	           	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+	            		 <span><c:if test="${!empty user}">${user.userId}님</c:if></span>
+	            		<span class="caret"></span>
+	            </a>
+	            <ul class="dropdown-menu">
+	            			<c:if test="${sessionScope.user.role == 'admin'}">
+	                         	<li><a href="#">회원정보조회</a></li>
+	                         </c:if>
+	                         <li><a href="#">마이페이지</a></li>
+ 							<li class="divider"></li>	                         
+ 							<li><a href="#">Log out</a></li>
+	             </ul>		
+            </li>
+            <c:if test="${empty user}">
+            <li><a href="#"> <span>Log in</span></a></li>
+            </c:if>
           	</ul>
         </div><!--/.navbar-collapse -->
       </div>

@@ -93,22 +93,26 @@
 								ORDER BY 
 								<!-- 정렬 -->
 								<if test="sortCondition != null and sortCondition != ''">
-									<if test="sortCondition == 'asc'">
+									<if test="sortCondition == 0"><!-- 상품명오름차순 -->
 										p.prod_name
 									</if>
-									<if test="sortCondition == 'desc'">
+									<if test="sortCondition == 1"><!-- 상품명내림차순 -->
 										p.prod_name DESC
 									</if>
-								</if>
-								<if test="sortCondition2 != null and sortCondition2 != ''">
-									<if test="sortCondition2 == 'asc'">
+									<if test="sortCondition == 2"><!-- 가격 높은순 -->
+										p.price DESC 
+									</if>
+									<if test="sortCondition == 3"><!-- 가격 낮은순 -->
 										p.price
 									</if>
-									<if test="sortCondition2 == 'desc'">
-										p.price DESC
+									<if test="sortCondition == 4"><!-- 최근 등록 순 -->
+										p.prod_no DESC
+									</if>
+									<if test="sortCondition == 5"><!-- 나중 등록 순 -->
+										p.prod_no
 									</if>
 								</if>
-								<if test="(sortCondition == null or sortCondition == '') and (sortCondition2 == null or sortCondition2 == '')">
+								<if test="sortCondition == null or sortCondition == '' ">
 									p.prod_no
 								</if>) inner_table
 					WHERE ROWNUM &lt;= ${currentPage}*${pageSize})
@@ -151,26 +155,30 @@
 						</if>
 					</where>
 					ORDER BY 
-					<!-- 정렬 -->
-					<if test="sortCondition != null and sortCondition != ''">
-						<if test="sortCondition == 'asc'">
-							p.prod_name
-						</if>
-						<if test="sortCondition == 'desc'">
-							p.prod_name DESC
-						</if>
-					</if>
-					<if test="sortCondition2 != null and sortCondition2 != ''">
-						<if test="sortCondition2 == 'asc'">
-							p.price
-						</if>
-						<if test="sortCondition2 == 'desc'">
-							p.price DESC
-						</if>
-					</if>
-					<if test="(sortCondition == null or sortCondition == '') and (sortCondition2 == null or sortCondition2 == '')">
-						p.prod_no
-					</if>) countTable
+								<!-- 정렬 -->
+								<if test="sortCondition != null and sortCondition != ''">
+									<if test="sortCondition == 0"><!-- 상품명오름차순 -->
+										p.prod_name
+									</if>
+									<if test="sortCondition == 1"><!-- 상품명내림차순 -->
+										p.prod_name DESC
+									</if>
+									<if test="sortCondition == 2"><!-- 가격 높은순 -->
+										p.price DESC 
+									</if>
+									<if test="sortCondition == 3"><!-- 가격 낮은순 -->
+										p.price
+									</if>
+									<if test="sortCondition == 4"><!-- 최근 등록 순 -->
+										p.prod_no DESC
+									</if>
+									<if test="sortCondition == 5"><!-- 나중 등록 순 -->
+										p.prod_no
+									</if>
+								</if>
+								<if test="sortCondition == null or sortCondition == '' ">
+									p.prod_no
+								</if>) countTable
 	</select>
 	
 	<delete id="deleteProduct" parameterType="int">

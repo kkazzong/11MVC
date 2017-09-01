@@ -14,8 +14,9 @@
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
   	<link href="/css/animate.min.css" rel="stylesheet">
-  	<link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+  	<!-- <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> -->
 	<link rel="stylesheet" href="/css/jquery-ui.css" type="text/css" />  
+	<link href="/css/dropdown-tube.css" rel="stylesheet">   
    
     <!-- Bootstrap Dropdown Hover JS -->
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
@@ -87,7 +88,7 @@
 					
 				}
 			}); 
-			dialog.dialog("open");
+			//dialog.dialog("open");
 		}
 		
 		$(function(){
@@ -148,14 +149,48 @@
 			//배송중일때 상품 수정 불가
 			//상품이름 클릭 수정
 			$("span > button").bind('click', function(){
-				console.log($(this).html());
-				console.log("parent====>"+$(this).parent().index());
-				console.log("sibling/tranNo====>"+$("input:hidden[name='tNo']",this).val());
+				
+				
+				$.ajax({
+					
+					url : "/purchase/json/getPurchase/"+$(this).val(),
+					method : "get",
+					dataType : "json",
+					success : function(JSONData, status) {
+						console.log(status);
+						alert(JSON.stringify(JSONData));
+						$("input:hidden[name='tranNo']").val(JSONData.tranNo);
+						$("input:text[name='receiverName']").val(JSONData.receiverName);
+						$("input:text[name='receiverPhone']").val(JSONData.receiverPhone);
+						$("input:text[name='receiverAddr']").val(JSONData.receiverAddr);
+						$("input:text[name='receiverRequest']").val(JSONData.receiverRequest);
+						$("input:text[name='receiverDate']").val(JSONData.receiverDate);
+						$("input:text[name='receiverDate']").datepicker().bind('change',function(){
+							$(this).datepicker("option","dateFormat","yy-mm-dd").val();
+						})
+						$('#myModal').modal();
+						
+					}
+					
+				})
+						$(".btn:contains('수정하기')").bind("click",function(e){
+							e.preventDefault();
+							console.log($("input:text[name='receiverDate']").val());
+							$("form[name='detailForm']").attr("method","post").attr("action","/purchase/updatePurchase").submit();
+						})
+				
+				//console.log($(this).html());
+				//console.log("parent====>"+$(this).parent().index());
+				//console.log("sibling/tranNo====>"+$("input:hidden[name='tNo']",this).val());
 				//$(this).siblings('.tr_no').text().trim()
 				//self.location="/purchase/updatePurchaseView?tranNo="+$("input:hidden[name='tNo']",this).val();
-				fncUpdatePurchaseView($(this).val());
+				//$("#myModal").modal('show');
+				//fncUpdatePurchaseView($(this).val());
 				//dialog.dialog("open");
 			});
+			
+			
+			
 			
 			console.log($("p").html)
 			
@@ -170,6 +205,8 @@
 				console.log($("input:hidden[name='tNo']",this).val());
 				
 				if($(this).text().trim() != 'review') {
+					
+					var result = confirm("물건이 도착했습니까?");
 					
 					if(result) {
 						//self.location="/purchase/updateTranCode?tranNo="+$("input:hidden[name='tNo']",this).val()+"&tranCode=3";
@@ -275,7 +312,8 @@
 					console.log(status);
 					console.log(JSON.stringify(JSONData));
 
-					var htmlStr = "<div class='col-md-offset-2 col-md-8 col-md-offset-2'><form><table class='table table-bordered table-condensed text-center'><tr class='ct_list_pop'>";
+					var htmlStr = "<div class='col-md-offset-2 col-md-8 col-md-offset-2'><form><table class='table table-bordered table-condensed text-center'>"
+					htmlStr += " <thead><tr><td>No / 주문날짜</td><td>상품명 / 구매정보</td><td>총 금액</td><td>정보</td></tr></thead><tr class='ct_list_pop'>";
 					for(var i = 0; i < JSONData.length; i++) {
 						
 						$("#scrollProd").removeClass();
@@ -287,10 +325,10 @@
 						var prodNo = JSONData[i].purchaseProd.prodNo;
 						var prodName = JSONData[i].purchaseProd.prodName;
 						var price = JSONData[i].purchaseProd.price;
-						var fileName = JSONData[i].purchaseProd.fileName;
+						var fileName = JSONData[i].purchaseProd.fileName[0];
 						console.log(fileName);
 						
-						htmlStr += "<td>"+(9 * (count - 1) + (i+1))+"</td>";
+						htmlStr += "<td>"+(9 * (count - 1) + (i))+"</td>";
 						htmlStr += "<td rowspan='2'><img class='img-thumbnail' src='../images/uploadFiles/"+fileName+"'>";
 	                	htmlStr += "<span>";
 											
@@ -338,22 +376,24 @@
 		var count = 1;
 		
 		//무한스크롤
-		$(window).bind("scroll",function(){
-				console.log("scrolling....");
-				console.log("doc > "+$(document).height());
+		$(window).bind("scroll",function(event){
+				/* console.log("doc > "+$(document).height());
 				console.log("win > "+$(window).height());
-				console.log("cur > "+$(window).scrollTop()); 
+				console.log("cur > "+$(window).scrollTop());  */
 				
 				if($(window).scrollTop() >= $(document).height() - $(window).height() - 1){
 					
 					if(count < ${resultPage.endUnitPage}) {
+						event.preventDefault();
 						console.log("끝");
 						count++;
 						console.log($(this).html());
-						getPurchaseList(count);					
+						getPurchaseList(count);		
+						event.prevetDefault();
 						
 					} else if(count >= ${resultPage.endUnitPage}) {
-						alert("마지막입니다");
+						event.preventDefault();
+						console.log("마지막입니다");
 					}
 				}
 		});
@@ -361,7 +401,7 @@
 		//검색
 		$(function(){
 			$(".btn:contains('검색')").bind('click', function(){
-				$("form[name='detailForm']").attr("action","/purchase/listPurchase").attr("method","post").submit();
+				$("form[name='detailForm2']").attr("action","/purchase/listPurchase").attr("method","post").submit();
 			})
 		})
 		
@@ -419,9 +459,9 @@
             padding-top : 70px;
         }
         td > small{font-size:65%}
-        .dropdown:hover .dropdown-menu {
+       /*  .dropdown:hover .dropdown-menu {
         	display : block;
-        }
+        } */
         thead {
         	background-color : #70cbce;
         }
@@ -439,7 +479,7 @@
 	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<!-- 수정 dialog form -->
-	<div class="ui-widget">
+	<!-- <div class="ui-widget">
 	<form name="updateForm" title="상품수정">
 		<fieldset>
 			<label for="상품명">상품명</label>
@@ -458,7 +498,67 @@
 			<input type="submit" value="수정하기" style="position:absolute; top:-1000px">
 		</fieldset>
 	</form>
+	</div> -->
+	
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	    <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h5 class="modal-title" id="myModalLabel">상품수정</h5>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal" id="detailForm" name="detailForm" enctype="multipart/form-data">
+			<input type="hidden" name="tranNo"/>
+			<div class="form-group has-warning">
+				<label for="receiverName" class="col-sm-offset-1 col-sm-3 control-label">받는 분</label>
+				<div class="col-sm-5">
+			    	<input type="text" class="form-control" id="receiverName" name="receiverName"  placeholder="이름을 입력해주세요"/>
+			    </div>
+			</div>
+			<jsp:include page="/data/addr.jsp"/>
+			<div class="form-group">
+				<label for="receiverPhone" class="col-sm-4 control-label">전화번호</label>
+				<div class="col-sm-5">
+			    	<input type="text" class="form-control" id="receiverPhone" name="receiverPhone"  placeholder="'-'를 제외한 전화번호 13자리"/>
+			    </div>
+			</div>
+			<div class="form-group">
+				<label for="receiverRequest" class="col-sm-offset-1 col-sm-3 control-label">배송 요청사항</label>
+				<div class="col-sm-5">
+			    	<input type="text" class="form-control" id="receiverRequest" name="receiverRequest"  placeholder="배송 요청 사항 입력해주세요"/>
+			    	<span id="helpBlock" class="help-block">
+			    		부재시 연락 가능한 연락처를 남겨주세요.
+			    	</span>
+			    </div>
+			</div>
+			<div class="form-group">
+			<label for="receiverDate" class="col-sm-offset-1 col-sm-3 control-label">배송 희망 날짜</label>
+			<div class="col-sm-5">
+			    <input	type="text" class="form-control" id="receiverDate"  name="receiverDate"/>
+			</div>
+			</div>
+			<div class="form-group">
+			<label for="receiverDate" class="col-sm-offset-1 col-sm-3 control-label">결제 수단</label>
+			<div class="col-sm-5">
+			    <select name="paymentOption" class="form-control">
+			    	<option value="1">신용카드</option>
+			    	<option value="2">현금</option>
+			    </select>
+			</div>
+			</div>
+		</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	        <button type="button" class="btn btn-primary">수정하기</button>
+	      </div>
+	    
+	    </div>
+	  </div>
 	</div>
+	
+	
 	
 	<div class="container">
 		
@@ -467,7 +567,7 @@
 		</div>
 		
 		<div class="row">
-			<form class="form-inline" name="detailForm">
+			<form class="form-inline" name="detailForm2">
 					<div class="form-group col-md-offset-9 col-md-3">
 						<input type="hidden" id="searchCondition" name="searchCondition" value="1"/>
 						<input type="hidden" id="currentPage" name="currentPage" value="1"/>
@@ -501,7 +601,7 @@
 			                	<img class="img-thumbnail" src="../images/uploadFiles/${purchase.purchaseProd.fileName[0]}">
 			                	<span>
 			                	<c:if test="${purchase.tranCode == 1 }">
-			                		<button type="button" class="btn btn-xs btn-link" value="${purchase.tranNo}">${purchase.purchaseProd.prodName}<br>
+			                		<button type="button" class="btn btn-xs btn-link" data-toggle="modal" data-target="#myModal" value="${purchase.tranNo}">${purchase.purchaseProd.prodName}<br>
 			                		<small class="text-muted primary">주문번호 | ${purchase.tranNo}</small></button>
 			                	</c:if>
 			                	<c:if test="${purchase.tranCode != 1 }">

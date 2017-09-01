@@ -12,9 +12,9 @@
 	
 	<!-- Bootstrap Dropdown Hover CSS -->
   	<link href="/css/animate.min.css" rel="stylesheet">
-  	<link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+  	<!-- <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet"> -->
 	<link rel="stylesheet" href="/css/jquery-ui.css" type="text/css" />  
-   
+	<link href="/css/dropdown-tube.css" rel="stylesheet">   
     <!-- Bootstrap Dropdown Hover JS -->
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
 
@@ -34,10 +34,6 @@
 		}
 		
 		function updateTranCode(elem) {
-			
-			var result = confirm("물건을 배송하시겠습니까?");
-			
-			if(result) {
 				
 				$.ajax({
 					url : "/purchase/json/updateTranCode/"+$(elem).val()+"/2",
@@ -49,17 +45,19 @@
 						$("#"+JSONData.tranNo).text("배송중");
 					}
 				})
-				
-			} else {
-				return;
-			}
 		}
 		
 		$(function(){
 
-			$(".btn:contains('배송하기')").bind('click', function(elem){
-				updateTranCode($(this));
-			});
+			$(".btn:contains('배송하기')").bind('click', function(elem,event){
+				var result = confirm("물건을 배송하시겠습니까?");
+				if(result) {
+					updateTranCode($(this));
+					event.preventDefault();
+				} else {
+					return;
+				}
+		});
 			
 			$(".ct_btn01:contains('검색')").bind('click', function(){
 				fncGetList(1);
@@ -70,7 +68,7 @@
 		var count = 1;
 		
 		//무한스크롤
-		$(window).bind("scroll",function(){
+		$(window).bind("scroll",function(event){
 				console.log("scrolling....");
 				console.log("doc > "+$(document).height());
 				console.log("win > "+$(window).height());
@@ -79,14 +77,17 @@
 				if($(window).scrollTop() >= $(document).height() - $(window).height() -1){
 					
 					if(count < ${resultPage.endUnitPage}) {
-						alert(count);
+						event.preventDefault();
+						console.log(count);
 						console.log("끝");
 						count++;
 						console.log($(this).html());
-						getPurchaseList(count);					
+						getPurchaseList(count);
+						event.preventDefault();
 						
 					} else if(count >= ${resultPage.endUnitPage}) {
-						alert("마지막입니다");
+						event.preventDefault();
+						console.log("마지막입니다");
 					}
 				}
 		});
@@ -103,15 +104,18 @@
 					"Content-Type" : "application/json"
 				},
 				data : JSON.stringify({
-					currentPage : count
+					currentPage : count,
+					sortCondition : $("select option:selected").val()
 				}),
 				dataType : "json",
 				success : function(JSONData, status){
 					
-					alert(status);
-					alert(JSON.stringify(JSONData));
+					console.log(status);
+					console.log(JSON.stringify(JSONData));
 
-					var htmlStr = "<div class='col-md-offset-2 col-md-8 col-md-offset-2'><form><table class='table table-bordered table-condensed text-center'><tr class='ct_list_pop'>";
+					var htmlStr ="<div class='container'><div class='row'>"
+					htmlStr += "<div class='col-md-offset-2 col-md-8 col-md-offset-2'><form><table class='table table-bordered table-condensed text-center'>";
+					htmlStr += "<thead><tr><td>No / 주문번호</td><td>상품명</td><td>구매정보</td><td>총 금액</td><td>현재상태</td></tr></thead><tr class='ct_list_pop'>";
 					for(var i = 0; i < JSONData.length; i++) {
 						
 						$("#scrollProd").removeClass();
@@ -124,15 +128,16 @@
 						var prodName = JSONData[i].purchaseProd.prodName;
 						var user = JSONData[i].buyer.userId;
 						var price = JSONData[i].purchaseProd.price;
-						var fileName = JSONData[i].purchaseProd.fileName;
+						var fileName = JSONData[i].purchaseProd.fileName[0];
+						
 						console.log(fileName);
 						
-						htmlStr += "<td>"+(9 * (count - 1) + (i+1))+"</td>";
+						htmlStr += "<td>"+(9 * (count - 1) + (i))+"</td>";
 						htmlStr += "<td rowspan='2'><img class='img-thumbnail' src='../images/uploadFiles/"+fileName+"'>";
 	                	htmlStr += "<span>";
 						htmlStr += '<button type="button" class="btn btn-xs disabled" value="'+tranNo+'">'+prodName+'</button>';
 						htmlStr += "</span></td>";				
-						htmlStr += '<td rowspan="2">구매자 : '+user+'</td>';
+						htmlStr += '<td rowspan="2">구매자 : '+user+'<br> 구매일 : '+orderDate+'</td>';
 						htmlStr += '<td rowspan="2">'+price+'원</td><td rowspan="2">';
 					  	htmlStr += "<p id="+tranNo+">";
 					  	
@@ -146,18 +151,87 @@
 						}
 						htmlStr += '</p></td></tr><tr><td><small class="text-muted">주문번호 : '+tranNo+'</small></td></tr>';
 					}
-					htmlStr += "</table></form></div>";
+					htmlStr += "</table></form></div></div></div>";
 						
 					$("#scrollProd").append(htmlStr);
 					
 					$(".btn:contains('배송하기')").bind('click', function(){
-						updateTranCode($(this));
+						var result = confirm("물건을 배송하시겠습니까?");
+						if(result) {
+							updateTranCode($(this));
+						} else {
+							return;
+						}
 					});
 						
 				}
 				
 			});
 		}
+		
+		$(function(){
+			
+			$("select[name='searchCondition']").bind("change", function(){
+				console.log("change==>"+$("option").val());
+				if($("select option:selected").val() == 3) {
+					$("input:text[name='searchKeyword']").attr("placeholder", "회원아이디 입력");
+				} else if($("select option:selected").val() == 1) {
+					$("input:text[name='searchKeyword']").attr("placeholder", "상품명 입력");
+				}
+				
+			})
+			
+		})
+		
+		//검색
+		$(function(){
+			$(".btn:contains('검색')").bind('click', function(){
+				$("form[name='detailForm']").attr("action","/purchase/listSale").attr("method","post").submit();
+			})
+		})
+		
+		//필터
+		$(function(){
+			$("select[name='sortCondition']").bind("change",function(){
+				$("form[name='sortForm']").attr("action","/purchase/listSale").attr("method","post").submit();				
+			})
+		})
+		
+		$(function(){
+			//<!-- autocomplete -->
+			$("input:text[name='searchKeyword']").autocomplete({
+				source: function( request, response ) {
+			        $.ajax( {
+			          url: "/product/json/listProductAuto",
+			          method : "post",
+			          headers : {
+							"Accept" : "application/json",
+							"Content-Type" : "application/json"
+						},
+			          dataType: "json",
+			          data: JSON.stringify({
+			            searchKeyword : $("input:text[name='searchKeyword']").val(),
+			            searchCondition : $("select[name='searchCondition']").val(),
+			            searchSoldProd : 1
+			          }),
+			          success: function( JSONData ) {
+			        		  
+			        	console.log("server data===>"+JSON.stringify(JSONData));
+			        	console.log("prodName===>"+JSONData[0].prodName);
+			        	
+			            response($.map(JSONData, function(value, key){
+			            	console.log(value);
+			            	console.log("key(autocomplete : value)====>"+key);
+			        		return {
+			        			label : value.prodName,
+			        			value : value.prodName //원래는 key,, 선택시를 위해
+			        		}
+			        	}));
+			          }
+			        } );
+			    }
+			});
+		})
 		
 	</script>
 	<style type="text/css">
@@ -172,11 +246,14 @@
 			height : 80px;
 			width:80px;
 		}
-		.dropdown:hover .dropdown-menu {
+		/* .dropdown:hover .dropdown-menu {
         	display : block;
-        }
+        } */
         thead {
         	background-color : #70cbce;
+        }
+        table {
+        	margin-top : 20px;
         }
 	</style>
 </head>
@@ -187,12 +264,41 @@
 	<jsp:include page="/layout/toolbarTube.jsp"/>
 	
 	<div class="container">
-		${resultPage.endUnitPage}
 		<div class="page-header text-center">
 			<h3 class="text-info">배송목록</h3>
 			<small class="text-muted">배송하기 전 확인해주세요</small>
 		</div>
-		
+		<div class="row">
+			<form class="form-inline" name="sortForm">
+					<!-- 필터 -->
+					<div class="form-group col-md-offset-1 col-md-1">
+							<select name="sortCondition" class="form-control input-sm">
+								<option value="">필터</option>
+								<optgroup label="상품명정렬">
+									<option value="0" ${!empty search.sortCondition && search.sortCondition == '0' ? "selected" : ""}>ㄱ~ㅎ</option>
+									<option value="1" ${!empty search.sortCondition && search.sortCondition == '1' ? "selected" : ""}>ㅎ~ㄱ</option>
+								</optgroup>
+								<optgroup label="판매날짜정렬">
+									<option value="2" ${!empty search.sortCondition && search.sortCondition == '2' ? "selected" : ""}>최근순</option>
+									<option value="3" ${!empty search.sortCondition && search.sortCondition == '3' ? "selected" : ""}>오래된순</option>
+								</optgroup>
+							</select>
+					  </div>
+				</form>
+				<form class="form-inline" name="detailForm">
+					<div class="form-group col-md-offset-6 col-md-4">
+							<select name="searchCondition" class="form-control input-sm">
+								<option value="1" ${!empty search.searchCondition && search.searchCondition == 1 ? "selected" : ""}>상품명</option>
+							</select>
+							<input type="hidden" id="currentPage" name="currentPage" value="1"/>
+							<input type="text" id="searchKeyword" name="searchKeyword" value="${search.searchKeyword}"  class="form-control input-sm" placeholder="상품명 입력" autocomplete="on">
+							<button class="btn btn-default btn-sm">검색</button>
+					  </div>
+			</form>
+		</div>
+	</div>
+	
+	<div class="container">	
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8 col-md-offset-2">
 			<form>
@@ -217,7 +323,7 @@
 			                		<button type="button" class="btn btn-xs disabled">${purchase.purchaseProd.prodName}</button>
 			                	</span>
 			                </td>
-			                <td rowspan="2">구매자 : ${purchase.buyer.userId} </td>
+			                <td rowspan="2">구매자 : ${purchase.buyer.userId} <br> 구매일 : ${purchase.orderDate} </td>
 			                <td rowspan="2">${purchase.purchaseProd.price}원</td>
 			                <td rowspan="2">
 			                <p id="${purchase.tranNo}">
@@ -243,9 +349,9 @@
 	          </table>
 	          </form>
         	</div>
-	          <div id="scrollProd"></div>
 		</div>
 	</div>
+	<div id="scrollProd"></div>
 	
 <%-- <div style="width:98%; margin-left:10px;">
 

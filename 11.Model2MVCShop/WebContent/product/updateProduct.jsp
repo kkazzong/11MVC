@@ -152,6 +152,9 @@
         	width : 80px;
         	height : 80px;
         }
+        .dropdown:hover .dropdown-menu {
+        	display : block;
+        }
 	</style>
 </head>
 

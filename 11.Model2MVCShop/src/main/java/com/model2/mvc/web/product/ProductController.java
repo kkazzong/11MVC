@@ -229,7 +229,7 @@ public class ProductController {
 	// @RequestMapping("listProduct.do")
 	// @RequestMapping(value="listProduct/{menu}")
 	@RequestMapping(value = "listProduct")
-	public ModelAndView listProduct(/* @PathVariable String menu, */ @ModelAttribute("search") Search search)
+	public ModelAndView listProduct(@RequestParam(required=false) String menu,  @ModelAttribute("search") Search search)
 			throws Exception {
 
 		System.out.println("@ listProduct @");
@@ -248,7 +248,7 @@ public class ProductController {
 		System.out.println(resultPage);
 
 		ModelAndView modelAndView = new ModelAndView();
-		// modelAndView.addObject("menu", menu);
+		 modelAndView.addObject("menu", menu);
 		modelAndView.addObject("list", map.get("productList"));
 		modelAndView.addObject("resultPage", resultPage);
 //		modelAndView.setViewName("/product/listProduct.jsp");

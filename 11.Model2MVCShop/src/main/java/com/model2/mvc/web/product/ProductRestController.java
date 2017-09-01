@@ -269,6 +269,46 @@ public class ProductRestController {
 		return map;
 	}
 	
+	
+	@RequestMapping(value="json/listProduct/{menu}")
+//	public Map listProduct(/*@PathVariable String menu*/) throws Exception {
+	public Map listProduct(@PathVariable String menu, @RequestBody(required=false) Search search) throws Exception {
+		
+		System.out.println(">>[From Client]<<");
+		System.out.println(search);
+		/*
+		Search search = new Search();
+		search.setCurrentPage(1);
+		search.setPageSize(pageSize);
+		*/
+		if(search != null) {
+			System.out.println("json/listProduct POST");
+			if(search.getCurrentPage() == 0) {
+				search.setCurrentPage(1);
+			}
+			search.setPageSize(pageSize);
+		} else {
+			search = new Search();
+			if(search.getCurrentPage() == 0) {
+				search.setCurrentPage(1);
+			}
+			search.setPageSize(pageSize);
+		}
+		Map<String, Object> map = productService.getProductList(search);
+		
+		Page page = new Page(search.getCurrentPage(), (Integer)map.get("totalCount"), pageUnit, pageSize);
+		map.put("resultPage", page);
+		map.put("menu", menu);
+		System.out.println(">>[To Client]<<");
+		System.out.println(map.get("totalCount"));
+		System.out.println(map.get("productList"));
+		System.out.println(map.get("resultPage"));
+		
+		return map;
+	}
+	
+	
+	
 	@RequestMapping(value="json/listProductAuto", method=RequestMethod.POST)
 //	public Map listProduct(/*@PathVariable String menu*/) throws Exception {
 	public List<Product> listProductAuto(@RequestBody(required=false) Search search) throws Exception {

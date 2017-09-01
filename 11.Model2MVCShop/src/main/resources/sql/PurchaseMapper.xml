@@ -128,23 +128,45 @@
 								 	u.user_id = t.buyer_id
 									AND p.prod_no = t.prod_no
 									AND u.user_id = #{userId}
-									<if test="search.searchCondition != null and search.searchCondition != ''">
-										<if test="search.searchCondition == 0 and search.searchKeyword != ''">
-											AND p.prod_no = #{search.searchKeyword}
-										</if>
-										<if test="search.searchCondition == 1 and search.searchKeyword != ''">
-											AND p.prod_name LIKE '%${search.searchKeyword}%'
-										</if>
-										<if test="search.searchCondition == 2 and search.searchKeyword != ''">
-											<if test="search.searchKeywordPrice != null and search.searchKeywordPrice != ''">
-												AND p.price BETWEEN #{search.searchKeword} AND #{search.searchKeywordPrice}
-											</if>
-											<if test="search.searchKeywordPrice == null or search.searchKeywordPrice == ''">
-												AND p.price >= #{search.searchKeyword}
-											</if>
-										</if>
+									<if test="searchCondition != null and searchCondition != ''" >
+										<choose>
+											<when test="searchCondition == 0 and searchKeyword != ''">
+												AND p.prod_no = #{searchKeyword}
+											</when>
+											<when test="searchCondition == 1 and searchKeyword != ''">
+												AND p.prod_name LIKE '%${searchKeyword}%'
+											</when>
+											<!--  가격검색 -->
+											<when test="searchCondition == 2 and searchLowPrice != ''"> 
+												<if test="searchLowPrice != null and searchHighPrice != ''">
+													AND p.price BETWEEN #{searchLowPrice} AND #{searchHighPrice}
+												</if>
+												<if test="searchHighPrice == '' or searchHighPrice == null">
+													AND p.price >= #{searchLowPrice}
+												</if>
+											</when>
+										</choose>
 									</if>
-								</where>) inner_table
+								</where>
+								ORDER BY 
+								<!-- 정렬 -->
+								<if test="sortCondition != null and sortCondition != ''">
+									<if test="sortCondition == 0"><!-- 상품명오름차순 -->
+										p.prod_name
+									</if>
+									<if test="sortCondition == 1"><!-- 상품명내림차순 -->
+										p.prod_name DESC
+									</if>
+									<if test="sortCondition == 2"><!-- 판매날짜오름차순 -->
+										t.order_date DESC
+									</if>
+									<if test="sortCondition == 3"><!-- 판매날짜내림차순 -->
+										t.order_date
+									</if>
+								</if>
+								<if test="sortCondition == null or sortCondition == '' ">
+									t.tran_no
+								</if>) inner_table
 					WHERE ROWNUM &lt;= ${search.currentPage}*${search.pageSize})
 		WHERE row_seq BETWEEN (${search.currentPage}-1)*${search.pageSize}+1 AND ${search.currentPage}*${search.pageSize}
 	</select>
@@ -160,23 +182,45 @@
 								<where>
 								 	u.user_id = t.buyer_id
 									AND p.prod_no = t.prod_no
-									<if test="searchCondition != null and searchCondition != ''">
-										<if test="searchCondition == 0 and searchKeyword != ''">
-											AND p.prod_no = #{searchKeyword}
-										</if>
-										<if test="searchCondition == 1 and searchKeyword != ''">
-											AND p.prod_name LIKE '%${searchKeyword}%'
-										</if>
-										<if test="searchCondition == 2 and searchKeyword != ''">
-											<if test="searchKeywordPrice != null and searchKeywordPrice != ''">
-												AND p.price BETWEEN #{searchKeword} AND #{searchKeywordPrice}
-											</if>
-											<if test="searchKeywordPrice == null or searchKeywordPrice == ''">
-												AND p.price >= #{searchKeyword}
-											</if>
-										</if>
+									<if test="searchCondition != null and searchCondition != ''" >
+										<choose>
+											<when test="searchCondition == 0 and searchKeyword != ''">
+												AND p.prod_no = #{searchKeyword}
+											</when>
+											<when test="searchCondition == 1 and searchKeyword != ''">
+												AND p.prod_name LIKE '%${searchKeyword}%'
+											</when>
+											<!--  가격검색 -->
+											<when test="searchCondition == 2 and searchLowPrice != ''"> 
+												<if test="searchLowPrice != null and searchHighPrice != ''">
+													AND p.price BETWEEN #{searchLowPrice} AND #{searchHighPrice}
+												</if>
+												<if test="searchHighPrice == '' or searchHighPrice == null">
+													AND p.price >= #{searchLowPrice}
+												</if>
+											</when>
+										</choose>
 									</if>
-								</where>) inner_table
+								</where>
+								ORDER BY 
+								<!-- 정렬 -->
+								<if test="sortCondition != null and sortCondition != ''">
+									<if test="sortCondition == 0"><!-- 상품명오름차순 -->
+										p.prod_name
+									</if>
+									<if test="sortCondition == 1"><!-- 상품명내림차순 -->
+										p.prod_name DESC
+									</if>
+									<if test="sortCondition == 2"><!-- 판매날짜오름차순 -->
+										t.order_date DESC
+									</if>
+									<if test="sortCondition == 3"><!-- 판매날짜내림차순 -->
+										t.order_date
+									</if>
+								</if>
+								<if test="sortCondition == null or sortCondition == '' ">
+									t.tran_no
+								</if>) inner_table
 					WHERE ROWNUM &lt;= ${currentPage}*${pageSize})
 		WHERE row_seq BETWEEN (${currentPage}-1)*${pageSize}+1 AND ${currentPage}*${pageSize}
 	</select>
@@ -206,23 +250,45 @@
 									<if test="userId != null and userId != ''">
 										AND u.user_id = #{userId}
 									</if>
-									<if test="search.searchCondition != null and search.searchCondition != ''">
-										<if test="search.searchCondition == 0 and search.searchKeyword != ''">
-											AND p.prod_no = #{search.searchKeyword}
-										</if>
-										<if test="search.searchCondition == 1 and search.searchKeyword != ''">
-											AND p.prod_name LIKE '%${search.searchKeyword}%'
-										</if>
-										<if test="search.searchCondition == 2 and search.searchKeyword != ''">
-											<if test="search.searchKeywordPrice != null and search.searchKeywordPrice != ''">
-												AND p.price BETWEEN #{search.searchKeword} AND #{search.searchKeywordPrice}
-											</if>
-											<if test="search.searchKeywordPrice == null or search.searchKeywordPrice == ''">
-												AND p.price >= #{search.searchKeyword}
-											</if>
-										</if>
+									<if test="search.searchCondition != null and search.searchCondition != ''" >
+										<choose>
+											<when test="search.searchCondition == 0 and search.searchKeyword != ''">
+												AND p.prod_no = #{search.searchKeyword}
+											</when>
+											<when test="search.searchCondition == 1 and search.searchKeyword != ''">
+												AND p.prod_name LIKE '%${search.searchKeyword}%'
+											</when>
+											<!--  가격검색 -->
+											<when test="search.searchCondition == 2 and search.searchLowPrice != ''"> 
+												<if test="search.searchLowPrice != null and search.searchHighPrice != ''">
+													AND p.price BETWEEN #{search.searchLowPrice} AND #{search.searchHighPrice}
+												</if>
+												<if test="search.searchHighPrice == '' or search.searchHighPrice == null">
+													AND p.price >= #{search.searchLowPrice}
+												</if>
+											</when>
+										</choose>
 									</if>
-								</where>) countTable
+								</where>
+								ORDER BY 
+								<!-- 정렬 -->
+								<if test="sortCondition != null and sortCondition != ''">
+									<if test="sortCondition == 0"><!-- 상품명오름차순 -->
+										p.prod_name
+									</if>
+									<if test="sortCondition == 1"><!-- 상품명내림차순 -->
+										p.prod_name DESC
+									</if>
+									<if test="sortCondition == 2"><!-- 판매날짜오름차순 -->
+										t.order_date DESC 
+									</if>
+									<if test="sortCondition == 3"><!-- 판매날짜내림차순 -->
+										t.order_date
+									</if>
+								</if>
+								<if test="sortCondition == null or sortCondition == '' ">
+									t.tran_no
+								</if>) countTable
 	</select>
 	
 	

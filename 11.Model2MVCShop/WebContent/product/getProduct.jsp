@@ -53,6 +53,12 @@
         body {
             padding-top : 70px;
         }
+      /*   img {
+        	margin-top : 30px;
+        } */
+        .dropdown:hover .dropdown-menu {
+        	display : block;
+        }
    	</style>
 
 <script type="text/javascript">
@@ -75,22 +81,22 @@
 		</div>
 	
 		<div class="row">
-	  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>상품명</strong></div>
+	  		<div class="col-md-offset-4 col-xs-4 col-md-2"><strong>상품명</strong></div>
 			<div class="col-xs-8 col-md-4">${product.prodName}</div>
 		</div>
 		
 		<div class="row">
-	  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>상세정보</strong></div>
+	  		<div class="col-md-offset-4 col-xs-4 col-md-2"><strong>상세정보</strong></div>
 			<div class="col-xs-8 col-md-4">${product.prodDetail}</div>
 		</div>
 		
 		<div class="row">
-	  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>제조일자</strong></div>
+	  		<div class="col-md-offset-4 col-xs-4 col-md-2"><strong>제조일자</strong></div>
 			<div class="col-xs-8 col-md-4">${product.manuDate}</div>
 		</div>
 		
 		<div class="row">
-	  		<div class="col-md-offset-2 col-xs-4 col-md-4"><strong>가격</strong></div>
+	  		<div class="col-md-offset-4 col-xs-4 col-md-2"><strong>가격</strong></div>
 			<div class="col-xs-8 col-md-4">${product.price}</div>
 		</div>
 		
@@ -107,9 +113,6 @@
 		</div> --%>
 		
 		<div class="row">
-			<div class="col-md-offset-2 col-md-4"><strong>상품이미지</strong></div>
-		</div>
-		<div class="row">
 			<div class="col-md-offset-4 col-xs-4 col-md-4">
 			<c:forEach var="fileName" items="${product.fileName}">
 			  <div class="thumbnail"><img src="../images/uploadFiles/${fileName}"></div>
@@ -118,10 +121,12 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-xs-8 col-md-4"><button class="btn btn-primary btn-xs" >상품평보기</button></div>
+			<div class="col-sm-offset-4  col-sm-2"><button class="btn btn-primary btn-default" >상품평보기</button></div>
+			<div>
 			<c:forEach var="review" items="${reviewList}">
-				${review.reviewUser.userId} -- ${review.reviews}<br>
+				<mark>${review.reviewUser.userId}</mark> : ${review.reviews}<br>
 			</c:forEach>
+			</div>
 		</div>
 		
 		<div class="row">

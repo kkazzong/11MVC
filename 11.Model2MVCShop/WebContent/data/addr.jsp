@@ -26,7 +26,7 @@
 				  <input type="hidden" name="resultType" value="json"/> 			
 				  <input type="hidden" name="confmKey" value="U01TX0FVVEgyMDE3MDgyNjE0MDUzNzI0MzI0"/>	
 				  <label for="keyword" class="col-sm-offset-1 col-sm-3 control-label">배송지</label>
-				  <div class="col-sm-4">
+				  <div class="col-sm-5">
 				  <input class="form-control input-sm" type="text" id="keyword" name="keyword" value="" placeholder="주소를 입력하세요"/>
 				  <input type="button" class="btn btn-default btn-xs" onclick="getAddr(1)" value="주소검색"/>
 				  <span id="helpBlock" class="help-block">
@@ -38,14 +38,14 @@
 			
 			<div class="form-group">
 					<label for="postNum" class="sr-only col-sm-offset-1 col-sm-3 control-label">배송지</label>
-					<div class="col-sm-4">
+					<div class="col-sm-5">
 					<input type="text" id="postNum" name="postNum" class="form-control input-sm" width="100px" placeholder="우편번호" readonly/>
 					</div>
 			</div> 
 			
 			<div class="form-group">
 				<label for="doroAddr" class="sr-only col-sm-offset-1 col-sm-3 control-label">배송지</label>
-				<div class="col-sm-4">
+				<div class="col-sm-5">
 					<input type="text" id="doroAddr" name="receiverAddr" class="form-control input-sm" placeholder="배송지 주소" readonly/>
 				</div>
 			</div> 
@@ -66,7 +66,7 @@ function getAddr(page){
 		,dataType:"jsonp"											/* // 크로스도메인으로 인한 jsonp 이용, 검색결과형식 JSON  */
 		,crossDomain:true
 		,success:function(jsonStr){		
-			alert(JSON.stringify(jsonStr));/* // jsonStr : 주소 검색 결과 JSON 데이터			 */
+			//alert(JSON.stringify(jsonStr));/* // jsonStr : 주소 검색 결과 JSON 데이터			 */
 			$("#list").html("");									/* // 결과 출력 영역 초기화 */
 			var errCode = jsonStr.results.common.errorCode;
 			var errDesc = jsonStr.results.common.errorMessage;
@@ -74,7 +74,7 @@ function getAddr(page){
 				alert(errCode+"="+errDesc);
 			}else{
 				if(jsonStr!= null){
-					alert(JSON.stringify(jsonStr));
+					console.log(JSON.stringify(jsonStr));
 					makeListJsonTable(jsonStr);
 					makeListAddr(jsonStr)/* // 결과 JSON 데이터 파싱 및 출력 */
 				}
