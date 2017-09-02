@@ -76,23 +76,11 @@ public class PurchaseController {
 		System.out.println("@ addPurchase[POST] @");
 		
 		
-		
-		int count = purchase.getPurchaseProd().getProdStock() - purchase.getStock().getStocks();
-		purchase.getPurchaseProd().setProdStock(count);
-		productService.updateProduct(purchase.getPurchaseProd());
-		
-		
-		Stock stock = new Stock();
-		stock.setProduct(purchase.getPurchaseProd());
-		stock.setStocks(purchase.getStock().getStocks());
-		
 		purchase = purchaseService.addPurchase(purchase);
-		stock.setPurchase(purchase);
-		stockService.addStock(stock);
 		System.out.println("=========±¸¸Å"+purchase);
 		
-		Product product = productService.getProduct(purchase.getPurchaseProd().getProdNo());
-		purchase.setPurchaseProd(product);
+//		Product product = productService.getProduct(purchase.getPurchaseProd().getProdNo());
+//		purchase.setPurchaseProd(product);
 		
 		System.out.println(purchase);
 		model.addAttribute(purchase);

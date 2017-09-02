@@ -28,22 +28,19 @@ public class StockDAOImpl implements StockDAO {
 
 	@Override
 	public Stock getStock(int stockNo) throws Exception {
-		return null;
+		return sqlSession.selectOne("StockMapper.getStock", stockNo);
 	}
 
 	@Override
 	public void updateStock(Stock stock) throws Exception {
-
+		sqlSession.update("StockMapper.updateStock", stock);
 	}
 
 	@Override
-	public List<Stock> getStockList(Search search) throws Exception {
-		return null;
+	public int deleteStock(int prodNo) throws Exception {
+		return sqlSession.delete("StockMapper.deleteStock", prodNo);
 	}
 
-	@Override
-	public int getCount(Search search) throws Exception {
-		return 0;
-	}
+	
 
 }

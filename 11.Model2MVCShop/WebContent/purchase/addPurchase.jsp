@@ -111,7 +111,7 @@
 				</tr>
 				<tr>
 					<td>구매수량</td>
-					<td>${purchase.stock.stocks}</td>
+					<td>${purchase.saleCount}</td>
 				</tr>
 				<tr>
 					<td>결제수단</td>

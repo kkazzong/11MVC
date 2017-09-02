@@ -510,7 +510,7 @@
 			                	</c:if>
 			                	</span>
 			                </td>
-			                <td rowspan="2">${purchase.purchaseProd.price}원</td>
+			                <td rowspan="2">${purchase.purchaseProd.price}원 수량:${purchase.saleCount}</td>
 			                <td rowspan="2">
 			                	
 								<c:if test="${purchase.tranCode == 2 }">

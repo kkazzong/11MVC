@@ -1,5 +1,6 @@
 package com.model2.mvc.service.purchase.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +32,18 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 	@Override
 	public Purchase getPurchase(int tranNo) throws Exception {
-		return sqlSession.selectOne("PurchaseMapper.getPurchase", tranNo);
+		 List  list = sqlSession.selectList("PurchaseMapper.getPurchase", tranNo);
+		 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		 System.out.println(list);
+		 return null;
 	}
 
 	@Override
-	public Purchase getPurchaseByProdNo(int prodNo) throws Exception {
-		return sqlSession.selectOne("PurchaseMapper.getPurchaseByProdNo", prodNo);
+	public List getPurchaseByProdNo(int prodNo) throws Exception {
+		 List  list =  sqlSession.selectList("PurchaseMapper.getPurchaseByProdNo", prodNo);
+		 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		 System.out.println(list);
+		 return list;
 	}
 
 //	@Override

@@ -59,9 +59,9 @@
 			<if test="manuDate != null">
 				manufacture_day = #{manuDate:DATE},
 			</if>
-			<if test="fileName != null">
+			<!-- <if test="fileName != null">
 				image_file = #{fileName:VARCHAR},
-			</if>
+			</if> -->
 			prod_stock = #{prodStock},
 			reg_date = SYSDATE
 		</set>
@@ -98,10 +98,11 @@
 									</if>
 									<!-- 판매상품 -->
 									<if test="searchSoldProd != null and searchSoldProd == 1">
-										AND t.tran_code IS NOT NULL
+										<!-- AND t.tran_code IS NOT NULL -->
+										AND t.tran_code = 4
 									</if>
 									<if test="searchSoldProd == null or searchSoldProd == ''">
-										AND t.tran_code IS NULL
+										AND t.tran_code NOT IN (4)
 									</if>
 								</where>
 								ORDER BY 

@@ -20,8 +20,9 @@
 		<result property="paymentOption" column="payment_option" jdbcType="VARCHAR"/>
 		<result property="receiverDate" column="receiver_date" jdbcType="DATE"/>
 		<result property="orderDate" column="order_date" jdbcType="DATE"/>
+		<result property="saleCount" column="sale_count" jdbcType="NUMERIC"/>
 		<!-- <result property="review" column/> -->
-		<association property="purchaseProd" javaType="com.model2.mvc.service.domain.Product">
+		<!-- <association property="purchaseProd" javaType="com.model2.mvc.service.domain.Product">
 			<id property="prodNo" column="prod_no" jdbcType="NUMERIC"/>
 			<result property="prodName" column="prod_name" jdbcType="VARCHAR"/>
 			<result property="prodDetail" column="prod_detail" jdbcType="VARCHAR"/>
@@ -30,21 +31,26 @@
 			<result property="manuDate" column="manufacture_day" jdbcType="VARCHAR"/>
 			<result property="fileName" column="image_file" jdbcType="VARCHAR" javaType="java.util.List"/>
 			<result property="prodStock" column="prod_stock" jdbcType="NUMERIC"/>
-		</association>
+		</association> -->
 		<association property="buyer" javaType="com.model2.mvc.service.domain.User">
 			<id property="userId" column="user_id" jdbcType="VARCHAR"/>
 			<result property="userName" column="user_name" jdbcType="VARCHAR"/>
 			<result property="phone" column="cell_phone" jdbcType="VARCHAR"/>
 		</association>
-		<association property="stock" javaType="com.model2.mvc.service.domain.Stock">
-			<id property="stockNo" column="stock_no" jdbcType="NUMERIC"/>
-			<result property="stocks" column="stocks" jdbcType="NUMERIC"/>
-		</association>
+		<collection property="purchaseProd" ofType="com.model2.mvc.service.domain.Product" javaType="java.util.List" select="getProduct"/>
 	</resultMap>
+	
+	<select id="getProduct" parameterType="int" resultType="com.model2.mvc.service.domain.Product">
+		SELECT 
+		t.tran_code, p.prod_no, p.prod_name, p.prod_detail, p.price, p.manufacture_day, p.image_file, p.prod_stock, p.reg_date
+		FROM product p, transaction t
+		WHERE p.prod_no = t.prod_no(+)
+			AND p.prod_no = #{value}
+	</select>
 	
 	<insert id="addPurchase" parameterType="com.model2.mvc.service.domain.Purchase" useGeneratedKeys="true" keyProperty="tranNo" keyColumn="tran_no">
 		INSERT
-		INTO transaction (tran_no, prod_no, buyer_id, payment_option, receiver_name, receiver_phone, receiver_addr, receiver_request, tran_code, order_date, receiver_date)
+		INTO transaction (tran_no, prod_no, buyer_id, payment_option, receiver_name, receiver_phone, receiver_addr, receiver_request, tran_code, order_date, receiver_date, sale_count)
 		VALUES (seq_transaction_tran_no.nextVal,
 					   #{purchaseProd.prodNo:NUMERIC},
 					   #{buyer.userId:VARCHAR},
@@ -53,19 +59,44 @@
 					   #{receiverPhone:VARCHAR},
 					   #{receiverAddr:VARCHAR},
 					   #{receiverRequest:VARCHAR},
-					   '1',
+					   #{tranCode:VARCHAR},
 					   SYSDATE,
-					   #{receiverDate:DATE})
+					   #{receiverDate:DATE},
+					   #{saleCount})
 	</insert>
 	
 	<select id="getPurchase" parameterType="int" resultMap="selectPurchaseMap">
 		SELECT
-		p.prod_no, p.prod_name, p.prod_detail, p.image_file, p.manufacture_day, p.price,
-		t.receiver_name, t.tran_no, t.tran_code, t.payment_option, 
-		t.receiver_phone, t.receiver_addr, t.receiver_request, t.buyer_id AS user_id
-		,TO_CHAR(t.receiver_date,'yyyymmdd') receiver_date
-		FROM product p, transaction t
-		WHERE p.prod_no = t.prod_no AND t.tran_no = #{value}
+		p.prod_no,
+		p.prod_name,
+		p.prod_stock,
+		t.tran_no,
+		u.user_id,
+		t.receiver_name,
+		t.tran_code,
+		t.payment_option, 
+		t.receiver_phone,
+		t.receiver_addr,
+		t.receiver_request,
+		t.sale_count,
+		TO_CHAR(t.receiver_date,'yy-mm-dd') receiver_date
+		FROM product p, transaction t, users u
+		WHERE p.prod_no = t.prod_no 
+			AND u.user_id = t.buyer_id
+			AND t.tran_no = #{value}
+		GROUP BY p.prod_no,
+		p.prod_name,
+		p.prod_stock,
+		t.tran_no,
+		u.user_id,
+		t.receiver_name,
+		t.tran_code,
+		t.payment_option, 
+		t.receiver_phone,
+		t.receiver_addr,
+		t.receiver_request,
+		t.sale_count,
+		TO_CHAR(t.receiver_date,'yy-mm-dd') receiver_date
 	</select>
 	
 	<select id="getPurchaseByProdNo" parameterType="int" resultMap="selectPurchaseMap">
@@ -74,20 +105,32 @@
 		p.prod_name,
 		p.prod_stock,
 		t.tran_no,
-		t.buyer_id AS user_id,
+		u.user_id,
 		t.receiver_name,
 		t.tran_code,
 		t.payment_option, 
 		t.receiver_phone,
 		t.receiver_addr,
 		t.receiver_request,
-		TO_CHAR(t.receiver_date,'yy-mm-dd') receiver_date,
-		s.stock_no, s.stocks
-		FROM product p, transaction t, stock s
+		t.sale_count,
+		TO_CHAR(t.receiver_date,'yy-mm-dd') receiver_date
+		FROM product p, transaction t, users u
 		WHERE p.prod_no = t.prod_no 
-			AND s.tran_no = t.tran_no
-			AND s.prod_no = p.prod_no
+			AND u.user_id = t.buyer_id
 			AND p.prod_no = #{value}
+		GROUP BY p.prod_no,
+		p.prod_name,
+		p.prod_stock,
+		t.tran_no,
+		u.user_id,
+		t.receiver_name,
+		t.tran_code,
+		t.payment_option, 
+		t.receiver_phone,
+		t.receiver_addr,
+		t.receiver_request,
+		t.sale_count,
+		t.receiver_date
 	</select>
 	
 	<update id="updatePurchase" parameterType="com.model2.mvc.service.domain.Purchase">
@@ -130,7 +173,7 @@
 		FROM (SELECT inner_table.*, ROWNUM AS row_seq
 					FROM (SELECT 
 								u.user_id, u.user_name, u.cell_phone,
-								p.prod_no, p.prod_name, p.price, p.image_file, p.prod_detail, p.manufacture_day,
+								p.prod_no, p.prod_name, p.price, p.image_file, p.prod_detail, p.manufacture_day, t.sale_count,
 								t.tran_no, t.order_date, t.tran_code, t.receiver_addr, t.receiver_name
 								FROM users u, product p, transaction t
 								<where>
@@ -163,7 +206,7 @@
 		FROM (SELECT inner_table.*, ROWNUM AS row_seq
 					FROM (SELECT 
 								u.user_id, u.user_name, u.cell_phone,
-								p.prod_no, p.prod_name, p.price, p.reg_date, p.image_file, p.prod_detail, p.manufacture_day,
+								p.prod_no, p.prod_name, p.price, p.reg_date, p.image_file, p.prod_detail, p.manufacture_day, t.sale_count,
 								t.tran_no, t.order_date, t.tran_code
 								FROM users u, product p, transaction t
 								<where>

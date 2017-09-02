@@ -13,9 +13,5 @@ public interface StockDAO {
 	
 	public void updateStock(Stock stock) throws Exception;
 	
-	public List<Stock> getStockList(Search search) throws Exception;
-	
-	public int getCount(Search search) throws Exception;
-	
-	//public int deleteProduct(int prodNo) throws Exception;
+	public int deleteStock(int prodNo) throws Exception;
 }

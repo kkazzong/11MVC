@@ -1,6 +1,7 @@
 package com.model2.mvc.service.purchase.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.model2.mvc.common.Search;
+import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.Purchase;
+import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.purchase.PurchaseDAO;
 import com.model2.mvc.service.purchase.PurchaseService;
+import com.model2.mvc.service.stock.StockService;
 
 @Service("purchaseServiceImpl")
 public class PurchaseServiceImpl implements PurchaseService {
@@ -19,14 +23,35 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Qualifier("purchaseDAOImpl")
 	PurchaseDAO purchaseDAO;
 	
+	@Autowired
+	@Qualifier("stockServiceImpl")
+	StockService stockService;
+	
+	@Autowired
+	@Qualifier("productServiceImpl")
+	ProductService productService;
+	
 	public PurchaseServiceImpl() {
 		System.out.println("::"+getClass()+"default constructor");
 	}
 
 	@Override
 	public Purchase addPurchase(Purchase purchase) throws Exception {
+		
+		/*Product product = purchase.getPurchaseProd();
+		int sale = product.getProdStock() - purchase.getSaleCount();
+		product.setProdStock(sale);
+		productService.updateProduct(product);
+		
+		if(sale == 0) {
+			purchase.setTranCode("4");
+		} else {
+			purchase.setTranCode("1");
+		}
+		*/
 		purchaseDAO.addPurchase(purchase);
-		return purchaseDAO.getPurchaseByProdNo(purchase.getPurchaseProd().getProdNo());
+//		return purchaseDAO.getPurchaseByProdNo(purchase.getPurchaseProd().getProdNo());
+		return null;
 	}
 
 	@Override
@@ -41,7 +66,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 	@Override
 	public Purchase getPurchaseByProdNo(int prodNo) throws Exception {
-		return purchaseDAO.getPurchaseByProdNo(prodNo);
+		List<Purchase> list =  purchaseDAO.getPurchaseByProdNo(prodNo);
+		return null;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ public class Stock {
 	private int stockNo;
 	private int stocks;
 	private Product product;
-	private Purchase purchase;
 	
 	public Stock() {
 		// TODO Auto-generated constructor stub
@@ -23,10 +22,6 @@ public class Stock {
 		return product;
 	}
 
-	public Purchase getPurchase() {
-		return purchase;
-	}
-
 	public void setStockNo(int stockNo) {
 		this.stockNo = stockNo;
 	}
@@ -39,15 +34,11 @@ public class Stock {
 		this.product = product;
 	}
 
-	public void setPurchase(Purchase purchase) {
-		this.purchase = purchase;
-	}
-
 	@Override
 	public String toString() {
-		return "Stock [stockNo=" + stockNo + ", stocks=" + stocks + ", product=" + product + ", purchase=" + purchase
-				+ "]";
+		return "Stock [stockNo=" + stockNo + ", stocks=" + stocks + ", product=" + product + "]";
 	}
+
 	
 	
 

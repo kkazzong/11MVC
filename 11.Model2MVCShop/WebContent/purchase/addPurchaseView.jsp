@@ -237,7 +237,7 @@
 			<div class="form-group">
 			<label for="receiverDate" class="col-sm-offset-1 col-sm-3 control-label">구매수량</label>
 			<div class="col-sm-4">
-			    <select name="stock.stocks" class="form-control">
+			    <select name="saleCount" class="form-control">
 			    	<c:forEach begin="1" end="${product.prodStock}" var="i"  step="1">
 				    	<option value="${i}">${i}</option>
 			    	</c:forEach>

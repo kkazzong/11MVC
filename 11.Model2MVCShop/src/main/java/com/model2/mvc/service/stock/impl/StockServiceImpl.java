@@ -28,26 +28,19 @@ public class StockServiceImpl implements StockService {
 
 	@Override
 	public Stock getStock(int stockNo) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void updateStock(Stock stock) throws Exception {
-		// TODO Auto-generated method stub
-
+		stockDAO.updateStock(stock);
 	}
 
 	@Override
-	public List<Stock> getStockList(Search search) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public int deleteStock(int prodNo) throws Exception {
+		return stockDAO.deleteStock(prodNo);
 	}
 
-	@Override
-	public int getCount(Search search) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
 }

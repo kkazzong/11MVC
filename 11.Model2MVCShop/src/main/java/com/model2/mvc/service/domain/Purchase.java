@@ -1,6 +1,7 @@
 package com.model2.mvc.service.domain;
 
 import java.sql.Date;
+import java.util.List;
 
 
 public class Purchase {
@@ -11,12 +12,13 @@ public class Purchase {
 	private String receiverRequest;
 	private Date orderDate;
 	private String paymentOption;
-	private Product purchaseProd;
+	/*private Product purchaseProd;*/
+	private List<Product> purchaseProd;
 	private String receiverName;
 	private String receiverPhone;
 	private String tranCode;
 	private int tranNo;
-	private Stock stock;
+	private int saleCount;
 	
 	public Purchase(){
 	}
@@ -57,15 +59,24 @@ public class Purchase {
 	public void setPaymentOption(String paymentOption) {
 		this.paymentOption = paymentOption;
 	}
-	public Product getPurchaseProd() {
+	/*public Product getPurchaseProd() {
 		return purchaseProd;
 	}
 	public void setPurchaseProd(Product purchaseProd) {
 		this.purchaseProd = purchaseProd;
-	}
+	}*/
+	
 	public String getReceiverName() {
 		return receiverName;
 	}
+	public List<Product> getPurchaseProd() {
+		return purchaseProd;
+	}
+
+	public void setPurchaseProd(List<Product> purchaseProd) {
+		this.purchaseProd = purchaseProd;
+	}
+
 	public void setReceiverName(String receiverName) {
 		this.receiverName = receiverName;
 	}
@@ -87,20 +98,19 @@ public class Purchase {
 	public void setTranNo(int tranNo) {
 		this.tranNo = tranNo;
 	}
-	public Stock getStock() {
-		return stock;
+
+	public int getSaleCount() {
+		return saleCount;
 	}
-	public void setStock(Stock stock) {
-		this.stock = stock;
+
+	public void setSaleCount(int saleCount) {
+		this.saleCount = saleCount;
 	}
 
 	@Override
 	public String toString() {
-		return "Purchase [buyer=" + buyer + ", receiverAddr=" + receiverAddr + ", receiverDate=" + receiverDate
-				+ ", receiverRequest=" + receiverRequest + ", orderDate=" + orderDate + ", paymentOption="
-				+ paymentOption + ", purchaseProd=" + purchaseProd + ", receiverName=" + receiverName
-				+ ", receiverPhone=" + receiverPhone + ", tranCode=" + tranCode + ", tranNo=" + tranNo + ", stock="
-				+ stock + "]";
+		return "Purchase [buyer=" + buyer + ", purchaseProd=" + purchaseProd + ", receiverName=" + receiverName
+				+ ", tranCode=" + tranCode + ", tranNo=" + tranNo + ", saleCount=" + saleCount + "]";
 	}
 	
 }

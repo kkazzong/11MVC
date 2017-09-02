@@ -116,7 +116,7 @@
 			</c:forEach>
 			</div>
 		</div>
-		
+		재고 ${product.prodStock}
 		<div class="row">
 			<div class="col-xs-8 col-md-4"><button class="btn btn-primary btn-xs" >상품평보기</button></div>
 			<c:forEach var="review" items="${reviewList}">

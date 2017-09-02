@@ -887,10 +887,10 @@
 							<a id="${product.prodNo}" href="#"><img alt="http://placehold.it/200x150" src="../images/uploadFiles/${product.fileName[0]}"></a>
 							<div class="caption text-center">
 									<p><small>${product.prodName}</small></p>
-									<p class="text-primary">${product.price}원</p>
+									<p class="text-primary">${product.price}원 재고 : ${product.prodStock}</p>
 									<p>
 										<c:if test="${param.menu == 'search'}">
-											 <c:if test="${empty product.proTranCode}">
+											 <c:if test="${product.proTranCode != 4}">
 												  <button class="btn btn-primary btn-sm" value="${product.prodNo}">상품보기</button>
 												  <button class="btn btn-default btn-sm" value="${product.prodNo}">바로구매</button>
 											  </c:if>
