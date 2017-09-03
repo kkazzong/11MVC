@@ -36,59 +36,40 @@
 		} */
 	
 		function fncUpdatePurchaseView(tranNo) {
-			console.log("tranNo====>"+tranNo);
-			console.log($("form[name='updateForm']").html());
-			//form modal dialog
-			var dialog = $("form[name='updateForm']").dialog({
-				autoOpen : false,
-				height : 500,
-				width : 350,
-				modal : true,
-				buttons : {
-					"수정하기" : function(){
-						/* self.location="/purchase/updatePurchase" */
-						$("form[name='updateForm']").attr("method","post").attr("action","/purchase/updatePurchase").submit();
-					},
-					cancel : function(){
-						dialog.dialog("close");
-					}
-				},
-				close : function(){
-					//$("form[name='updateForm']").reset();
-					dialog.dialog("close");
-				},
-				open : function(){
-					console.log("opne!")
-					
-					$.ajax({
-						
-						url : "/purchase/json/getPurchase/"+tranNo,
-						method : "get",
-						dataType : "json",
-						success : function(JSONData, status) {
-							console.log(status);
-							console.log(JSON.stringify(JSONData));
-							
-							var htmlStr = "<input type='hidden' name='tranNo' value='"+JSONData.tranNo+"'/>";
-							$("form[name='updateForm']").append(htmlStr);
-							$("#purchaseProd").html("<b>"+JSONData.purchaseProd.prodName)
-							$("b").css("color","red")
-							$("input:text[name='receiverName']").val(JSONData.receiverName);
-							$("input:text[name='receiverPhone']").val(JSONData.receiverPhone);
-							$("input:text[name='receiverAddr']").val(JSONData.receiverAddr);
-							$("input:text[name='receiverRequest']").val(JSONData.receiverRequest);
-							$("input:text[name='receiverDate']").val(JSONData.receiverDate);
-							$("input:text[name='receiverDate']").datepicker().bind('change',function(){
-								$(this).datepicker("option","dateFormat","yy-mm-dd").val();
-							})
-							
-						}
-						
+		
+			$.ajax({
+				
+				url : "/purchase/json/getPurchase/"+tranNo,
+				method : "get",
+				dataType : "json",
+				success : function(JSONData, status) {
+					console.log(status);
+					console.log(JSON.stringify(JSONData));
+					$("input:hidden[name='tranNo']").val(JSONData.tranNo);
+					$("input:text[name='receiverName']").val(JSONData.receiverName);
+					$("input:text[name='receiverPhone']").val(JSONData.receiverPhone);
+					$("input:text[name='receiverAddr']").val(JSONData.receiverAddr);
+					$("input:text[name='receiverRequest']").val(JSONData.receiverRequest);
+					$("input:text[name='receiverDate']").val(JSONData.receiverDate);
+					$("input:text[name='receiverDate']").datepicker().bind('change',function(){
+						$(this).datepicker("option","dateFormat","yy-mm-dd").val();
 					})
+					console.log($($("select[name='paymentOption'] option")[1]).html());
+					if(JSONData.paymentOption == 1) {
+						$($("select[name='paymentOption'] option")[0]).attr("selected","selected");
+					} else {
+						$($("select[name='paymentOption'] option")[1]).attr("selected","selected");
+					}
+					$('#myModal').modal();
 					
 				}
-			}); 
-			//dialog.dialog("open");
+				
+			})
+					$(".btn:contains('수정하기')").bind("click",function(e){
+						e.preventDefault();
+						console.log($("input:text[name='receiverDate']").val());
+						$("form[name='detailForm']").attr("method","post").attr("action","/purchase/updatePurchase").submit();
+					})
 		}
 		
 		$(function(){
@@ -158,7 +139,7 @@
 					dataType : "json",
 					success : function(JSONData, status) {
 						console.log(status);
-						alert(JSON.stringify(JSONData));
+						console.log(JSON.stringify(JSONData));
 						$("input:hidden[name='tranNo']").val(JSONData.tranNo);
 						$("input:text[name='receiverName']").val(JSONData.receiverName);
 						$("input:text[name='receiverPhone']").val(JSONData.receiverPhone);
@@ -168,7 +149,13 @@
 						$("input:text[name='receiverDate']").datepicker().bind('change',function(){
 							$(this).datepicker("option","dateFormat","yy-mm-dd").val();
 						})
-						$('#myModal').modal();
+						console.log($($("select[name='paymentOption'] option")[1]).html());
+						if(JSONData.paymentOption == 1) {
+							$($("select[name='paymentOption'] option")[0]).attr("selected","selected");
+						} else {
+							$($("select[name='paymentOption'] option")[1]).attr("selected","selected");
+						}
+						//$('#myModal').modal();
 						
 					}
 					
@@ -195,7 +182,7 @@
 			console.log($("p").html)
 			
 			//물건도착
-			$("p").css("color","#70cbce");
+			//$("p").css("color","#70cbce");
 			
 			
 			$("p").bind('click', function(){
@@ -206,9 +193,9 @@
 				
 				if($(this).text().trim() != 'review') {
 					
-					var result = confirm("물건이 도착했습니까?");
+					//var result = confirm("물건이 도착했습니까?");
 					
-					if(result) {
+					//if(result) {
 						//self.location="/purchase/updateTranCode?tranNo="+$("input:hidden[name='tNo']",this).val()+"&tranCode=3";
 						
 						$.ajax({
@@ -232,9 +219,9 @@
 							
 						})
 						
-					} else {
+					/* } else {
 						return;
-					}
+					} */
 				}
 				
 				
@@ -249,7 +236,7 @@
 		})
 		
 		function reviewProduct(elem) {
-			alert("리뷰");
+			console.log("리뷰");
 			self.location = "/review/addReview?prodNo="+$(elem).val()+"&userId=user13";
 		}
 		
@@ -262,9 +249,9 @@
 			
 			
 			if($(elem).text().trim() != 'review') {
-	 			var result = confirm("물건이 도착했습니까?");
+	 			//var result = confirm("물건이 도착했습니까?");
 				
-				if(result) {
+				//if(result) {
 					
 					$.ajax({
 						
@@ -287,11 +274,13 @@
 						
 					})
 					
-				} else {
+				/* } else {
 					return;
-				}
+				} */
 			}
 		}
+		
+		var ajaxCount = 0;
 		
 		//무한스크롤
 		function getPurchaseList(count) {
@@ -311,7 +300,7 @@
 				success : function(JSONData, status){
 					console.log(status);
 					console.log(JSON.stringify(JSONData));
-
+					ajaxCount++;
 					var htmlStr = "<div class='col-md-offset-2 col-md-8 col-md-offset-2'><form><table class='table table-bordered table-condensed text-center'>"
 					htmlStr += " <thead><tr><td>No / 주문날짜</td><td>상품명 / 구매정보</td><td>총 금액</td><td>정보</td></tr></thead><tr class='ct_list_pop'>";
 					for(var i = 0; i < JSONData.length; i++) {
@@ -328,7 +317,7 @@
 						var fileName = JSONData[i].purchaseProd.fileName[0];
 						console.log(fileName);
 						
-						htmlStr += "<td>"+(9 * (count - 1) + (i))+"</td>";
+						htmlStr += "<td>"+(i+1)+"</td>";
 						htmlStr += "<td rowspan='2'><img class='img-thumbnail' src='../images/uploadFiles/"+fileName+"'>";
 	                	htmlStr += "<span>";
 											
@@ -357,7 +346,8 @@
 						$("#scrollProd").append(htmlStr);
 						
 						$("span > button").bind('click', function(){
-							getPurchase($(this));
+							fncUpdatePurchaseView($(this).val());
+							$('#myModal').modal();
 						});
 						
 						$("p").bind('click', function(){
@@ -375,25 +365,24 @@
 		
 		var count = 1;
 		
-		//무한스크롤
-		$(window).bind("scroll",function(event){
-				/* console.log("doc > "+$(document).height());
-				console.log("win > "+$(window).height());
-				console.log("cur > "+$(window).scrollTop());  */
+		//무한스크롤...................................................
+		 $(window).bind("scroll",function(event){
 				
 				if($(window).scrollTop() >= $(document).height() - $(window).height() - 1){
 					
-					if(count < ${resultPage.endUnitPage}) {
-						event.preventDefault();
+					event.preventDefault();
+					//event.stopPropagation();
+						//alert(count);
+					if(count < ${resultPage.maxPage}) {
 						console.log("끝");
 						count++;
-						console.log($(this).html());
-						getPurchaseList(count);		
-						event.prevetDefault();
-						
-					} else if(count >= ${resultPage.endUnitPage}) {
 						event.preventDefault();
-						console.log("마지막입니다");
+						getPurchaseList(count);					
+						event.preventDefault();
+						//event.stopPropagation();
+					} else if(count >= ${resultPage.maxPage}) {
+						event.preventDefault();
+						console.log("마지막페이지");
 					}
 				}
 		});
@@ -411,7 +400,7 @@
 		$("input:text[name='searchKeyword']").autocomplete({
 				source: function( request, response ) {
 			        $.ajax( {
-			          url: "/product/json/listProductAuto",
+			          url: "/purchase/json/listPurchase/${user.userId}",
 			          method : "post",
 			          headers : {
 							"Accept" : "application/json",
@@ -431,8 +420,8 @@
 			            	console.log(value);
 			            	console.log("key(autocomplete : value)====>"+key);
 			        		return {
-			        			label : value.prodName,
-			        			value : value.prodName //원래는 key,, 선택시를 위해
+			        			label : value.purchaseProd.prodName,
+			        			value : value.purchaseProd.prodName //원래는 key,, 선택시를 위해
 			        		}
 			        	}));
 			          }
@@ -440,6 +429,15 @@
 			    }
 			});
 		});
+		
+		//리뷰
+		$(function(){
+			
+			$(".btn:contains('리뷰보기')").bind("click",function(){
+				self.location = "/review/getReview?prodNo="+$(this).val()+"&menu=search";
+			})
+			
+		})
 		
 	</script>
 
@@ -539,7 +537,7 @@
 			</div>
 			</div>
 			<div class="form-group">
-			<label for="receiverDate" class="col-sm-offset-1 col-sm-3 control-label">결제 수단</label>
+			<label for="paymentOption" class="col-sm-offset-1 col-sm-3 control-label">결제 수단</label>
 			<div class="col-sm-5">
 			    <select name="paymentOption" class="form-control">
 			    	<option value="1">신용카드</option>
@@ -577,6 +575,22 @@
 			</form>
 		</div>
 		
+		<div class="row">
+				<div class="col-md-1">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-md-1">&nbsp;</div>
+			</div>
+			
+			<div class="col-md-offset-2 col-md-3 text-left">
+			    	<span class="text-muted">
+			    		전체  ${resultPage.totalCount } 건수
+			    	</span>
+			</div>
+		
+		<div class="row">
+			<div class="col-md-1">&nbsp;</div>
+		</div>
 		
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8 col-md-offset-2">
@@ -617,11 +631,14 @@
 									<p id="${purchase.tranNo}"></p>
 									<p><input type="hidden" name="tNo" value="${purchase.tranNo}">물건도착</p>
 								</c:if>
-								<c:if test="${purchase.tranCode < 2}">
+								<c:if test="${purchase.tranCode == 1}">
 									대기
 								</c:if>
-								<c:if test="${purchase.tranCode > 2}">
+								<c:if test="${purchase.tranCode == 3}">
 									<button type="button" class="btn btn-link" value="${purchase.purchaseProd.prodNo}">review</button>
+								</c:if>
+								<c:if test="${purchase.tranCode == 4}">
+									<button type="button" class="btn btn-link" value="${purchase.purchaseProd.prodNo}">리뷰보기</button>
 								</c:if>
 			                </td>
 	              		</tr>

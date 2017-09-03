@@ -404,13 +404,16 @@
 				if($(window).scrollTop() >= $(document).height() - $(window).height() - 1){
 					
 					event.preventDefault();
-					if(count <= ${resultPage.maxPage}) {
+					//event.stopPropagation();
+						//alert(count);
+					if(count < ${resultPage.maxPage}) {
 						console.log("끝");
 						count++;
 						event.preventDefault();
 						getProductList(count);					
-						event.preventDefault();					
-					} else if(count > ${resultPage.maxPage}) {
+						event.preventDefault();
+						//event.stopPropagation();
+					} else if(count >= ${resultPage.maxPage}) {
 						event.preventDefault();
 						console.log("마지막페이지");
 					}
@@ -438,9 +441,8 @@
 					
 					console.log(JSON.stringify(JSONData.productList));
 					
-					if(JSONData.productList.length == 0) {
-						console.log("(ajax)마지막입니다");
-					}
+					if(JSONData.productList.length != 0) {
+					
 					
 					var htmlStr = '';
 					htmlStr += '<div class="container"><div class="row">';
@@ -456,9 +458,9 @@
 						var price = JSONData.productList[i].price;
 						var proTranCode = JSONData.productList[i].proTranCode;
 						
-						console.log(prodName);
+						//console.log(prodName);
 						htmlStr += '<div class="col-md-3">'+
-									'<div class="thumbnail" data-toggle="popover" data-original-title="'+prodName+'" data-container="body" data-content="상세정보 : '+prodDetail+'<br> 제조일자 : '+manuDate+'>';
+									'<div class="thumbnail" data-toggle="popover" data-original-title="'+prodName+'" data-container="body" data-content="상세정보 : '+prodDetail+'<br> 제조일자 : '+manuDate+'">';
 						htmlStr += '<a id="'+prodNo+'" href="#">';
 						htmlStr += '<img src="../images/uploadFiles/'+fileName+'" alt="'+prodNo+'">';
 						htmlStr += '</a>';
@@ -479,8 +481,8 @@
 						htmlStr += '</div></div></div>';
 						
 						$("#scrollProd").append(htmlStr);
-						
-						console.log($(".thumbnail > img").attr("alt"))
+					}	
+						//console.log($(".thumbnail > img").attr("alt"))
 						
 						$(".thumbnail > img").bind('click', function(elem){
 							self.location = "/product/getProduct?prodNo="+$(this).attr('alt')+"&menu=search";
@@ -716,6 +718,19 @@
 						</div>
 					</form>
 				</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-1">&nbsp;</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">&nbsp;</div>
+		</div>
+		
+		<div class="col-md-6 text-left">
+		    	<p class="text-muted">
+		    		전체  ${resultPage.totalCount } 건수
+		    	</p>
 		</div>
 		
 		<div class="row">

@@ -106,6 +106,14 @@
 			
 		});
 		
+		$(function() {
+		      $('textarea').keyup(function (e){
+		          var content = $(this).val();
+		          $('#counter').html(content.length + '/300');
+		      });
+		      $('#content').keyup();
+		});
+		
 	</script>
 	<style>
         body {
@@ -168,11 +176,12 @@
 		<form class="form-horizontal" name="detailForm" enctype="multipart/form-data">
 			<input type="hidden" name="reviewProd.prodNo" value="${product.prodNo}" />
 			<input type="hidden" name="reviewUser.userId" value="${user.userId}" />
-			
+			<input type="hidden" name="menu" value="search"/>
 			<div class="form-group has-warning">
 				<label for="receiverName" class="col-sm-offset-1 col-sm-3 control-label">ªÛ«∞∆Ú</label>
 				<div class="col-sm-4">
 			    	<textarea class="form-control" rows="10" cols="30" id="reviews" name="reviews"></textarea>
+			    	<div id="counter">0/300</div>
 			    </div>
 			</div>
 			

@@ -1,38 +1,58 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8"/>
+<meta charset="euc-kr"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
 <title>Login Demo - Kakao JavaScript SDK</title>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 </head>
 <body>
-<div class="container">
-<div class="row">
-<div class="col-md-offset-4 col-md-8 col-sm-offset-4 col-sm-8">
-<a id="kakao-login-btn"></a>
-<a href="http://developers.kakao.com/logout"></a>
-</div>
-</div>
-</div>
+		<a id="kakao-login-btn"></a><br>
+		<button class="btn btn-default"><a href="https://kauth.kakao.com/oauth/authorize?client_id=3226d66f575df6c87dccd47e599b3b5f&redirect_uri=http://localhost:8080/kakao/kakaologin&response_type=code">rest login</a></button><br>
+		<button class="btn btn-default"><a href="#">logout</a></button><br>
+		<div id="profile"></div>
 <script type='text/javascript'>
+
+	
+  
   //<![CDATA[
-    // »ç¿ëÇÒ ¾ÛÀÇ JavaScript Å°¸¦ ¼³Á¤ÇØ ÁÖ¼¼¿ä.
-    Kakao.init('8865635962c202af331e7362850ce3f2');
-    // Ä«Ä«¿À ·Î±×ÀÎ ¹öÆ°À» »ý¼ºÇÕ´Ï´Ù.
-    Kakao.Auth.createLoginButton({
+    // ì‚¬ìš©í•  ì•±ì˜ JavaScript í‚¤ë¥¼ ì„¤ì •í•´ ì£¼ì„¸ìš”.
+    Kakao.init('4c581b38ff4c308971bc220233e61b89');
+    // ì¹´ì¹´ì˜¤ ë¡œê·¸ì¸ ë²„íŠ¼ì„ ìƒì„±í•©ë‹ˆë‹¤.
+   Kakao.Auth.createLoginButton({
       container: '#kakao-login-btn',
       success: function(authObj) {
-        alert(JSON.stringify(authObj));
+        //alert(JSON.stringify(authObj));
+        //$("#profile").html(JSON.stringify(authObj.scope));
+        //ì‚¬ìš©ìž ì •ë³´ ìš”ì²­
+    	  Kakao.API.request({
+              url: '/v1/user/me',
+              success: function(res) {
+                alert(JSON.stringify(res));
+                $("#profile").html(res.properties.nickname+"ë‹˜ í™˜ì˜í•©ë‹ˆë‹¤");
+              },
+              fail: function(error) {
+                alert(JSON.stringify(error));
+              }
+            });
       },
       fail: function(err) {
          alert(JSON.stringify(err));
       }
     });
+    
+    $(function(){
+    	$("a:contains('logout')").bind("click",function(){
+    		Kakao.Auth.logout(function(data) {
+    			alert(data);
+    			if(data) {
+    				$("#profile").html("logout ok")
+    			}
+    		})
+    	})
+    })
   //]]>
 </script>
 

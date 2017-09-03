@@ -31,13 +31,17 @@
 			
 			$(".btn:contains('수정')").bind('click', function(){
 				console.log($(this).html());
-				self.location = "/review/updateReview?reviewNo=${review.reviewNo}";
+				self.location = "/review/updateReview?prodNo=${review.reviewProd.prodNo}";
 			});
 			
 			$(".btn:contains('확인')").bind('click', function(){
 				console.log($(this).html());
 				self.location = "/purchase/listPurchase";
 			});
+			
+			$(".btn:contains('이전')").bind("click",function(){
+				self.location = "/purchase/listSale";
+			})
 			
 		});
 		
@@ -74,7 +78,6 @@
 			<h3 class="text-info">상품평</h3>
 			<small class="text-muted">입력한 상품평를 확인하세요.</small>
 		</div>
-		
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 			<table class="table">
@@ -102,22 +105,34 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-md-offset-5 col-md-5">
-				등록자 : ${review.reviewUser.userId}
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-md-offset-5 col-md-5">
-				상품평 : ${review.reviews}
+			<div class="col-md-offset-4 col-md-4">
+			<table class="table table-striped">
+			 		<tr class="text-muted">
+			 			<td><small>작성자</small></td>
+			 			<td><small>내용</small></td>
+			 		</tr>
+			 	<tr>
+			 		<td>
+			 			<small><mark>${review.reviewUser.userId}</mark></small>
+			 		</td>
+			 		<td>
+			 		 	<small>${review.reviews}</small>
+			 		</td>
+			 	</tr>
+			</table>
 			</div>
 		</div>
 		
 		<div class="row">
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
+				<c:if test="${param.menu == 'search'}">
 					<a href="# "class="btn btn-primary">수정</a>
 					<a href="# "class="btn btn-default">확인</a>
+				</c:if>
+				<c:if test="${param.menu == 'manage'}">
+					<a href="# "class="btn btn-default">이전</a>
+				</c:if>
 				</div>
 			</div>
 		</div>

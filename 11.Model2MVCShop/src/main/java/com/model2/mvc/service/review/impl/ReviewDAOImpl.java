@@ -28,8 +28,8 @@ public class ReviewDAOImpl implements ReviewDAO{
 	}
 
 	@Override
-	public Review getReview(int reviewNo) throws Exception {
-		return sqlSession.selectOne("ReviewMapper.getReview", reviewNo);
+	public Review getReview(int prodNo) throws Exception {
+		return sqlSession.selectOne("ReviewMapper.getReview", prodNo);
 	}
 
 	@Override

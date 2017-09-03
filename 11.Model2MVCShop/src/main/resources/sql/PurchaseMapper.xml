@@ -97,7 +97,10 @@
 				receiver_request = #{receiverRequest},
 			</if>
 			<if test="receiverDate != null">
-				receiver_date = #{receiverDate}
+				receiver_date = #{receiverDate},
+			</if>
+			<if test="paymentOption != null">
+				payment_option = #{paymentOption}
 			</if>
 		</set>
 		<where>
@@ -128,45 +131,17 @@
 								 	u.user_id = t.buyer_id
 									AND p.prod_no = t.prod_no
 									AND u.user_id = #{userId}
-									<if test="searchCondition != null and searchCondition != ''" >
+									<if test="search.searchCondition != null and search.searchCondition != ''" >
 										<choose>
-											<when test="searchCondition == 0 and searchKeyword != ''">
-												AND p.prod_no = #{searchKeyword}
-											</when>
-											<when test="searchCondition == 1 and searchKeyword != ''">
-												AND p.prod_name LIKE '%${searchKeyword}%'
+											<when test="search.searchCondition == 1 and search.searchKeyword != ''">
+												AND p.prod_name LIKE '%${search.searchKeyword}%'
 											</when>
 											<!--  가격검색 -->
-											<when test="searchCondition == 2 and searchLowPrice != ''"> 
-												<if test="searchLowPrice != null and searchHighPrice != ''">
-													AND p.price BETWEEN #{searchLowPrice} AND #{searchHighPrice}
-												</if>
-												<if test="searchHighPrice == '' or searchHighPrice == null">
-													AND p.price >= #{searchLowPrice}
-												</if>
-											</when>
 										</choose>
 									</if>
 								</where>
 								ORDER BY 
-								<!-- 정렬 -->
-								<if test="sortCondition != null and sortCondition != ''">
-									<if test="sortCondition == 0"><!-- 상품명오름차순 -->
-										p.prod_name
-									</if>
-									<if test="sortCondition == 1"><!-- 상품명내림차순 -->
-										p.prod_name DESC
-									</if>
-									<if test="sortCondition == 2"><!-- 판매날짜오름차순 -->
-										t.order_date DESC
-									</if>
-									<if test="sortCondition == 3"><!-- 판매날짜내림차순 -->
-										t.order_date
-									</if>
-								</if>
-								<if test="sortCondition == null or sortCondition == '' ">
-									t.tran_no
-								</if>) inner_table
+								t.tran_no) inner_table
 					WHERE ROWNUM &lt;= ${search.currentPage}*${search.pageSize})
 		WHERE row_seq BETWEEN (${search.currentPage}-1)*${search.pageSize}+1 AND ${search.currentPage}*${search.pageSize}
 	</select>

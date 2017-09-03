@@ -8,7 +8,7 @@ public interface ReviewService {
 
 	public int addReview(Review review) throws Exception;
 	
-	public Review getReview(int reviewNo) throws Exception;
+	public Review getReview(int prodNo) throws Exception;
 	
 	public int updateReview(Review review) throws Exception;
 	

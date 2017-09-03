@@ -75,6 +75,7 @@
 		WHERE p.prod_no = r.prod_no AND u.user_id = r.user_id AND r.review_no = #{value} -->
 		SELECT r.review_no AS review_no,
 		r.reviews AS reviews,
+		p.prod_no AS prod_no,
 		p.prod_name AS prod_name,
 		p.price AS price,
 		p.manufacture_day AS manufacture_day,
@@ -82,7 +83,7 @@
 		p.image_file AS image_file,
 		u.user_id AS user_id
 		FROM review r, product p, users u
-		WHERE r.prod_no = p.prod_no AND r.user_id = u.user_id AND r.review_no = #{value}
+		WHERE r.prod_no = p.prod_no AND r.user_id = u.user_id AND p.prod_no = #{value}
 	</select>
 	
 	<select id="getReviewList" parameterType="int" resultMap="selectReviewListMap">

@@ -338,7 +338,7 @@ public class ProductController {
 		}
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("reviewList", reviewService.getReviewList(prodNo));
+		//modelAndView.addObject("reviewList", reviewService.getReviewList(prodNo));
 		modelAndView.addObject("menu", menu);
 		modelAndView.addObject("product", product);
 		modelAndView.setViewName(viewName);

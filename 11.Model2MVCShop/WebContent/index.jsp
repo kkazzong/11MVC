@@ -325,94 +325,6 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
 				<div class="scroll"></div>
 	</div>
     
-    
-    <section id="main-info" class="pad-xl">
-	    <div class="container">
-		    <div class="row">
-			    <div class="col-sm-4 wow fadeIn" data-wow-delay="0.4s">
-	    			<div class="panel panel-default">
-		    			<div class="panel-body">
-					    	<img alt="hi" src="/images/uploadFiles/apeach.jpg">
-						    <h3>App Feature One Here</h3>
-						    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut est facilisis, eu elementum mi volutpat. Pellentesque ac tristique nisi.</p>
-			    		</div>
-	    				<div class="panel-footer">
-	    					Panel footer
-	    				</div>
-			 		</div>
-	    		</div>
-	    		<div class="col-sm-4 wow fadeIn" data-wow-delay="0.4s">
-	    			<div class="panel panel-default">
-		    			<div class="panel-body">
-					    	<img alt="hi" src="/images/uploadFiles/apeach.jpg">
-						    <h3>App Feature One Here</h3>
-						    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut est facilisis, eu elementum mi volutpat. Pellentesque ac tristique nisi.</p>
-			    		</div>
-	    				<div class="panel-footer">
-	    					Panel footer
-	    				</div>
-			 		</div>
-			 		
-	    		</div>
-	   		</div>
-	    </div>
-    </section>
-    
-  <!-- teastimonial -->
-  <section id="tstm_sec">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="all_tstm">
-					
-				<div class="clnt_tstm">
-					<div class="sngl_tstm">
-						<i class="fa fa-quote-right"></i>
-						<h3>what people say?</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
-						<h6>- jhon deo</h6>					
-					</div>
-				</div>						
-				
-				<div class="clnt_tstm">
-					<div class="sngl_tstm">
-						<i class="fa fa-quote-right"></i>
-						<h3>Clien Design</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
-						<h6>- shura deo</h6>					
-					</div>
-				</div>				
-				<div class="clnt_tstm">
-					<div class="sngl_tstm">
-						<i class="fa fa-quote-right"></i>
-						<h3>Awesome Support SIMA</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
-						<h6>- kumara deo</h6>					
-					</div>
-				</div>				
-				<div class="clnt_tstm">
-					<div class="sngl_tstm">
-						<i class="fa fa-quote-right"></i>
-						<h3>Theme Feature great</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
-						<h6>- dhera deo</h6>					
-					</div>
-				</div>				
-				<div class="clnt_tstm">
-					<div class="sngl_tstm">
-						<i class="fa fa-quote-right"></i>
-						<h3>Non conflict</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur sequi accusamus voluptatum rem itaque alias deleniti nostrum aperiam fugiat voluptates debitis praesentium incidunt accusantium distinctio,</p>
-						<h6>- jhon deo</h6>					
-					</div>
-				</div>	
-					
-				</div>
-			</div>	
-		</div>
-	</div>
-</section>
-    
     <!-- Learn more -->
      <section id="be-the-first" class="pad-xl">
       <div class="container">
@@ -429,62 +341,6 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
       </div>
     </section> 
         
-    <!--Pricing-->
-   <!--  <section id="pricing" class="pad-lg">
-      <div class="container">
-        <div class="row margin-40">
-          <div class="col-sm-8 col-sm-offset-2 text-center">
-            <h2 class="white">Pricing</h2>
-            <p class="white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra orci ut.</p>
-          </div>
-        </div>
-        
-        <div class="row margin-50">
-          
-          <div class="col-sm-4 pricing-container wow fadeInUp" data-wow-delay="1s">
-            <br />
-            <ul class="list-unstyled pricing-table text-center">
-    					<li class="headline"><h5 class="white">Personal</h5></li>
-    					<li class="price"><div class="amount">$5<small>/m</small></div></li>
-    					<li class="info">2 row section for you package information. You can include all details or icons</li>
-    					<li class="features first">Up To 25 Projects</li>
-    					<li class="features">10GB Storage</li>
-    					<li class="features">Other info</li>
-    					<li class="features last btn btn-secondary btn-wide"><a href="#">Get Started</a></li>
-    				</ul>
-          </div>
-          
-          <div class="col-sm-4 pricing-container wow fadeInUp" data-wow-delay="0.4s">
-            <ul class="list-unstyled pricing-table active text-center">
-    					<li class="headline"><h5 class="white">Professional</h5></li>
-    					<li class="price"><div class="amount">$12<small>/m</small></div></li>
-    					<li class="info">2 row section for you package information. You can include all details or icons</li>
-    					<li class="features first">Up To 25 Projects</li>
-    					<li class="features">10GB Storage</li>
-    					<li class="features">Other info</li>
-    					<li class="features">Other info</li>
-    					<li class="features last btn btn-secondary btn-wide"><a href="#">Get Started</a></li>
-    				</ul>
-          </div>
-          
-          <div class="col-sm-4 pricing-container wow fadeInUp" data-wow-delay="1.3s">
-            <br />
-            <ul class="list-unstyled pricing-table text-center">
-    					<li class="headline"><h5 class="white">Business</h5></li>
-    					<li class="price"><div class="amount">$24<small>/m</small></div></li>
-    					<li class="info">2 row section for you package information. You can include all details or icons</li>
-    					<li class="features first">Up To 25 Projects</li>
-    					<li class="features">10GB Storage</li>
-    					<li class="features">Other info</li>
-    					<li class="features last btn btn-secondary btn-wide"><a href="#">Get Started</a></li>
-    				</ul>
-          </div>
-          
-        </div>
-        
-      </div>
-    </section> -->
-    
     
     <section id="invite" class="pad-lg light-gray-bg">
       <div class="container">
@@ -496,15 +352,13 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
             <p class="black">8, Gangnam-daero 53-gil, Seocho-gu, Seoul, Republic of Korea</p>
             <br />
             
-            <!-- 다음지도 -->
-            
             
             <div class="row">
               <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <form role="form">
                   <div class="form-group">
-                    <!-- <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email"> -->
-        				<%-- <jsp:include page="daum.jsp"/> --%>
+			            <!-- 다음지도 -->
+        				<jsp:include page="daum.jsp"/>
                   </div>
                   <button class="btn btn-primary btn-lg"><a href="http://map.daum.net/link/to/비트아카데미,37.49456429671521,127.0280215767454">Way to Shop</a></button>
                 </form>
@@ -577,26 +431,6 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
     <script src="/js/main.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
 	<script>
-	$('.all_tstm').owlCarousel({
-		items:1,
-		loop:true,
-		margin:10,
-		nav:true,
-		autoplay:true,
-		smartSpeed:500,	
-		navText: ["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"],
-		responsive:{
-			0:{
-				items:1
-			},
-			600:{
-				items:1
-			},
-			1000:{
-				items:1
-			}
-		}
-	})
 	
 	$("a[href='#' ]:contains('Log in')").bind('click',function(){
 		console.log("log in click");

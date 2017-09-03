@@ -65,29 +65,26 @@
 			
 		});
 		
-		var count = 1;
+var count = 1;
 		
-		//무한스크롤
-		$(window).bind("scroll",function(event){
-				console.log("scrolling....");
-				console.log("doc > "+$(document).height());
-				console.log("win > "+$(window).height());
-				console.log("cur > "+$(window).scrollTop()); 
+		//무한스크롤...................................................
+		 $(window).bind("scroll",function(event){
 				
-				if($(window).scrollTop() >= $(document).height() - $(window).height() -1){
+				if($(window).scrollTop() >= $(document).height() - $(window).height() - 1){
 					
-					if(count < ${resultPage.endUnitPage}) {
-						event.preventDefault();
-						console.log(count);
+					event.preventDefault();
+					//event.stopPropagation();
+						//alert(count);
+					if(count < ${resultPage.maxPage}) {
 						console.log("끝");
 						count++;
-						console.log($(this).html());
-						getPurchaseList(count);
 						event.preventDefault();
-						
-					} else if(count >= ${resultPage.endUnitPage}) {
+						getPurchaseList(count);					
 						event.preventDefault();
-						console.log("마지막입니다");
+						//event.stopPropagation();
+					} else if(count >= ${resultPage.maxPage}) {
+						event.preventDefault();
+						console.log("마지막페이지");
 					}
 				}
 		});
@@ -132,7 +129,7 @@
 						
 						console.log(fileName);
 						
-						htmlStr += "<td>"+(9 * (count - 1) + (i))+"</td>";
+						htmlStr += "<td>"+(i+1)+"</td>";
 						htmlStr += "<td rowspan='2'><img class='img-thumbnail' src='../images/uploadFiles/"+fileName+"'>";
 	                	htmlStr += "<span>";
 						htmlStr += '<button type="button" class="btn btn-xs disabled" value="'+tranNo+'">'+prodName+'</button>';
@@ -233,6 +230,15 @@
 			});
 		})
 		
+		//리뷰
+		$(function(){
+			
+			$(".btn:contains('상품평보기')").bind("click",function(){
+				self.location = "/review/getReview?prodNo="+$(this).val()+"&menu=manage";
+			})
+			
+		})
+		
 	</script>
 	<style type="text/css">
 		body {
@@ -298,6 +304,25 @@
 		</div>
 	</div>
 	
+		<div class="container">
+		<div class="row">
+				<div class="col-md-1">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-md-1">&nbsp;</div>
+			</div>
+			
+			<div class="col-md-offset-2 col-md-3 text-left">
+			    	<p class="text-muted">
+			    		전체  ${resultPage.totalCount } 건수
+			    	</p>
+			</div>
+		
+			<div class="row">
+				<div class="col-md-1">&nbsp;</div>
+			</div>
+		</div>
+	
 	<div class="container">	
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8 col-md-offset-2">
@@ -336,6 +361,9 @@
 									</c:when>
 									<c:when test="${purchase.tranCode == 3 }">
 										배송완료
+									</c:when>
+									<c:when test="${purchase.tranCode == 4 }">
+										 <button type="button" class="btn btn-xs btn-link" value="${purchase.purchaseProd.prodNo}">상품평보기</button>
 									</c:when>
 								</c:choose>
 			                </p>

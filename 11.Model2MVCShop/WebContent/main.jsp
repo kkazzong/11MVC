@@ -31,15 +31,35 @@
    function fncChart(){
 	   
 	   var data = {
-			   labels: ["08/27", "08/28", "08/29", "08/30"],
+			   labels: ["상품갯수", "팔린상품", "회원수", "방문자수"],
 			   datasets: [{
-			     label: "방문자 수",
-			     backgroundColor: "rgba(255,99,132,0.2)",
-			     borderColor: "rgba(255,99,132,1)",
-			     borderWidth: 1,
-			     hoverBackgroundColor: "rgba(255,99,132,0.4)",
-			     hoverBorderColor: "rgba(255,99,132,1)",
-			     data: [65, 59, 20, 81, 56, 55, 40],
+				   label : "Tube Shop",					   
+	 			     backgroundColor: [
+	 					"rgba(168, 145, 253, 0.4)",
+	 					"rgba(253, 166, 160, 0.4)",
+	 					"rgba(253, 215, 165, 0.4)",
+	 					"rgba(155, 211, 253, 0.4)"
+	 			     ], 
+	 			     borderColor: [
+	 					"rgba(168, 145, 253, 1)",
+	 					"rgba(253, 166, 160, 1)",
+	 					"rgba(253, 215, 165, 1)",
+	 					"rgba(155, 211, 253, 1)"          
+	 			     ],
+	 			     borderWidth: 1,
+	 			     hoverBackgroundColor: [
+	 			        "rgba(168, 145, 253, 0.8)",
+	 			        "rgba(253, 166, 160, 0.8)",
+	 			        "rgba(253, 215, 165, 0.8)",
+	 			        "rgba(155, 211, 253, 0.8)"
+	 			     ],
+	 			     hoverBorderColor: [
+	 			    	"rgba(168, 145, 253, 1)",
+	 			    	"rgba(253, 166, 160, 1)",
+	 			    	"rgba(253, 215, 165, 1)",
+	 			    	"rgba(155, 211, 253, 1)"          
+	 			  	],
+			     	data: [65, 59, 20, 81],
 			   }]
 		 };
 
@@ -49,7 +69,7 @@
 			     yAxes: [{
 			       stacked: true,
 			       gridLines: {
-			         display: true,
+			         display: false,
 			         color: "rgba(255,99,132,0.2)"
 			       }
 			     }],

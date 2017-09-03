@@ -42,14 +42,24 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value="addReview", method=RequestMethod.POST)
-	public String addReview(@ModelAttribute("review") Review review, Model model) throws Exception {
+	public String addReview(@ModelAttribute("review") Review review, @RequestParam("menu") String menu, Model model) throws Exception {
 		
 		System.out.println("addReview[POST]");
 		reviewService.addReview(review);
 		System.out.println("reviewNo : "+review.getReviewNo());
-		model.addAttribute("review", reviewService.getReview(review.getReviewNo()));
+		model.addAttribute("menu", menu);
+		model.addAttribute("review", reviewService.getReview(review.getReviewProd().getProdNo()));
 		return "/review/reviewProduct.jsp";
 	}
+	
+	@RequestMapping(value="getReview", method=RequestMethod.GET)
+	public String addReview(@RequestParam("prodNo") int prodNo, Model model) throws Exception {
+		
+		System.out.println("getReview[POST]");
+		model.addAttribute("review", reviewService.getReview(prodNo));
+		return "/review/reviewProduct.jsp";
+	}
+	
 	
 	@RequestMapping(value="getReviewList", method=RequestMethod.GET)
 	public String getReviewList(@RequestParam int prodNo, Model model) throws Exception {
@@ -60,19 +70,20 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value="updateReview", method=RequestMethod.GET)
-	public String updateReview(@RequestParam int reviewNo, Model model) throws Exception {
+	public String updateReview(@RequestParam("prodNo") int prodNo, Model model) throws Exception {
 		
 		System.out.println("updateReview[GET]");
-		model.addAttribute("review", reviewService.getReview(reviewNo));
+		model.addAttribute("review", reviewService.getReview(prodNo));
 		return "/review/updateReview.jsp";
 	}
 	
 	@RequestMapping(value="updateReview", method=RequestMethod.POST)
-	public String updateReview(@ModelAttribute("review") Review review, Model model) throws Exception {
+	public String updateReview(@ModelAttribute("review") Review review, @RequestParam("menu") String menu, Model model) throws Exception {
 		
 		System.out.println("updateReview[POST]");
 		reviewService.updateReview(review);
-		model.addAttribute("review", reviewService.getReview(review.getReviewNo()));
+		model.addAttribute("menu",menu);
+		model.addAttribute("review", reviewService.getReview(review.getReviewProd().getProdNo()));
 		return "/review/reviewProduct.jsp";
 	}
 	

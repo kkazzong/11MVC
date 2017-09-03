@@ -50,7 +50,8 @@
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp" />
+	<%-- <jsp:include page="/layout/toolbar.jsp" /> --%>
+	<jsp:include page="/layout/toolbarTube.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
 	
 	<!--  화면구성 div Start /////////////////////////////////////-->

@@ -102,6 +102,16 @@
 			
 		});
 		
+		$(function() {
+			 $('#content').html($('textarea').val().length);
+			 
+		      $('textarea').keyup(function (e){
+		          var content = $(this).val();
+		          $('#counter').html(content.length + '/300');
+		      });
+		      $('#content').keyup();
+		});
+		
 	</script>
 	<style>
         body {
@@ -164,17 +174,20 @@
 		
 		<form class="form-horizontal" name="detailForm" enctype="multipart/form-data">
 			<input type="hidden" name="reviewNo" value="${review.reviewNo}" />
+			<input type="hidden" name="reviewProd.prodNo" value="${review.reviewProd.prodNo}">
+			<input type="hidden" name="menu" value="search">
 			
 			<div class="form-group has-warning">
 				<label for="reviews" class="col-sm-offset-1 col-sm-3 control-label">상품평</label>
 				<div class="col-sm-4">
 			    	<textarea class="form-control" rows="10" cols="30" id="reviews" name="reviews">${review.reviews}</textarea>
+			    	<div id="counter">0/300</div>
 			    </div>
 			</div>
 			
 			<div class="form-group">
 				<div class="col-sm-offset-4  col-sm-4 text-center">
-					<button type="button" class="btn btn-danger">수정</button>
+					<button type="button" class="btn btn-primary">수정</button>
 					<button type="button" class="btn btn-default">취소</button>
 			    </div>
 			</div>

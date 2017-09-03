@@ -2,7 +2,7 @@
 <%@ page pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   <meta charset="utf-8">
-  <title>Snow Landing Page Theme </title>
+  <title>Tube Shop</title>
   <meta name="keywords" content="">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -58,7 +58,7 @@
       h1, h2, h3, h4, h5, h6, p, .logo, .btn, .navbar-nav a, a span .form-control, .list-inline, small, #pricing {
 		  font-family: 'Montserrat', sans-serif;
 		}
-		span, .logo, .logo:hover{
+		span, .logo, .logo:hover, .navbar-nav>li>a{
     		color: #ffffff;
     		text-decoration: none;
 		}
@@ -117,34 +117,37 @@
 			        </ul>
 	            </li> -->
             
+            <c:if test="${sessionScope.user.role == 'admin'}">
+             <li><a href="#"><span>배송관리</span></a></li>
+             </c:if>
 			
 			<li class="dropdown">
 			<c:if test="${sessionScope.user.role == 'admin'}">
 		       <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-		            <span>product</span>
+		            <span>manage</span>
 		            <span class="caret"></span>
 		        </a>
 		        <ul class="dropdown-menu">
 			            <li><a href="#">판매상품등록</a></li>
 			            <li><a href="#">판매상품관리</a></li>
-			            <li class="divider"></li>
-		                <li><a href="#">배 송 관 리</a></li>
 			    </ul>
 	        </c:if>
             </li>
             
+            
+	         <c:if test="${sessionScope.user.role == 'user'}">
+	              <li><a href="#"><span>order</span></a></li>
+	         </c:if>
+	         
             <li class="dropdown">
 	           	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-	            		 <span>purchase</span>
+	            		 <span>product</span>
 	            		<span class="caret"></span>
 	            </a>
 	            <ul class="dropdown-menu">
 	                         <li><a href="#">상 품 검 색</a></li>
-	                         <c:if test="${sessionScope.user.role == 'user'}">
-	                           <li><a href="#">구매이력조회</a></li>
-	                         </c:if>
 	                         <li><a href="#">최근본상품</a></li>
-	                     </ul>		
+	             </ul>		
             </li>
             
             <li class="dropdown">
@@ -195,7 +198,7 @@
 		 });
 		
 		//=============  개인정보조회회 Event  처리 =============	
-	 	$( "a:contains('개인정보조회')" ).on("click" , function() {
+	 	$( "a:contains('마이페이지')" ).on("click" , function() {
 	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$(self.location).attr("href","/user/getUser?userId=${sessionScope.user.userId}");
 		});
@@ -219,11 +222,11 @@
 				self.location = "../history.jsp";
 			});
 			
-			$("a[href='#']:contains('구매이력조회')").bind('click', function(){
+			$("a[href='#']:contains('order')").bind('click', function(){
 				self.location = "/purchase/listPurchase";
 			});
 			
-			$("a[href='#']:contains('배 송 관 리')").bind('click', function(){
+			$("a[href='#']:contains('배송관리')").bind('click', function(){
 				self.location = "/purchase/listSale";
 			});
 			

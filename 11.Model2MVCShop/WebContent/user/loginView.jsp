@@ -190,7 +190,7 @@
 		$( function() {
 			
 			$("a[href='#' ]:contains('Log in')").bind('click',function(){
-				alert("log in click");
+				console.log("log in click");
 				self.location = "/user/login";
 			})
 			
@@ -199,7 +199,7 @@
 			console.log("¹öÆ°"+$("button").html());
 			
 			$("button").bind("click" , function() {
-				alert("button click")
+				console.log("button click")
 				var id=$("input:text").val();
 				var pw=$("input:password").val();
 				
@@ -242,6 +242,9 @@
 		border : 3px solid #D6CDB7;
 		margin0top : 10px;
 	} */
+	form{
+		margin-top : 200px;
+	}
   </style>
 </head>
 
@@ -259,7 +262,7 @@
           </div>
         </div>
         
-        <div class="row header-info">
+        <div class="row">
             <div class="row">
               <div class="col-md-offset-4 col-md-8 col-sm-offset-4 col-sm-8">
                 <div class="row">
@@ -288,6 +291,7 @@
         </div>
     </header>
    	
+    						<%-- <jsp:include page="/data/kakaoLogin.jsp"/> --%>
     <footer>
       <div class="container">
         
