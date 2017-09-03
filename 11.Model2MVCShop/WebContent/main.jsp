@@ -134,7 +134,7 @@
 				   htmlStr += manu;
 			   htmlStr += "</p>";
 			   
-			   $("p").remove();
+			   $(".grid-item-content > p").remove();
 			   $($(elem),".grid-item-content").append(htmlStr);
 		   }  
 	   })
