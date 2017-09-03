@@ -322,7 +322,7 @@
 	                	htmlStr += "<span>";
 											
 						 if(JSONData[i].tranCode == '1'){
-							htmlStr += '<button type="button" class="btn btn-xs btn-link" value="'+tranNo+'">'+prodName+'<br>'
+							htmlStr += '<button type="button" class="btn btn-xs btn-link"  data-toggle="modal" data-target="#myModal" value="'+tranNo+'">'+prodName+'<br>'
 	                						+'<small class="text-muted primary">주문번호 | '+tranNo+'</small></button>';
 						} else {
 							htmlStr += '&nbsp;<button type="button" class="btn btn-xs">'+prodName+'<br>'
@@ -347,7 +347,7 @@
 						
 						$("span > button").bind('click', function(){
 							fncUpdatePurchaseView($(this).val());
-							$('#myModal').modal();
+							//$('#myModal').modal();
 						});
 						
 						$("p").bind('click', function(){
