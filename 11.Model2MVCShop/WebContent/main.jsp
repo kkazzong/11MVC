@@ -27,84 +27,92 @@
    <script src="/js/main.js" type="text/javascript"></script>
    <!-- masonry cdn -->
 	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+	
+	
    <script type="text/javascript">
-   function fncChart(){
-	   
-	   var data = {
-			   labels: ["상품갯수", "팔린상품", "회원수", "방문자수"],
-			   datasets: [{
-				   label : "Tube Shop",					   
-	 			     backgroundColor: [
-	 					"rgba(168, 145, 253, 0.4)",
-	 					"rgba(253, 166, 160, 0.4)",
-	 					"rgba(253, 215, 165, 0.4)",
-	 					"rgba(155, 211, 253, 0.4)"
-	 			     ], 
-	 			     borderColor: [
-	 					"rgba(168, 145, 253, 1)",
-	 					"rgba(253, 166, 160, 1)",
-	 					"rgba(253, 215, 165, 1)",
-	 					"rgba(155, 211, 253, 1)"          
-	 			     ],
-	 			     borderWidth: 1,
-	 			     hoverBackgroundColor: [
-	 			        "rgba(168, 145, 253, 0.8)",
-	 			        "rgba(253, 166, 160, 0.8)",
-	 			        "rgba(253, 215, 165, 0.8)",
-	 			        "rgba(155, 211, 253, 0.8)"
-	 			     ],
-	 			     hoverBorderColor: [
-	 			    	"rgba(168, 145, 253, 1)",
-	 			    	"rgba(253, 166, 160, 1)",
-	 			    	"rgba(253, 215, 165, 1)",
-	 			    	"rgba(155, 211, 253, 1)"          
-	 			  	],
-			     	data: [65, 59, 20, 81],
-			   }]
-		 };
+   //차트 옵션
+   var options = {
+		   maintainAspectRatio: false,
+		   scales: {
+		     yAxes: [{
+		       stacked: true,
+		       gridLines: {
+		         display: true
+		       }
+		     }],
+		     xAxes: [{
+		       gridLines: {
+		         display: false
+		       }
+		     }]
+		   }
+	};
 
-			 var options = {
-			   maintainAspectRatio: false,
-			   scales: {
-			     yAxes: [{
-			       stacked: true,
-			       gridLines: {
-			         display: false,
-			         color: "rgba(255,99,132,0.2)"
-			       }
-			     }],
-			     xAxes: [{
-			       gridLines: {
-			         display: false
-			       }
-			     }]
-			   }
-			 };
-
-			 Chart.Line('chartLine', {
-			   options: options,
-			   data: data
-			 });
-			 
-			 Chart.Bar('chartBar', {
-				   options: options,
-				   data: data
-				});
-			 
-			 var myDoughnutChart = new Chart('chartDoughnut', {
-				    type: 'doughnut',
-				    data: data,
-				    options: options
-				});
-			 
-			 var myPieChart = new Chart('chartPie', {
-				    type: 'pie',
-				    data: data,
-				    options: options
-				});
-	   
-   }
    
+   //차트만들기
+   function makeChart(){
+	   var chart = new Chart('chartBar', {
+		   type : "bar",
+		   options : options,
+		   data : chartData
+	   });
+	   var myPieChart = new Chart('chartPie', {
+			type: 'doughnut',
+			data: chartData,
+			options: options
+	   });
+   } 
+   
+///////차트데이터	   
+	   var chartData = function() {
+		   $.ajax({
+			   url : "/chart/json/getChartData",
+			   method : "get",
+			   dataType : "json",
+			   success : function(JSONData){
+				   //var count = JSONData.totalCount;
+				   //console.log("count : "+count);
+				   var userCount = JSONData.userCount;
+				   var prodCount = JSONData.prodCount;
+				   var soldCount = JSONData.soldCount;
+				   
+				   chartData = {
+						   labels: ["상품갯수", "팔린상품", "회원수"],
+						   datasets: [{
+							   label : "Tube Shop",					   
+				 			     backgroundColor: [
+				 					"rgba(168, 145, 253, 0.4)",
+				 					"rgba(253, 166, 160, 0.4)",
+				 					"rgba(253, 215, 165, 0.4)",
+				 			     ], 
+				 			     borderColor: [
+				 					"rgba(168, 145, 253, 1)",
+				 					"rgba(253, 166, 160, 1)",
+				 					"rgba(253, 215, 165, 1)",
+				 			     ],
+				 			     borderWidth: 1,
+				 			     hoverBackgroundColor: [
+				 			        "rgba(168, 145, 253, 0.8)",
+				 			        "rgba(253, 166, 160, 0.8)",
+				 			        "rgba(253, 215, 165, 0.8)",
+				 			     ],
+				 			     hoverBorderColor: [
+				 			    	"rgba(168, 145, 253, 1)",
+				 			    	"rgba(253, 166, 160, 1)",
+				 			    	"rgba(253, 215, 165, 1)",
+				 			  	],
+						     	data: [prodCount+"",soldCount+"",userCount+""],
+						   }]
+					 };
+					console.log(chartData)
+				   makeChart();
+			   }
+		   });
+	   }
+		   
+
+   
+   // 마소니에 표현할 데이터 getAjax
    function getProductAjax(prodNo,elem){
 		
 	   $.ajax({
@@ -150,12 +158,14 @@
     		dataType : "json",
     		success : function(JSONData){
     			
+    			//이미지 슬라이드
     			for(var i = 0; i < 3; i++) {
     				var fileName = JSONData.productList[i].fileName[0];
     				$($(".slide img")[i]).attr("src","/images/uploadFiles/"+fileName);
     				$($(".btn:contains('더보기')")[i]).attr("href","/product/getProduct?prodNo="+JSONData.productList[i].prodNo+"&menu=search");
     			}
     			
+    			// 마소니에 표현할 이미지
     			var htmlStr = '<div class="grid"><div class="col-md-offset-1">';
     			
     			for(var index = 0; index < 5; index++){
@@ -200,6 +210,7 @@
     		        	
     		      })
     		      
+    		      //툴팁
     		      $(function () {
   					$('[data-toggle="tooltip"]').tooltip({
   						html : true,
@@ -210,15 +221,15 @@
     			
     		}
     		
-    	})
+    	});
     	
     	
     	$("#myCarousel").carousel({
     		interval : 2000
     	});
     	
-    	fncChart();
-    	
+    	//fncChart();
+    	chartData();
     })
     
   
@@ -320,6 +331,28 @@
 <body>
 	<jsp:include page="/layout/toolbarTube.jsp" />
 	
+	<section id="sub-info" class="pad-xl">
+		<div class="container">
+			<div class="page-header text-center wow fadeIn" data-wow-delay="0.4s">
+				<h3>Intro</h3>
+			</div>
+			<div class="row">
+				<div class="md-offset-1 md-col-4">
+					<div class="chart-container">
+		    			<canvas id="chartBar"></canvas>
+					</div>
+				</div>
+				<div class="row">
+				<div class="md-offset-1 md-col-4">
+					<div class="chart-container">
+		    			<canvas id="chartPie"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</section>
+	
 	<section id="main-info" class="pad-xl">
 		<div class="container">
 			<div class="page-header text-center wow fadeIn" data-wow-delay="0.4s">
@@ -373,27 +406,6 @@
 			</div>
 	</div>
 	
-	</section>
-	
-	<section id="sub-info" class="pad-xl">
-		<div class="container">
-			<div class="page-header text-center wow fadeIn" data-wow-delay="0.4s">
-				<h3>Intro</h3>
-			</div>
-			<div class="row">
-				<div class="md-offset-1 md-col-4">
-					<div class="chart-container">
-		    			<canvas id="chartBar"></canvas>
-					</div>
-				</div>
-				<div class="row">
-				<div class="md-offset-1 md-col-4">
-					<div class="chart-container">
-		    			<canvas id="chartPie"></canvas>
-					</div>
-				</div>
-			</div>
-		</div>
 	</section>
 	
 	
